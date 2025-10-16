@@ -19,13 +19,13 @@ router.post("/", async (req, res) => {
 
 // Get all blog posts (newest first)
 
-router.get("/", async (_req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const blogs = await Blog.find().sort({ createdAt: -1 });
-    res.json(blogs);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to fetch blogs" });
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) return res.status(404).json({ error: "Not found" });
+    res.json(blog);
+  } catch {
+    res.status(400).json({ error: "Invalid id" });
   }
 });
 
