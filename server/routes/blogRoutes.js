@@ -2,11 +2,12 @@
 const express = require("express");
 const Blog = require("../models/blog");
 const mongoose = require("mongoose");
+const { requireAuth } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-// Create a new blog post
-router.post("/", async (req, res) => {
+// Create a new blog post (protected)
+router.post("/", requireAuth, async (req, res) => {
   try {
     const { title, content, image } = req.body;
     const blog = new Blog({ title, content, image });
@@ -19,18 +20,18 @@ router.post("/", async (req, res) => {
 
 // Get all blog posts (newest first)
 
-router.get("/:id", async (req, res) => {
+router.get("/", async (_req, res) => {
   try {
-    const blog = await Blog.findById(req.params.id);
-    if (!blog) return res.status(404).json({ error: "Not found" });
-    res.json(blog);
-  } catch {
-    res.status(400).json({ error: "Invalid id" });
+    const blogs = await Blog.find().sort({ createdAt: -1 });
+    res.json(blogs);              // <-- must send something
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch blogs" });
   }
 });
 
-// Update a blog post
-router.put("/:id", async (req, res) => {
+// Update a blog post (protected)
+router.put("/:id", requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     if (!mongoose.isValidObjectId(id)) return res.status(400).json({ error: "Invalid id" });
@@ -52,8 +53,8 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Delete a blog post
-router.delete("/:id", async (req, res) => {
+// Delete a blog post (protected)
+router.delete("/:id", requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     if (!mongoose.isValidObjectId(id)) return res.status(400).json({ error: "Invalid id" });
