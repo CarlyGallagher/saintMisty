@@ -9,8 +9,8 @@ const router = express.Router();
 // Create a new blog post (protected)
 router.post("/", requireAuth, async (req, res) => {
   try {
-    const { title, content, image } = req.body;
-    const blog = new Blog({ title, content, image });
+    const { title, content, image, video, links } = req.body;
+    const blog = new Blog({ title, content, image, video, links });
     await blog.save();
     res.status(201).json(blog);
   } catch (err) {
@@ -52,12 +52,12 @@ router.put("/:id", requireAuth, async (req, res) => {
     const { id } = req.params;
     if (!mongoose.isValidObjectId(id)) return res.status(400).json({ error: "Invalid id" });
 
-    const { title, content, image } = req.body;
+    const { title, content, image, video, links } = req.body;
     if (!title || !content) return res.status(400).json({ error: "Title and content are required" });
 
     const updated = await Blog.findByIdAndUpdate(
       id,
-      { title, content, image },
+      { title, content, image, video, links },
       { new: true, runValidators: true }
     );
     if (!updated) return res.status(404).json({ error: "Not found" });
