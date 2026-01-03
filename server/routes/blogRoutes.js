@@ -30,6 +30,22 @@ router.get("/", async (_req, res) => {
   }
 });
 
+// Get a single blog post by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ error: "Invalid id" });
+
+    const blog = await Blog.findById(id);
+    if (!blog) return res.status(404).json({ error: "Not found" });
+
+    res.json(blog);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch blog post" });
+  }
+});
+
 // Update a blog post (protected)
 router.put("/:id", requireAuth, async (req, res) => {
   try {
