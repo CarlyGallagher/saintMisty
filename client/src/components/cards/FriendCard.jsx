@@ -47,8 +47,8 @@ export default function FriendCard() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))",
-          gap: "12px",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "15px",
         }}
       >
         {friends.map((friend, index) => (
@@ -68,8 +68,9 @@ export default function FriendCard() {
               alt={friend.name}
               className="y2k-img"
               style={{
-                width: "80px",
-                height: "80px",
+                width: "70%",
+                height: "auto",
+                aspectRatio: "1",
                 marginBottom: "4px",
               }}
             />
