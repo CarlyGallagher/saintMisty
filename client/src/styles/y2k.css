@@ -1,0 +1,287 @@
+/* Y2K MySpace Style - Red, Black, White with Leopard Print */
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #000;
+  background: #D4A574;
+  background-image: url('./../assets/leopard-pattern-fur-texture.jpg');
+  background-size: 800px 600px;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+  border: 2px solid #FFF;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FF0000;
+  border: 2px solid #000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #CC0000;
+}
+
+/* Links */
+a {
+  color: #FF0000;
+  text-decoration: underline;
+  font-weight: bold;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: #CC0000;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #990000;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Arial Black", "Arial Bold", sans-serif;
+  font-weight: 900;
+  color: #000;
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-size: 32px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+/* Y2K Card Styles */
+.y2k-card {
+  background: #FFF;
+  border: 1px solid #000;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.y2k-card-header {
+  color: #990000;
+  font-family: "Arial Black", sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+  padding: 8px 12px;
+  margin: -16px -16px 16px -16px;
+  letter-spacing: 0.5px;
+}
+
+.y2k-card-transparent {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.y2k-card-dark {
+  background: #000;
+  color: #FFF;
+}
+
+.y2k-card-dark .y2k-card-header {
+  background: linear-gradient(135deg, #FFF 0%, #CCC 100%);
+  color: #000;
+}
+
+/* Buttons */
+.y2k-button {
+  background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%);
+  color: #FFF;
+  border: 2px solid #000;
+  padding: 10px 20px;
+  font-family: "Arial Black", sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+}
+
+.y2k-button:hover {
+  background: linear-gradient(135deg, #CC0000 0%, #990000 100%);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8);
+  transform: translate(-1px, -1px);
+}
+
+.y2k-button:active {
+  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.8);
+  transform: translate(2px, 2px);
+}
+
+.y2k-button-secondary {
+  background: linear-gradient(135deg, #FFF 0%, #CCC 100%);
+  color: #000;
+}
+
+.y2k-button-secondary:hover {
+  background: linear-gradient(135deg, #CCC 0%, #999 100%);
+}
+
+/* Input Fields */
+.y2k-input,
+.y2k-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 2px solid #000;
+  border-radius: 1px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  background: #FFF;
+  transition: border-color 0.15s ease;
+}
+
+.y2k-input:focus,
+.y2k-textarea:focus {
+  outline: none;
+  border-color: #FF0000;
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
+}
+
+.y2k-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Grid Layout */
+.y2k-grid {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+@media (max-width: 768px) {
+  .y2k-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Column Layouts */
+.y2k-column-left {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.y2k-column-right {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Dividers */
+.y2k-divider {
+  height: 2px;
+  margin: 16px 0;
+}
+
+/* Image Styling */
+.y2k-img {
+  border: 1px solid,#000;
+}
+
+/* Badge/Tag Styles */
+.y2k-badge {
+  display: inline-block;
+  background: #FF0000;
+  color: #FFF;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 1px;
+  border: 1px solid #000;
+  letter-spacing: 0.5px;
+}
+
+/* List Styles */
+.y2k-list {
+  list-style: none;
+  padding: 0;
+}
+
+.y2k-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #CCC;
+}
+
+.y2k-list li:last-child {
+  border-bottom: none;
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.text-red {
+  color: #FF0000;
+}
+
+.text-white {
+  color: #FFF;
+}
+
+.mb-1 {
+  margin-bottom: 8px;
+}
+
+.mb-2 {
+  margin-bottom: 16px;
+}
+
+.mb-3 {
+  margin-bottom: 24px;
+}
+
+.mt-1 {
+  margin-top: 8px;
+}
+
+.mt-2 {
+  margin-top: 16px;
+}
+
+.mt-3 {
+  margin-top: 24px;
+}

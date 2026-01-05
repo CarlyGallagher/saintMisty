@@ -11,13 +11,14 @@ import EditBlog from "./pages/EditBlog";
 import AdminLogin from "./pages/AdminLogin";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Navigation from "./components/Navigation";
 
 function App() {
   return (
     <Router>
       <AuthProvider>
         <div className="App">
-HEADER HERE EVENTUALLY
+          <Navigation />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/blog" element={<BlogList />} />

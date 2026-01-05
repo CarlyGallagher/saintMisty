@@ -13,6 +13,13 @@ const blogSchema = new mongoose.Schema(
     image: {
       type: String, // could hold a URL or file path
     },
+    video: {
+      type: String, // URL to video (YouTube, Vimeo, etc.)
+    },
+    links: {
+      type: [String], // Array of URLs
+      default: [],
+    },
   },
   { timestamps: true }
 );
