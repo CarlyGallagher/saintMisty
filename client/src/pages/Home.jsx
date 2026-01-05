@@ -67,64 +67,35 @@ export default function Home() {
           <BlogCard />
           <AboutCard />
           <FriendCard />
-
-          {/* Footer - Social Links */}
-          <div className="home-footer">
-            <h3 style={{ fontSize: "14px", marginBottom: "12px", textAlign: "center" }}>
-              Connect with Saint Misty
-            </h3>
-            <div className="social-links">
-              <a
-                href="https://www.tiktok.com/@saintmisty"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-link"
-              >
-                TikTok
-              </a>
-              <a
-                href="https://www.instagram.com/saintmisty"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-link"
-              >
-                Instagram
-              </a>
-              <a
-                href="https://open.spotify.com/artist/saintmisty"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-link"
-              >
-                Spotify
-              </a>
-              <a
-                href="https://music.apple.com/artist/saintmisty"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-link"
-              >
-                Apple Music
-              </a>
-              <a
-                href="https://www.deezer.com/artist/saintmisty"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-link"
-              >
-                Deezer
-              </a>
-              <a
-                href="https://www.youtube.com/@saintmisty"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-link"
-              >
-                YouTube
-              </a>
-            </div>
-          </div>
         </div>
+      </div>
+
+      {/* Footer */}
+      <div style={{
+        backgroundColor: "#d80e6dff",
+        opacity: 0.9,
+        textAlign: "center",
+        padding: "20px",
+        fontSize: "125%",
+        marginTop: "24px",
+        width: "100%"
+      }}>
+        <p style={{ margin: "0 0 8px 0" }}>
+          <a href="https://www.tiktok.com/@sexybenfranklin?_r=1&_t=ZT-92pW9qq9YJp" target="_blank" rel="noopener noreferrer">TikTok</a>
+          {" | "}
+          <a href="https://www.instagram.com/thesaintmisty?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">Instagram</a>
+          {" | "}
+          <a href="https://open.spotify.com/artist/3ATKsyAg4Ua8cs2VJJN0CC?si=MsJYW4RKSOWXFqz6YyiPQg" target="_blank" rel="noopener noreferrer">Spotify</a>
+          {" | "}
+          <a href="https://music.apple.com/us/artist/saint-misty/1708411597" target="_blank" rel="noopener noreferrer">Apple Music</a>
+          {" | "}
+          <a href="https://youtu.be/dQw4w9WgXcQ?si=ZDxVBO8ixFw3J5K1" target="_blank" rel="noopener noreferrer">Deezer</a>
+          {" | "}
+          <a href="https://youtube.com/@thesaintmisty?si=YnOon4BxonWhl4dc" target="_blank" rel="noopener noreferrer">YouTube</a>
+        </p>
+        <p style={{ margin: "8px 0 0 0", color: "#666" }}>
+          © 2026 Saint Misty
+        </p>
       </div>
     </div>
   );
