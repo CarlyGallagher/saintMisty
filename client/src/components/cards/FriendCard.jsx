@@ -1,34 +1,41 @@
+import anonProfile from "../../assets/Anon-Profile.png";
+
 export default function FriendCard() {
   const friends = [
     {
-      name: "Billie",
-      image: "https://via.placeholder.com/80",
-      url: "https://www.instagram.com/billieeilish",
+      name: "Daddy",
+      image: anonProfile,
+      url: "https://www.daddy-music.com/",
     },
     {
-      name: "Clairo",
-      image: "https://via.placeholder.com/80",
-      url: "https://www.instagram.com/clairo",
+      name: "The Dimes",
+      image: anonProfile,
+      url: "https://linktr.ee/thedimesofficial?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnxkmqXwyEkWthFXX4921DwpzUhEjOFFQtPooT3FW3GoMz5Crx75OzRJwjd3k_aem_-DqqeOgTp0KeWfdkR1u2YQ",
     },
     {
-      name: "Girl in Red",
-      image: "https://via.placeholder.com/80",
-      url: "https://www.instagram.com/girlinred",
+      name: "Mariela",
+      image: anonProfile,
+      url: "https://mariela.band/",
     },
     {
-      name: "Conan Gray",
-      image: "https://via.placeholder.com/80",
-      url: "https://www.instagram.com/conangray",
+      name: "The Band Cope",
+      image: anonProfile,
+      url: "https://www.the-band-cope.com/",
     },
     {
-      name: "beabadoobee",
-      image: "https://via.placeholder.com/80",
-      url: "https://www.instagram.com/beabadoobee",
+      name: "The Whole Damn Dog",
+      image: anonProfile,
+      url: "https://www.wholedamndog.com/",
     },
     {
-      name: "Remi Wolf",
-      image: "https://via.placeholder.com/80",
-      url: "https://www.instagram.com/remiwolf",
+      name: "Ty Fox Photo",
+      image: anonProfile,
+      url: "https://www.tyfox.photography/",
+    },
+    {
+      name: "Raspberry Management",
+      image: anonProfile,
+      url: "https://www.raspberryrecords.co/artists/",
     },
   ];
 
@@ -63,7 +70,6 @@ export default function FriendCard() {
               style={{
                 width: "80px",
                 height: "80px",
-                borderRadius: "4px",
                 marginBottom: "4px",
               }}
             />

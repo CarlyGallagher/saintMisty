@@ -14,8 +14,18 @@ export default function Home() {
     <div className="home-container">
       {/* Site Header */}
       <div className="home-header">
-        <h1 className="home-title">SAINT MISTY</h1>
-        <p className="home-subtitle">Alternative R&B Artist • Los Angeles, CA</p>
+        <h1 className="home-title">
+          <a href="http://www.gigaglitters.com/">
+            <img
+              src="http://www.gigaglitters.com/created/7N3HmxwSxu.gif"
+              width="500"
+              height="150"
+              border="0"
+              alt="Saint Misty - Glitter Graphics"
+              style={{ display: 'block', margin: '0 auto' }}
+            />
+          </a>
+        </h1>
       </div>
 
       {/* Two Column Layout */}
@@ -33,7 +43,7 @@ export default function Home() {
         <div className="y2k-column-right">
           {/* Hero Video Section */}
           <div className="hero-video y2k-card">
-            <div className="y2k-card-header">HAUS of Mad Video</div>
+            <div className="y2k-card-header">Night ButterFly Music Video</div>
             <div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
               <iframe
                 style={{
@@ -45,8 +55,8 @@ export default function Home() {
                   border: "none",
                   borderRadius: "4px",
                 }}
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ"
-                title="HAUS of Mad Video"
+                src="https://www.youtube.com/embed/S6FHOY4ZwAE?autoplay=1&mute=1&loop=1&playlist=S6FHOY4ZwAE"
+                title="Night ButterFly Music Video"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               ></iframe>
