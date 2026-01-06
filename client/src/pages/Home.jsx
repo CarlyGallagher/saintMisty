@@ -72,8 +72,7 @@ export default function Home() {
 
       {/* Footer */}
       <div style={{
-        backgroundColor: "#d80e6dff",
-        opacity: 0.9,
+        backgroundColor: "#f33e92ff",
         textAlign: "center",
         padding: "20px",
         fontSize: "125%",
