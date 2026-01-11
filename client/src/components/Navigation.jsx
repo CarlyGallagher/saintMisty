@@ -111,6 +111,10 @@ export default function Navigation() {
             )}
           </div>
 
+          <Link to="/shows" className="y2k-nav-link">
+            SHOWS
+          </Link>
+
           <Link to="/blog" className="y2k-nav-link">
             BLOG
           </Link>

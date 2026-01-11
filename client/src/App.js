@@ -10,6 +10,7 @@ import NewBlog from "./pages/NewBlog";
 import EditBlog from "./pages/EditBlog";
 import AdminLogin from "./pages/AdminLogin";
 import PicturesVideos from "./pages/PicturesVideos";
+import Shows from "./pages/Shows";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navigation from "./components/Navigation";
@@ -23,6 +24,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/pictures" element={<PicturesVideos />} />
+            <Route path="/shows" element={<Shows />} />
             <Route path="/blog" element={<BlogList />} />
             <Route path="/blog/new" element={<ProtectedRoute><NewBlog /></ProtectedRoute>} />
             <Route path="/blog/:id/edit" element={<ProtectedRoute><EditBlog /></ProtectedRoute>} />
