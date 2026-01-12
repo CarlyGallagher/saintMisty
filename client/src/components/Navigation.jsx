@@ -125,8 +125,8 @@ export default function Navigation() {
 
           {user && (
             <>
-              <Link to="/blog/new" className="y2k-nav-link">
-                NEW POST
+              <Link to="/admin/dashboard" className="y2k-nav-link">
+                ADMIN
               </Link>
               <button onClick={logout} className="y2k-nav-link y2k-nav-logout">
                 LOGOUT

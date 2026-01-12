@@ -1,59 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { fetchMedia } from "../api/media";
 import "../styles/PicturesVideos.css";
 
 export default function PicturesVideos() {
   const [activeTab, setActiveTab] = useState("all"); // all, pictures, videos
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [mediaItems, setMediaItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Sample media data (replace with actual data later)
-  // Replace these placeholder images with your actual photo/video URLs
-  const mediaItems = [
-    {
-      id: 1,
-      type: "video",
-      title: "Night Butterfly Behind the Scenes",
-      thumbnail: "https://img.youtube.com/vi/S6FHOY4ZwAE/mqdefault.jpg",
-      videoUrl: "https://www.youtube.com/embed/S6FHOY4ZwAE",
-      date: "2026-01-08",
-    },
-    {
-      id: 2,
-      type: "photo",
-      title: "Studio Session",
-      url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23FF1493'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3EStudio Session%3C/text%3E%3C/svg%3E",
-      date: "2026-01-07",
-    },
-    {
-      id: 3,
-      type: "photo",
-      title: "Concert Vibes",
-      url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%238A2BE2'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3EConcert Vibes%3C/text%3E%3C/svg%3E",
-      date: "2026-01-06",
-    },
-    {
-      id: 4,
-      type: "video",
-      title: "Taurus Sun Music Video",
-      thumbnail: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23FF69B4'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3ETaurus Sun%3C/text%3E%3C/svg%3E",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      date: "2026-01-05",
-    },
-    {
-      id: 5,
-      type: "photo",
-      title: "LA Photoshoot",
-      url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23FF6347'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3ELA Photoshoot%3C/text%3E%3C/svg%3E",
-      date: "2026-01-04",
-    },
-    {
-      id: 6,
-      type: "photo",
-      title: "Y2K Aesthetic",
-      url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%234169E1'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3EY2K Aesthetic%3C/text%3E%3C/svg%3E",
-      date: "2026-01-03",
-    },
-  ];
+  // Fetch media from backend
+  useEffect(() => {
+    (async () => {
+      try {
+        const media = await fetchMedia();
+        setMediaItems(media);
+      } catch (error) {
+        console.error("Failed to fetch media:", error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
   // Filter media based on active tab
   const filteredMedia = mediaItems.filter((item) => {

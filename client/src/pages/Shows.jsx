@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import profileImg from "../assets/SaintMistyProfileImg.jpeg";
+import { fetchShows } from "../api/shows";
+import { subscribe } from "../api/newsletter";
 import "../styles/Shows.css";
 
 export default function Shows() {
@@ -11,34 +13,22 @@ export default function Shows() {
     shows: false,
   });
   const [subscribeSuccess, setSubscribeSuccess] = useState(false);
+  const [upcomingShows, setUpcomingShows] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Sample shows data (replace with actual data later)
-  const upcomingShows = [
-    {
-      id: 1,
-      date: "Feb. 3, 2026",
-      time: "7:00 PM",
-      venue: "SODA BAR",
-      city: "San Diego, CA",
-      ticketUrl: "https://www.eventbrite.com/",
-    },
-    {
-      id: 2,
-      date: "Feb. 15, 2026",
-      time: "8:30 PM",
-      venue: "THE ROXY",
-      city: "Los Angeles, CA",
-      ticketUrl: "https://www.eventbrite.com/",
-    },
-    {
-      id: 3,
-      date: "Mar. 1, 2026",
-      time: "9:00 PM",
-      venue: "BOTTOM OF THE HILL",
-      city: "San Francisco, CA",
-      ticketUrl: "https://www.eventbrite.com/",
-    },
-  ];
+  // Fetch shows from backend
+  useEffect(() => {
+    (async () => {
+      try {
+        const shows = await fetchShows();
+        setUpcomingShows(shows);
+      } catch (error) {
+        console.error("Failed to fetch shows:", error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
   const handleSubscribeClick = () => {
     setShowSubscribeModal(true);
@@ -59,7 +49,7 @@ export default function Shows() {
     }));
   };
 
-  const handleSubmitSubscription = (e) => {
+  const handleSubmitSubscription = async (e) => {
     e.preventDefault();
 
     // Validate email
@@ -75,16 +65,18 @@ export default function Shows() {
       return;
     }
 
-    // Here you would typically send this to your backend
-    console.log("Subscription data:", { email, subscribeOptions });
+    try {
+      await subscribe({ email, name: "" });
+      setSubscribeSuccess(true);
 
-    // Show success message
-    setSubscribeSuccess(true);
-
-    // Auto-close after 2 seconds
-    setTimeout(() => {
-      handleCloseModal();
-    }, 2000);
+      // Auto-close after 2 seconds
+      setTimeout(() => {
+        handleCloseModal();
+      }, 2000);
+    } catch (error) {
+      console.error("Subscription failed:", error);
+      alert("Failed to subscribe. Please try again.");
+    }
   };
 
   return (

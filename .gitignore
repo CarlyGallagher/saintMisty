@@ -14,3 +14,6 @@ server/.env
 
 # Build output
 client/build/
+
+# Uploads
+server/uploads/

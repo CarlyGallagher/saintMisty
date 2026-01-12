@@ -9,6 +9,7 @@ import BlogPost from "./pages/BlogPost";
 import NewBlog from "./pages/NewBlog";
 import EditBlog from "./pages/EditBlog";
 import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 import PicturesVideos from "./pages/PicturesVideos";
 import Shows from "./pages/Shows";
 import { AuthProvider } from "./context/AuthContext";
@@ -30,6 +31,7 @@ function App() {
             <Route path="/blog/:id/edit" element={<ProtectedRoute><EditBlog /></ProtectedRoute>} />
             <Route path="/blog/:id" element={<BlogPost />} />
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           </Routes>
         </div>
       </AuthProvider>
