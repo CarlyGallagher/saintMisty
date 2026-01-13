@@ -15,16 +15,14 @@ export default function Home() {
       {/* Site Header */}
       <div className="home-header">
         <h1 className="home-title">
-          <a href="http://www.gigaglitters.com/">
-            <img
-              src="http://www.gigaglitters.com/created/7N3HmxwSxu.gif"
-              width="500"
-              height="150"
-              border="0"
-              alt="Saint Misty - Glitter Graphics"
-              style={{ display: 'block', margin: '0 auto' }}
-            />
-          </a>
+          <img
+            src="http://www.gigaglitters.com/created/7N3HmxwSxu.gif"
+            width="500"
+            height="150"
+            border="0"
+            alt="Saint Misty - Glitter Graphics"
+            style={{ display: 'block', margin: '0 auto' }}
+          />
         </h1>
       </div>
 

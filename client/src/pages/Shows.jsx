@@ -83,7 +83,7 @@ export default function Shows() {
     <div className="shows-container">
       {/* Header */}
       <div className="shows-header">
-        <h1>Saint Misty Shows</h1>
+        <img src="http://www.gigaglitters.com/created/LZFycy67hT.gif" width="450" height="80" border="0" alt="http://www.rasaint.net/ - Glitter Graphics"></img>
       </div>
 
       {/* Subscribe Card */}
@@ -102,7 +102,6 @@ export default function Shows() {
 
       {/* Upcoming Shows */}
       <div className="shows-list">
-        <h2 className="shows-list-title">Upcoming Shows</h2>
         {upcomingShows.length === 0 ? (
           <p className="no-shows">No upcoming shows at this time. Check back soon!</p>
         ) : (

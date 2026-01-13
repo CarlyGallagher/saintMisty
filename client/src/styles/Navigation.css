@@ -1,9 +1,7 @@
 /* Y2K Navigation Styles */
 
 .y2k-nav {
-  background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%);
-  border-bottom: 3px solid #000;
-  box-shadow: 0 4px 0px rgba(0, 0, 0, 0.8);
+  background: linear-gradient(100deg, #060000 0%, rgb(253, 66, 154) 100%);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -19,19 +17,18 @@
 }
 
 .y2k-nav-logo {
-  font-family: "Arial Black", sans-serif;
-  font-size: 24px;
-  font-weight: 900;
-  color: #FFF;
   text-decoration: none;
-  letter-spacing: 2px;
-  text-shadow: 3px 3px 0px #000;
   transition: transform 0.15s ease;
+  display: inline-block;
+}
+
+.y2k-nav-logo img {
+  display: block;
+  height: auto;
 }
 
 .y2k-nav-logo:hover {
   transform: scale(1.05);
-  color: #FFF;
 }
 
 .y2k-nav-links {
@@ -42,9 +39,9 @@
 }
 
 .y2k-nav-link {
-  font-family: "Arial Black", sans-serif;
-  font-size: 13px;
-  font-weight: 900;
+  font-family: "Orbitron", "Arial Black", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
   color: #FFF;
   text-decoration: none;
   text-transform: uppercase;
@@ -72,14 +69,12 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background: #FFF;
-  border: 2px solid #000;
-  border-radius: 6px;
-  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8);
+  background: rgb(253, 66, 154);
+  border: 2px solid #f9f6f6;
   min-width: 160px;
   margin-top: 8px;
   z-index: 1001;
-  animation: dropdownSlide 0.2s ease;
+  animation: dropdownSlide 0.4s ease;
 }
 
 @keyframes dropdownSlide {
@@ -87,6 +82,7 @@
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -96,12 +92,14 @@
 .y2k-nav-dropdown-item {
   display: block;
   padding: 10px 16px;
-  color: #000;
+  font-family: "Orbitron", "Arial Black", sans-serif;
+  color: #FFF;
   text-decoration: none;
   font-size: 13px;
   font-weight: bold;
   transition: all 0.15s ease;
-  border-bottom: 1px solid #CCC;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  text-shadow: 1px 1px 0px #000;
 }
 
 .y2k-nav-dropdown-item:last-child {
@@ -109,7 +107,7 @@
 }
 
 .y2k-nav-dropdown-item:hover {
-  background: #FF0000;
+  background: rgba(255, 255, 255, 0.2);
   color: #FFF;
 }
 

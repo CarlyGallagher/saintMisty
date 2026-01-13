@@ -13,15 +13,15 @@ export default function InfoCard() {
             className="y2k-img"
             style={{ width: "150px", height: "150px", flexShrink: 0, marginBottom: "8px" }}
           />
-          <p style={{ fontSize: "12px", textAlign: "center", margin: 0 }}>
-            <span style={{ fontWeight: "bold" }}>Mood:</span> ✨ creative ✨
+          <p style={{ fontSize: "15px", textAlign: "center", margin: 0 }}>
+            <span style={{ fontWeight: "bold" }}>Mood:</span> Gorgeous 💅
           </p>
         </div>
         <table style={{ width: "100%", fontSize: "12px" }}>
           <tbody>
             <tr>
               <td style={{ fontWeight: "bold", padding: "1px" }}>Age:</td>
-              <td style={{ padding: "1px" }}>21</td>
+              <td style={{ padding: "1px" }}>69</td>
             </tr>
             <tr>
               <td style={{ fontWeight: "bold", padding: "1px" }}>Pronouns:</td>
@@ -29,7 +29,7 @@ export default function InfoCard() {
             </tr>
             <tr>
               <td style={{ fontWeight: "bold", padding: "1px" }}>Location:</td>
-              <td style={{ padding: "1px" }}>Los Angeles, CA</td>
+              <td style={{ padding: "1px" }}>San Diego, CA</td>
             </tr>
             <tr>
               <td style={{ fontWeight: "bold", padding: "1px" }}>Last Login:</td>

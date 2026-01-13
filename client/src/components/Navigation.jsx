@@ -6,14 +6,13 @@ import "../styles/Navigation.css";
 export default function Navigation() {
   const { user, logout } = useAuth();
   const [showSocials, setShowSocials] = useState(false);
-  const [showShop, setShowShop] = useState(false);
   const [showMusic, setShowMusic] = useState(false);
 
   return (
     <nav className="y2k-nav">
       <div className="y2k-nav-container">
         <Link to="/" className="y2k-nav-logo">
-          SAINT MISTY
+          <img src="http://www.gigaglitters.com/created/4cxtwBEwKC.gif" width="294" height="67" border="0" alt="Saint Misty - Glitter Graphics" />
         </Link>
 
         <div className="y2k-nav-links">
@@ -26,7 +25,7 @@ export default function Navigation() {
             onMouseEnter={() => setShowSocials(true)}
             onMouseLeave={() => setShowSocials(false)}
           >
-            <span className="y2k-nav-link">SOCIALS ▼</span>
+            <span className="y2k-nav-link">SOCIALS</span>
             {showSocials && (
               <div className="y2k-nav-dropdown-menu">
                 <a
@@ -57,30 +56,21 @@ export default function Navigation() {
             )}
           </div>
 
-          <div
-            className="y2k-nav-dropdown"
-            onMouseEnter={() => setShowShop(true)}
-            onMouseLeave={() => setShowShop(false)}
+          <a
+            href="https://saint-misty.printify.me/category/all/1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="y2k-nav-link"
           >
-            <span className="y2k-nav-link">SHOP ▼</span>
-            {showShop && (
-              <div className="y2k-nav-dropdown-menu">
-                <a href="#merch" className="y2k-nav-dropdown-item">
-                  Merch
-                </a>
-                <a href="#music" className="y2k-nav-dropdown-item">
-                  Music
-                </a>
-              </div>
-            )}
-          </div>
+            SHOP
+          </a>
 
           <div
             className="y2k-nav-dropdown"
             onMouseEnter={() => setShowMusic(true)}
             onMouseLeave={() => setShowMusic(false)}
           >
-            <span className="y2k-nav-link">MUSIC ▼</span>
+            <span className="y2k-nav-link">MUSIC</span>
             {showMusic && (
               <div className="y2k-nav-dropdown-menu">
                 <a
@@ -100,7 +90,7 @@ export default function Navigation() {
                   Apple Music
                 </a>
                 <a
-                  href="https://www.deezer.com/artist/saintmisty"
+                  href="https://www.deezer.com/us/artist/231301315?host=6747341883&utm_campaign=clipboard-generic&utm_source=user_sharing&utm_content=artist-231301315&deferredFl=1"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="y2k-nav-dropdown-item"
