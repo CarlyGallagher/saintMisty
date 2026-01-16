@@ -1,40 +1,45 @@
-import anonProfile from "../../assets/Anon-Profile.png";
+import angelAnon from "../../assets/Angel-Anon.jpg";
+import catAnon from "../../assets/cat-Anon.jpg";
+import devilAnon from "../../assets/Devil-Anon.jpg";
+import flowerAnon from "../../assets/Flower-Anon.jpg";
+import mustacheAnon from "../../assets/Mustache-Anon.jpg";
+import princessAnon from "../../assets/Princess-anon.jpg";
 
 export default function FriendCard() {
   const friends = [
     {
       name: "Daddy",
-      image: anonProfile,
+      image: angelAnon,
       url: "https://www.daddy-music.com/",
     },
     {
       name: "The Dimes",
-      image: anonProfile,
+      image: catAnon,
       url: "https://linktr.ee/thedimesofficial?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnxkmqXwyEkWthFXX4921DwpzUhEjOFFQtPooT3FW3GoMz5Crx75OzRJwjd3k_aem_-DqqeOgTp0KeWfdkR1u2YQ",
     },
     {
       name: "Mariela",
-      image: anonProfile,
+      image: devilAnon,
       url: "https://mariela.band/",
     },
     {
       name: "The Band Cope",
-      image: anonProfile,
+      image: flowerAnon,
       url: "https://www.the-band-cope.com/",
     },
     {
       name: "The Whole Damn Dog",
-      image: anonProfile,
+      image: mustacheAnon,
       url: "https://www.wholedamndog.com/",
     },
     {
       name: "Ty Fox Photo",
-      image: anonProfile,
+      image: princessAnon,
       url: "https://www.tyfox.photography/",
     },
     {
       name: "Raspberry Management",
-      image: anonProfile,
+      image: angelAnon,
       url: "https://www.raspberryrecords.co/artists/",
     },
   ];

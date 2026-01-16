@@ -17,3 +17,6 @@ client/build/
 
 # Uploads
 server/uploads/
+
+# Setup scripts (security)
+server/scripts/

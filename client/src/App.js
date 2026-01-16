@@ -1,7 +1,6 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-
+import "./styles/accessibility.css";
 
 import Home from "./pages/Home";
 import BlogList from "./pages/BlogList";
@@ -13,6 +12,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import PicturesVideos from "./pages/PicturesVideos";
 import Shows from "./pages/Shows";
 import { AuthProvider } from "./context/AuthContext";
+import { AccessibilityProvider } from "./context/AccessibilityContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navigation from "./components/Navigation";
 
@@ -20,20 +20,27 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="App">
-          <Navigation />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/pictures" element={<PicturesVideos />} />
-            <Route path="/shows" element={<Shows />} />
-            <Route path="/blog" element={<BlogList />} />
-            <Route path="/blog/new" element={<ProtectedRoute><NewBlog /></ProtectedRoute>} />
-            <Route path="/blog/:id/edit" element={<ProtectedRoute><EditBlog /></ProtectedRoute>} />
-            <Route path="/blog/:id" element={<BlogPost />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-          </Routes>
-        </div>
+        <AccessibilityProvider>
+          <a href="#main-content" className="skip-to-main">
+            Skip to main content
+          </a>
+          <div className="App">
+            <Navigation />
+            <main id="main-content">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/pictures" element={<PicturesVideos />} />
+                <Route path="/shows" element={<Shows />} />
+                <Route path="/blog" element={<BlogList />} />
+                <Route path="/blog/new" element={<ProtectedRoute><NewBlog /></ProtectedRoute>} />
+                <Route path="/blog/:id/edit" element={<ProtectedRoute><EditBlog /></ProtectedRoute>} />
+                <Route path="/blog/:id" element={<BlogPost />} />
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+              </Routes>
+            </main>
+          </div>
+        </AccessibilityProvider>
       </AuthProvider>
     </Router>
   );

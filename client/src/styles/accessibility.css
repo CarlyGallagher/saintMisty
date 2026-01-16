@@ -1,0 +1,561 @@
+/* Accessibility Styles */
+
+/* High Contrast Mode - Classic MySpace Colors */
+.high-contrast {
+  /* Override background */
+  background: #ffffff !important;
+}
+
+.high-contrast body {
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #000000 !important;
+}
+
+/* Cards in high contrast - white background with blue accents */
+.high-contrast .y2k-card {
+  background: #ffffff !important;
+  border: 2px solid #6699cc !important;
+  color: #000000 !important;
+}
+
+.high-contrast .y2k-card-header {
+  background: #f39450 !important;
+  color: #ffffff !important;
+}
+
+/* Links - classic MySpace blue */
+.high-contrast a {
+  color: #0066cc !important;
+}
+
+/* Buttons */
+.high-contrast .y2k-button,
+.high-contrast .y2k-button-secondary {
+  background: #6699cc !important;
+  color: #ffffff !important;
+  border: 2px solid #003366 !important;
+}
+
+.high-contrast .y2k-button:hover,
+.high-contrast .y2k-button-secondary:hover {
+  background: #003366 !important;
+}
+
+/* Hide home title completely in accessibility mode */
+.high-contrast .home-title {
+  display: none !important;
+}
+
+/* Navigation */
+.high-contrast .y2k-nav {
+  background: #6699cc !important;
+  border-bottom: 2px solid #003366 !important;
+}
+
+/* Hide navigation logo GIF and show text instead */
+.high-contrast .y2k-nav-logo img[src*="gigaglitters"] {
+  display: none !important;
+}
+
+.high-contrast .y2k-nav-logo::after {
+  content: "mistyspace";
+  font-family: Consolas, monospace;
+  font-size: 20px;
+  font-weight: 400;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Hide shows header GIF and show text instead */
+.high-contrast .shows-header img[src*="LZFycy67hT.gif"] {
+  display: none !important;
+}
+
+.high-contrast .shows-header {
+  position: relative;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.high-contrast .shows-header::after {
+  content: "UPCOMING SHOWS";
+  font-family: Consolas, monospace;
+  font-size: 32px;
+  font-weight: 700;
+  color: #003366;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: block;
+}
+
+.high-contrast .y2k-nav-link {
+  color: #ffffff !important;
+  text-shadow: none !important;
+}
+
+.high-contrast .y2k-nav-link:hover {
+  background: #003366 !important;
+}
+
+.high-contrast .y2k-nav-dropdown-menu {
+  background: #ffffff !important;
+  border: 2px solid #003366 !important;
+}
+
+.high-contrast .y2k-nav-dropdown-item {
+  color: #0066cc !important;
+  border-bottom: 1px solid #6699cc !important;
+}
+
+.high-contrast .y2k-nav-dropdown-item:hover {
+  background: #6699cc !important;
+  color: #ffffff !important;
+}
+
+/* Page backgrounds */
+.high-contrast .blog-container,
+.high-contrast .shows-container,
+.high-contrast .pictures-videos-container,
+.high-contrast .admin-dashboard,
+.high-contrast .blog-post-container,
+.high-contrast .home-container {
+  background: #ffffff !important;
+}
+
+/* Footer styling */
+.high-contrast .home-container > div[style*="background-color"],
+.high-contrast .home-container > div[style*="backgroundColor"] {
+  background-color: #6699cc !important;
+  background: #6699cc !important;
+}
+
+.high-contrast .home-container > div[style*="background-color"] p,
+.high-contrast .home-container > div[style*="backgroundColor"] p {
+  color: #ffffff !important;
+}
+
+.high-contrast .home-container > div[style*="background-color"] a,
+.high-contrast .home-container > div[style*="backgroundColor"] a {
+  color: #ffffff !important;
+  text-decoration: underline !important;
+}
+
+.high-contrast .home-container > div[style*="background-color"] a:hover,
+.high-contrast .home-container > div[style*="backgroundColor"] a:hover {
+  color: #003366 !important;
+}
+
+/* Blog/Shows/Media items */
+.high-contrast .blog-list-item,
+.high-contrast .show-item > div,
+.high-contrast .media-item,
+.high-contrast .admin-section,
+.high-contrast .blog-post-content {
+  background: #ffffff !important;
+  border: 2px solid #6699cc !important;
+  color: #000000 !important;
+}
+
+.high-contrast .blog-list-item h3 a,
+.high-contrast .blog-post-title,
+.high-contrast .shows-header h1,
+.high-contrast .pictures-videos-header h1,
+.high-contrast .blog-header h1 {
+  color: #0066cc !important;
+  background: transparent !important;
+  -webkit-text-fill-color: #0066cc !important;
+  text-shadow: none !important;
+}
+
+/* Subscribe/Show cards */
+.high-contrast .subscribe-card {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.high-contrast .subscribe-card-content,
+.high-contrast .subscribe-modal {
+  background: #ffffff !important;
+  border: 2px solid #6699cc !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.high-contrast .subscribe-image {
+  border: 2px solid #003366 !important;
+  box-shadow: none !important;
+}
+
+.high-contrast .subscribe-text h2,
+.high-contrast .media-title,
+.high-contrast .admin-section-header h2 {
+  color: #003366 !important;
+  text-shadow: none !important;
+}
+
+.high-contrast .subscribe-text p {
+  color: #000000 !important;
+}
+
+.high-contrast .subscribe-button,
+.high-contrast .tickets-button,
+.high-contrast .modal-subscribe-button,
+.high-contrast .admin-btn-primary {
+  background: #6699cc !important;
+  color: #ffffff !important;
+  border: 2px solid #003366 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+.high-contrast .subscribe-button:hover,
+.high-contrast .tickets-button:hover,
+.high-contrast .modal-subscribe-button:hover,
+.high-contrast .admin-btn-primary:hover {
+  background: #003366 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+.high-contrast .show-item {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin-bottom: 15px !important;
+}
+
+.high-contrast .show-date-time,
+.high-contrast .show-date,
+.high-contrast .show-time,
+.high-contrast .show-location,
+.high-contrast .show-city,
+.high-contrast .show-venue {
+  color: #000000 !important;
+}
+
+.high-contrast .show-divider {
+  color: #003366 !important;
+}
+
+.high-contrast .shows-list-title {
+  color: #003366 !important;
+  text-shadow: none !important;
+}
+
+.high-contrast .no-shows {
+  color: #000000 !important;
+}
+
+.high-contrast .modal-close {
+  background: #6699cc !important;
+  color: #ffffff !important;
+}
+
+.high-contrast .modal-close:hover {
+  background: #003366 !important;
+}
+
+.high-contrast .modal-subtitle {
+  color: #000000 !important;
+}
+
+.high-contrast .checkbox-label {
+  color: #000000 !important;
+}
+
+.high-contrast .checkbox-label:hover {
+  color: #003366 !important;
+}
+
+.high-contrast .checkbox-label input[type="checkbox"] {
+  accent-color: #6699cc !important;
+}
+
+.high-contrast .subscribe-success h3 {
+  color: #006600 !important;
+  text-shadow: none !important;
+}
+
+.high-contrast .subscribe-success p {
+  color: #000000 !important;
+}
+
+/* Input fields */
+.high-contrast .y2k-input,
+.high-contrast .y2k-textarea,
+.high-contrast .email-input,
+.high-contrast .admin-form-group input,
+.high-contrast .admin-form-group textarea,
+.high-contrast .admin-form-group select {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #6699cc !important;
+}
+
+.high-contrast .y2k-input:focus,
+.high-contrast .y2k-textarea:focus,
+.high-contrast .email-input:focus,
+.high-contrast .admin-form-group input:focus,
+.high-contrast .admin-form-group textarea:focus {
+  border-color: #003366 !important;
+  box-shadow: 0 0 0 2px rgba(0, 51, 102, 0.3) !important;
+}
+
+/* Tabs */
+.high-contrast .tab-button,
+.high-contrast .admin-tab {
+  color: #0066cc !important;
+  text-shadow: none !important;
+}
+
+.high-contrast .tab-button.active,
+.high-contrast .admin-tab.active {
+  color: #003366 !important;
+  background: #e6f0ff !important;
+}
+
+/* Large Text Mode */
+.large-text {
+  font-size: 18px !important;
+}
+
+.large-text body {
+  font-size: 18px !important;
+}
+
+.large-text h1 {
+  font-size: 42px !important;
+}
+
+.large-text h2 {
+  font-size: 32px !important;
+}
+
+.large-text h3 {
+  font-size: 24px !important;
+}
+
+.large-text .y2k-button,
+.large-text .y2k-nav-link,
+.large-text a,
+.large-text p,
+.large-text li,
+.large-text .y2k-card-header {
+  font-size: 18px !important;
+}
+
+.large-text .blog-list-item h3,
+.large-text .blog-post-title,
+.large-text .shows-header h1,
+.large-text .pictures-videos-header h1 {
+  font-size: 56px !important;
+}
+
+/* Reduced Motion Mode */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Keyboard Navigation - Focus Indicators */
+*:focus-visible {
+  outline: 3px solid #0066cc !important;
+  outline-offset: 3px !important;
+}
+
+.high-contrast *:focus-visible {
+  outline: 3px solid #003366 !important;
+  outline-offset: 3px !important;
+}
+
+/* Skip to main content link */
+.skip-to-main {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 100000;
+  font-weight: bold;
+}
+
+.skip-to-main:focus {
+  top: 0;
+}
+
+.high-contrast .skip-to-main {
+  background: #003366 !important;
+  color: #ffffff !important;
+}
+
+/* Accessibility Menu */
+.accessibility-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.accessibility-menu {
+  background: #ffffff;
+  border: 3px solid #000;
+  border-radius: 8px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.high-contrast .accessibility-menu {
+  background: #ffffff !important;
+  border: 3px solid #003366 !important;
+}
+
+.accessibility-menu h2 {
+  color: #ff1493;
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+.high-contrast .accessibility-menu h2 {
+  color: #003366 !important;
+}
+
+.accessibility-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  margin-bottom: 10px;
+  background: #f5f5f5;
+  border-radius: 6px;
+  border: 2px solid transparent;
+}
+
+.high-contrast .accessibility-option {
+  background: #f0f6ff !important;
+  border: 2px solid #6699cc !important;
+}
+
+.accessibility-option-info {
+  flex: 1;
+}
+
+.accessibility-option h3 {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+  color: #000;
+}
+
+.accessibility-option p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.high-contrast .accessibility-option p {
+  color: #333 !important;
+}
+
+.accessibility-toggle {
+  width: 60px;
+  height: 30px;
+  background: #ccc;
+  border-radius: 15px;
+  position: relative;
+  cursor: pointer;
+  border: 2px solid #999;
+  transition: background 0.3s;
+}
+
+.accessibility-toggle.active {
+  background: #4CAF50;
+  border-color: #2E7D32;
+}
+
+.high-contrast .accessibility-toggle.active {
+  background: #6699cc !important;
+  border-color: #003366 !important;
+}
+
+.accessibility-toggle-slider {
+  width: 22px;
+  height: 22px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: left 0.3s;
+}
+
+.accessibility-toggle.active .accessibility-toggle-slider {
+  left: 32px;
+}
+
+.accessibility-menu-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.accessibility-menu-actions button {
+  flex: 1;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+}
+
+.accessibility-reset-btn {
+  background: #666;
+  color: #fff;
+}
+
+.accessibility-reset-btn:hover {
+  background: #444;
+}
+
+.accessibility-close-btn {
+  background: #ff1493;
+  color: #fff;
+}
+
+.accessibility-close-btn:hover {
+  background: #cc0066;
+}
+
+.high-contrast .accessibility-close-btn {
+  background: #6699cc !important;
+}
+
+.high-contrast .accessibility-close-btn:hover {
+  background: #003366 !important;
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
