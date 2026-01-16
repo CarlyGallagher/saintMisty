@@ -39,10 +39,10 @@
 }
 
 .y2k-nav-link {
-  font-family: "Orbitron", "Arial Black", sans-serif;
+  font-family: Consolas, monospace;
   font-size: 20px;
   font-weight: 400;
-  color: #FFF;
+  color: #ffffff;
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -52,7 +52,7 @@
   cursor: pointer;
   background: transparent;
   border: none;
-  text-shadow: 2px 2px 0px #000;
+
 }
 
 .y2k-nav-link:hover {
@@ -69,37 +69,24 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background: rgb(253, 66, 154);
-  border: 2px solid #f9f6f6;
+  background: #FFF;
+  border: 2px solid #000;
   min-width: 160px;
   margin-top: 8px;
   z-index: 1001;
-  animation: dropdownSlide 0.4s ease;
-}
-
-@keyframes dropdownSlide {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
 }
 
 .y2k-nav-dropdown-item {
   display: block;
   padding: 10px 16px;
-  font-family: "Orbitron", "Arial Black", sans-serif;
-  color: #FFF;
+  font-family: Consolas, monospace;
+  color: #000;
   text-decoration: none;
   font-size: 13px;
   font-weight: bold;
-  transition: all 0.15s ease;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  text-shadow: 1px 1px 0px #000;
+  transition: background 0.15s ease;
+  border-bottom: 1px solid #ccc;
 }
 
 .y2k-nav-dropdown-item:last-child {
@@ -107,7 +94,7 @@
 }
 
 .y2k-nav-dropdown-item:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #FF8C00;
   color: #FFF;
 }
 
