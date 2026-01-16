@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import API_URL from "../config/api";
 
 const AuthContext = createContext();
 
@@ -18,7 +19,7 @@ export function AuthProvider({ children }) {
       }
 
       try {
-        const { data } = await axios.get("/api/auth/me", {
+        const { data } = await axios.get(`${API_URL}/api/auth/me`, {
           headers: { Authorization: `Bearer ${storedToken}` },
         });
         setUser(data);
@@ -37,7 +38,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (credentials) => {
-    const { data } = await axios.post("/api/auth/login", credentials);
+    const { data } = await axios.post(`${API_URL}/api/auth/login`, credentials);
     localStorage.setItem("token", data.token);
     setToken(data.token);
     setUser(data.user);

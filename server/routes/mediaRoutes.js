@@ -1,9 +1,11 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
+const sanitizeHtml = require("sanitize-html");
 const Media = require("../models/media");
 const mongoose = require("mongoose");
 const { requireAuth } = require("../middleware/authMiddleware");
+const logger = require("../utils/logger");
 
 const router = express.Router();
 
@@ -40,7 +42,7 @@ router.get("/", async (_req, res) => {
     const media = await Media.find().sort({ date: -1 });
     res.json(media);
   } catch (err) {
-    console.error(err);
+    logger.error("Failed to fetch media:", err);
     res.status(500).json({ error: "Failed to fetch media" });
   }
 });
@@ -56,7 +58,7 @@ router.get("/:id", async (req, res) => {
 
     res.json(media);
   } catch (err) {
-    console.error(err);
+    logger.error("Failed to fetch media:", err);
     res.status(500).json({ error: "Failed to fetch media" });
   }
 });
@@ -74,11 +76,14 @@ router.post("/upload", requireAuth, upload.single("file"), async (req, res) => {
       return res.status(400).json({ error: "Title and type are required" });
     }
 
+    // Sanitize title
+    const sanitizedTitle = sanitizeHtml(title, { allowedTags: [], allowedAttributes: {} });
+
     // Generate URL for the uploaded file
     const fileUrl = `/uploads/${req.file.filename}`;
 
     const mediaData = {
-      title,
+      title: sanitizedTitle,
       type,
       date: date || new Date(),
     };
@@ -94,7 +99,7 @@ router.post("/upload", requireAuth, upload.single("file"), async (req, res) => {
     await media.save();
     res.status(201).json(media);
   } catch (err) {
-    console.error(err);
+    logger.error("Failed to upload file:", err);
     res.status(500).json({ error: "Failed to upload file" });
   }
 });
@@ -108,11 +113,14 @@ router.post("/", requireAuth, async (req, res) => {
       return res.status(400).json({ error: "Title, type, and URL are required" });
     }
 
-    const media = new Media({ title, type, url, thumbnail, videoUrl, date });
+    // Sanitize title
+    const sanitizedTitle = sanitizeHtml(title, { allowedTags: [], allowedAttributes: {} });
+
+    const media = new Media({ title: sanitizedTitle, type, url, thumbnail, videoUrl, date });
     await media.save();
     res.status(201).json(media);
   } catch (err) {
-    console.error(err);
+    logger.error("Failed to create media:", err);
     res.status(500).json({ error: "Failed to create media" });
   }
 });
@@ -125,16 +133,19 @@ router.put("/:id", requireAuth, async (req, res) => {
 
     const { title, type, url, thumbnail, videoUrl, date } = req.body;
 
+    // Sanitize title
+    const sanitizedTitle = sanitizeHtml(title, { allowedTags: [], allowedAttributes: {} });
+
     const updated = await Media.findByIdAndUpdate(
       id,
-      { title, type, url, thumbnail, videoUrl, date },
+      { title: sanitizedTitle, type, url, thumbnail, videoUrl, date },
       { new: true, runValidators: true }
     );
     if (!updated) return res.status(404).json({ error: "Not found" });
 
     res.json(updated);
   } catch (err) {
-    console.error(err);
+    logger.error("Failed to update media:", err);
     res.status(500).json({ error: "Failed to update media" });
   }
 });
@@ -150,7 +161,7 @@ router.delete("/:id", requireAuth, async (req, res) => {
 
     res.status(204).send();
   } catch (err) {
-    console.error(err);
+    logger.error("Failed to delete media:", err);
     res.status(500).json({ error: "Failed to delete media" });
   }
 });
