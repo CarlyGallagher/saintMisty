@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchMedia } from "../api/media";
+import { getMediaUrl } from "../utils/mediaAssets";
 import "../styles/PicturesVideos.css";
 
 export default function PicturesVideos() {
@@ -98,11 +99,11 @@ export default function PicturesVideos() {
           >
             {media.type === "video" ? (
               <div className="media-thumbnail">
-                <img src={media.thumbnail} alt={media.title} />
+                <img src={getMediaUrl(media.thumbnail)} alt={media.title} />
                 <div className="play-button">▶</div>
               </div>
             ) : (
-              <img src={media.url} alt={media.title} className="media-thumbnail" />
+              <img src={getMediaUrl(media.url)} alt={media.title} className="media-thumbnail" />
             )}
             <p className="media-title">{media.title}</p>
           </div>
@@ -130,7 +131,7 @@ export default function PicturesVideos() {
                   allowFullScreen
                 ></iframe>
               ) : (
-                <img src={selectedMedia.url} alt={selectedMedia.title} />
+                <img src={getMediaUrl(selectedMedia.url)} alt={selectedMedia.title} />
               )}
             </div>
 
