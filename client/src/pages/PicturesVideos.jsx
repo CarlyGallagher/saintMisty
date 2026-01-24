@@ -3,145 +3,139 @@ import { fetchMedia } from "../api/media";
 import { getMediaUrl } from "../utils/mediaAssets";
 import "../styles/PicturesVideos.css";
 
+// Tab button component
+function TabButton({ active, onClick, children }) {
+  return (
+    <button
+      className={`tab-button ${active ? "active" : ""}`}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+}
+
+// Media thumbnail component
+function MediaThumbnail({ media }) {
+  const imageUrl = media.type === "video" ? media.thumbnail : media.url;
+
+  return (
+    <div className="media-thumbnail">
+      <img src={getMediaUrl(imageUrl)} alt={media.title} />
+      {media.type === "video" && <div className="play-button">▶</div>}
+    </div>
+  );
+}
+
+// Lightbox component
+function Lightbox({ media, onClose, onPrevious, onNext }) {
+  return (
+    <div className="lightbox-overlay" onClick={onClose}>
+      <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+        <button className="lightbox-close" onClick={onClose}>✕</button>
+
+        <button className="lightbox-arrow lightbox-left" onClick={onPrevious}>‹</button>
+
+        <div className="lightbox-media">
+          {media.type === "video" ? (
+            <iframe
+              src={media.videoUrl}
+              title={media.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <img src={getMediaUrl(media.url)} alt={media.title} />
+          )}
+        </div>
+
+        <button className="lightbox-arrow lightbox-right" onClick={onNext}>›</button>
+
+        <div className="lightbox-title">{media.title}</div>
+      </div>
+    </div>
+  );
+}
+
+// Main component
 export default function PicturesVideos() {
-  const [activeTab, setActiveTab] = useState("all"); // all, pictures, videos
+  const [activeTab, setActiveTab] = useState("all");
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mediaItems, setMediaItems] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  // Fetch media from backend
   useEffect(() => {
-    (async () => {
-      try {
-        const media = await fetchMedia();
-        setMediaItems(media);
-      } catch (error) {
-        console.error("Failed to fetch media:", error);
-      } finally {
-        setLoading(false);
-      }
-    })();
+    fetchMedia()
+      .then(setMediaItems)
+      .catch((error) => console.error("Failed to fetch media:", error));
   }, []);
 
-  // Filter media based on active tab
-  const filteredMedia = mediaItems.filter((item) => {
-    if (activeTab === "all") return true;
-    if (activeTab === "pictures") return item.type === "photo";
-    if (activeTab === "videos") return item.type === "video";
-    return true;
-  });
+  // Filter and sort media
+  const getDisplayMedia = () => {
+    const typeMap = { pictures: "photo", videos: "video" };
+    const filtered = activeTab === "all"
+      ? mediaItems
+      : mediaItems.filter((item) => item.type === typeMap[activeTab]);
 
-  // Sort by date (newest to oldest)
-  const sortedMedia = [...filteredMedia].sort(
-    (a, b) => new Date(b.date) - new Date(a.date)
-  );
+    return filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+  };
+
+  const displayMedia = getDisplayMedia();
 
   const handleMediaClick = (media, index) => {
     setSelectedMedia(media);
     setCurrentIndex(index);
   };
 
-  const handleClose = () => {
-    setSelectedMedia(null);
-  };
+  const navigateMedia = (direction) => {
+    const newIndex = direction === "next"
+      ? (currentIndex + 1) % displayMedia.length
+      : currentIndex > 0 ? currentIndex - 1 : displayMedia.length - 1;
 
-  const handlePrevious = () => {
-    const newIndex = currentIndex > 0 ? currentIndex - 1 : sortedMedia.length - 1;
     setCurrentIndex(newIndex);
-    setSelectedMedia(sortedMedia[newIndex]);
-  };
-
-  const handleNext = () => {
-    const newIndex = currentIndex < sortedMedia.length - 1 ? currentIndex + 1 : 0;
-    setCurrentIndex(newIndex);
-    setSelectedMedia(sortedMedia[newIndex]);
+    setSelectedMedia(displayMedia[newIndex]);
   };
 
   return (
     <div className="pictures-videos-container">
-      {/* Header */}
       <div className="pictures-videos-header">
         <h1>Saint Misty's Photos & Videos</h1>
       </div>
 
-      {/* Tab Navigation */}
       <div className="pictures-videos-tabs">
-        <button
-          className={`tab-button ${activeTab === "pictures" ? "active" : ""}`}
-          onClick={() => setActiveTab("pictures")}
-        >
+        <TabButton active={activeTab === "pictures"} onClick={() => setActiveTab("pictures")}>
           PICTURES
-        </button>
+        </TabButton>
         <span className="tab-separator">|</span>
-        <button
-          className={`tab-button ${activeTab === "videos" ? "active" : ""}`}
-          onClick={() => setActiveTab("videos")}
-        >
+        <TabButton active={activeTab === "videos"} onClick={() => setActiveTab("videos")}>
           VIDEOS
-        </button>
+        </TabButton>
         <span className="tab-separator">|</span>
-        <button
-          className={`tab-button ${activeTab === "all" ? "active" : ""}`}
-          onClick={() => setActiveTab("all")}
-        >
+        <TabButton active={activeTab === "all"} onClick={() => setActiveTab("all")}>
           ALL
-        </button>
+        </TabButton>
       </div>
 
-      {/* Media Grid */}
       <div className="media-grid">
-        {sortedMedia.map((media, index) => (
+        {displayMedia.map((media, index) => (
           <div
-            key={media.id}
+            key={media._id || media.id}
             className="media-item"
             onClick={() => handleMediaClick(media, index)}
           >
-            {media.type === "video" ? (
-              <div className="media-thumbnail">
-                <img src={getMediaUrl(media.thumbnail)} alt={media.title} />
-                <div className="play-button">▶</div>
-              </div>
-            ) : (
-              <img src={getMediaUrl(media.url)} alt={media.title} className="media-thumbnail" />
-            )}
+            <MediaThumbnail media={media} />
             <p className="media-title">{media.title}</p>
           </div>
         ))}
       </div>
 
-      {/* Lightbox Modal */}
       {selectedMedia && (
-        <div className="lightbox-overlay" onClick={handleClose}>
-          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <button className="lightbox-close" onClick={handleClose}>
-              ✕
-            </button>
-
-            <button className="lightbox-arrow lightbox-left" onClick={handlePrevious}>
-              ‹
-            </button>
-
-            <div className="lightbox-media">
-              {selectedMedia.type === "video" ? (
-                <iframe
-                  src={selectedMedia.videoUrl}
-                  title={selectedMedia.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              ) : (
-                <img src={getMediaUrl(selectedMedia.url)} alt={selectedMedia.title} />
-              )}
-            </div>
-
-            <button className="lightbox-arrow lightbox-right" onClick={handleNext}>
-              ›
-            </button>
-
-            <div className="lightbox-title">{selectedMedia.title}</div>
-          </div>
-        </div>
+        <Lightbox
+          media={selectedMedia}
+          onClose={() => setSelectedMedia(null)}
+          onPrevious={() => navigateMedia("prev")}
+          onNext={() => navigateMedia("next")}
+        />
       )}
     </div>
   );
