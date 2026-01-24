@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { createMedia, fetchMedia, deleteMedia } from "../api/media";
 import { createShow, fetchShows, deleteShow } from "../api/shows";
 import { sendNewsletter } from "../api/newsletter";
 import "../styles/AdminDashboard.css";
@@ -9,7 +8,7 @@ import "../styles/AdminDashboard.css";
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("blog"); // blog, media, shows, newsletter
+  const [activeTab, setActiveTab] = useState("blog"); // blog, shows, newsletter
 
   // Redirect if not logged in
   if (!user) {
@@ -36,12 +35,6 @@ export default function AdminDashboard() {
           Blog Posts
         </button>
         <button
-          className={`admin-tab ${activeTab === "media" ? "active" : ""}`}
-          onClick={() => setActiveTab("media")}
-        >
-          Videos
-        </button>
-        <button
           className={`admin-tab ${activeTab === "shows" ? "active" : ""}`}
           onClick={() => setActiveTab("shows")}
         >
@@ -58,7 +51,6 @@ export default function AdminDashboard() {
       {/* Tab Content */}
       <div className="admin-content">
         {activeTab === "blog" && <BlogManagement />}
-        {activeTab === "media" && <MediaManagement />}
         {activeTab === "shows" && <ShowsManagement />}
         {activeTab === "newsletter" && <NewsletterManagement />}
       </div>
@@ -90,187 +82,6 @@ function BlogManagement() {
       >
         View All Blog Posts
       </button>
-    </div>
-  );
-}
-
-// Media Management Component (Videos Only)
-function MediaManagement() {
-  const [mediaForm, setMediaForm] = useState({
-    title: "",
-    thumbnail: "",
-    videoUrl: "",
-    date: new Date().toISOString().split('T')[0]
-  });
-  const [uploadStatus, setUploadStatus] = useState("");
-  const [mediaList, setMediaList] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    loadMedia();
-  }, []);
-
-  const loadMedia = async () => {
-    try {
-      const media = await fetchMedia();
-      setMediaList(media);
-    } catch (error) {
-      console.error("Failed to fetch media:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this media item?")) {
-      return;
-    }
-
-    try {
-      await deleteMedia(id);
-      setUploadStatus("Media deleted successfully!");
-      loadMedia();
-      setTimeout(() => setUploadStatus(""), 3000);
-    } catch (error) {
-      console.error("Failed to delete media:", error);
-      setUploadStatus("Failed to delete media. Please try again.");
-      setTimeout(() => setUploadStatus(""), 3000);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setUploadStatus("");
-
-    try {
-      const payload = {
-        type: "video",
-        title: mediaForm.title,
-        thumbnail: mediaForm.thumbnail,
-        videoUrl: mediaForm.videoUrl,
-        date: mediaForm.date
-      };
-
-      await createMedia(payload);
-      setUploadStatus("Video added successfully!");
-
-      // Reset form
-      setMediaForm({
-        title: "",
-        thumbnail: "",
-        videoUrl: "",
-        date: new Date().toISOString().split('T')[0]
-      });
-
-      // Reload media list
-      loadMedia();
-
-      setTimeout(() => setUploadStatus(""), 3000);
-    } catch (error) {
-      console.error("Failed to add video:", error);
-      setUploadStatus("Failed to add video. Please try again.");
-      setTimeout(() => setUploadStatus(""), 3000);
-    }
-  };
-
-  return (
-    <div className="admin-section">
-      <div className="admin-section-header">
-        <h2>Videos</h2>
-      </div>
-      <p className="admin-hint">
-        Add videos using YouTube embed URLs. Photos are managed in the codebase as static assets.
-      </p>
-
-      <form onSubmit={handleSubmit} className="admin-form">
-        <div className="admin-form-group">
-          <label>Video Title</label>
-          <input
-            type="text"
-            value={mediaForm.title}
-            onChange={(e) => setMediaForm({ ...mediaForm, title: e.target.value })}
-            placeholder="e.g., Live Performance at The Casbah"
-            required
-          />
-        </div>
-
-        <div className="admin-form-group">
-          <label>Thumbnail URL</label>
-          <input
-            type="url"
-            value={mediaForm.thumbnail}
-            onChange={(e) => setMediaForm({ ...mediaForm, thumbnail: e.target.value })}
-            placeholder="https://example.com/thumbnail.jpg"
-            required
-          />
-          <small>Upload thumbnail to Imgur or use a direct image URL</small>
-        </div>
-
-        <div className="admin-form-group">
-          <label>YouTube Embed URL</label>
-          <input
-            type="url"
-            value={mediaForm.videoUrl}
-            onChange={(e) => setMediaForm({ ...mediaForm, videoUrl: e.target.value })}
-            placeholder="https://www.youtube.com/embed/VIDEO_ID"
-            required
-          />
-          <small>Use YouTube embed URL format (not regular youtube.com URL)</small>
-        </div>
-
-        <div className="admin-form-group">
-          <label>Date</label>
-          <input
-            type="date"
-            value={mediaForm.date}
-            onChange={(e) => setMediaForm({ ...mediaForm, date: e.target.value })}
-            required
-          />
-        </div>
-
-        <button type="submit" className="admin-btn-primary">
-          Add Video
-        </button>
-
-        {uploadStatus && <p className="admin-success">{uploadStatus}</p>}
-      </form>
-
-      {/* Existing Media List */}
-      <div style={{ marginTop: 40 }}>
-        <h3 style={{ color: "#ff69b4", marginBottom: 20 }}>Existing Media</h3>
-        {loading ? (
-          <p style={{ color: "#888" }}>Loading media...</p>
-        ) : mediaList.length === 0 ? (
-          <p style={{ color: "#888" }}>No media items yet. Add one above!</p>
-        ) : (
-          <div className="media-list-grid">
-            {mediaList.map((item) => (
-              <div key={item._id} className="media-list-item">
-                {item.type === "photo" ? (
-                  <img src={item.url} alt={item.title} className="media-list-thumbnail" />
-                ) : (
-                  <div className="media-list-video">
-                    {item.thumbnail && <img src={item.thumbnail} alt={item.title} className="media-list-thumbnail" />}
-                    <div className="video-icon">▶</div>
-                  </div>
-                )}
-                <div className="media-list-info">
-                  <h4>{item.title}</h4>
-                  <p className="media-list-type">{item.type === "photo" ? "📷 Photo" : "🎥 Video"}</p>
-                  <p className="media-list-date">{new Date(item.date).toLocaleDateString()}</p>
-                </div>
-                <button
-                  onClick={() => handleDelete(item._id)}
-                  className="media-delete-btn"
-                  title="Delete this media"
-                >
-                  🗑️ Delete
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
     </div>
   );
 }
