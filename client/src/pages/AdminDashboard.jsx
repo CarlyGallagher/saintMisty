@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { createMedia, uploadMediaFile, fetchMedia, deleteMedia } from "../api/media";
+import { createMedia, fetchMedia, deleteMedia } from "../api/media";
 import { createShow, fetchShows, deleteShow } from "../api/shows";
 import { sendNewsletter } from "../api/newsletter";
 import "../styles/AdminDashboard.css";
@@ -39,7 +39,7 @@ export default function AdminDashboard() {
           className={`admin-tab ${activeTab === "media" ? "active" : ""}`}
           onClick={() => setActiveTab("media")}
         >
-          Photos & Videos
+          Videos
         </button>
         <button
           className={`admin-tab ${activeTab === "shows" ? "active" : ""}`}
@@ -94,20 +94,15 @@ function BlogManagement() {
   );
 }
 
-// Media Management Component
+// Media Management Component (Videos Only)
 function MediaManagement() {
-  const [mediaType, setMediaType] = useState("photo");
-  const [uploadMode, setUploadMode] = useState("file"); // "file" or "url"
   const [mediaForm, setMediaForm] = useState({
     title: "",
-    url: "",
+    thumbnail: "",
     videoUrl: "",
     date: new Date().toISOString().split('T')[0]
   });
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [dragActive, setDragActive] = useState(false);
   const [uploadStatus, setUploadStatus] = useState("");
-  const [previewUrl, setPreviewUrl] = useState("");
   const [mediaList, setMediaList] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -134,7 +129,7 @@ function MediaManagement() {
     try {
       await deleteMedia(id);
       setUploadStatus("Media deleted successfully!");
-      loadMedia(); // Reload the list
+      loadMedia();
       setTimeout(() => setUploadStatus(""), 3000);
     } catch (error) {
       console.error("Failed to delete media:", error);
@@ -143,124 +138,37 @@ function MediaManagement() {
     }
   };
 
-  const handleFileSelect = (file) => {
-    if (!file) return;
-
-    // Validate file type
-    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
-    const validVideoTypes = ['video/mp4', 'video/mov', 'video/avi'];
-
-    const isValidImage = validImageTypes.includes(file.type);
-    const isValidVideo = validVideoTypes.includes(file.type);
-
-    if (mediaType === "photo" && !isValidImage) {
-      setUploadStatus("Please select a valid image file (JPG, PNG, GIF)");
-      setTimeout(() => setUploadStatus(""), 3000);
-      return;
-    }
-
-    if (mediaType === "video" && !isValidVideo) {
-      setUploadStatus("Please select a valid video file (MP4, MOV, AVI)");
-      setTimeout(() => setUploadStatus(""), 3000);
-      return;
-    }
-
-    setSelectedFile(file);
-
-    // Create preview for images
-    if (mediaType === "photo" && isValidImage) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setPreviewUrl("");
-    }
-  };
-
-  const handleDrag = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFileSelect(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleFileInputChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      handleFileSelect(e.target.files[0]);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setUploadStatus("");
 
     try {
-      if (uploadMode === "file") {
-        // File upload
-        if (!selectedFile) {
-          setUploadStatus("Please select a file to upload");
-          setTimeout(() => setUploadStatus(""), 3000);
-          return;
-        }
+      const payload = {
+        type: "video",
+        title: mediaForm.title,
+        thumbnail: mediaForm.thumbnail,
+        videoUrl: mediaForm.videoUrl,
+        date: mediaForm.date
+      };
 
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-        formData.append("title", mediaForm.title);
-        formData.append("type", mediaType);
-        formData.append("date", mediaForm.date);
-        if (mediaType === "video" && mediaForm.videoUrl) {
-          formData.append("videoUrl", mediaForm.videoUrl);
-        }
-
-        await uploadMediaFile(formData);
-        setUploadStatus("Media uploaded successfully!");
-      } else {
-        // URL upload
-        const payload = {
-          type: mediaType,
-          title: mediaForm.title,
-          url: mediaType === "photo" ? mediaForm.url : mediaForm.url,
-          thumbnail: mediaType === "video" ? mediaForm.url : undefined,
-          videoUrl: mediaType === "video" ? mediaForm.videoUrl : undefined,
-          date: mediaForm.date
-        };
-
-        await createMedia(payload);
-        setUploadStatus("Media added successfully!");
-      }
+      await createMedia(payload);
+      setUploadStatus("Video added successfully!");
 
       // Reset form
       setMediaForm({
         title: "",
-        url: "",
+        thumbnail: "",
         videoUrl: "",
         date: new Date().toISOString().split('T')[0]
       });
-      setSelectedFile(null);
-      setPreviewUrl("");
 
       // Reload media list
       loadMedia();
 
       setTimeout(() => setUploadStatus(""), 3000);
     } catch (error) {
-      console.error("Failed to add media:", error);
-      setUploadStatus("Failed to add media. Please try again.");
+      console.error("Failed to add video:", error);
+      setUploadStatus("Failed to add video. Please try again.");
       setTimeout(() => setUploadStatus(""), 3000);
     }
   };
@@ -268,149 +176,47 @@ function MediaManagement() {
   return (
     <div className="admin-section">
       <div className="admin-section-header">
-        <h2>Photos & Videos</h2>
+        <h2>Videos</h2>
       </div>
       <p className="admin-hint">
-        Add photos and videos to the Pictures & Videos page. These will appear in the gallery for fans to view.
+        Add videos using YouTube embed URLs. Photos are managed in the codebase as static assets.
       </p>
 
       <form onSubmit={handleSubmit} className="admin-form">
         <div className="admin-form-group">
-          <label>Media Type</label>
-          <div className="admin-radio-group">
-            <label>
-              <input
-                type="radio"
-                value="photo"
-                checked={mediaType === "photo"}
-                onChange={(e) => setMediaType(e.target.value)}
-              />
-              Photo
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="video"
-                checked={mediaType === "video"}
-                onChange={(e) => setMediaType(e.target.value)}
-              />
-              Video
-            </label>
-          </div>
-        </div>
-
-        <div className="admin-form-group">
-          <label>Upload Method</label>
-          <div className="admin-radio-group">
-            <label>
-              <input
-                type="radio"
-                value="file"
-                checked={uploadMode === "file"}
-                onChange={(e) => setUploadMode(e.target.value)}
-              />
-              Upload File
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="url"
-                checked={uploadMode === "url"}
-                onChange={(e) => setUploadMode(e.target.value)}
-              />
-              Use URL
-            </label>
-          </div>
-        </div>
-
-        <div className="admin-form-group">
-          <label>Title</label>
+          <label>Video Title</label>
           <input
             type="text"
             value={mediaForm.title}
             onChange={(e) => setMediaForm({ ...mediaForm, title: e.target.value })}
-            placeholder="e.g., Studio Session, Concert Night"
+            placeholder="e.g., Live Performance at The Casbah"
             required
           />
         </div>
 
-        {uploadMode === "file" ? (
-          <>
-            <div className="admin-form-group">
-              <label>Upload {mediaType === "photo" ? "Photo" : "Video"}</label>
-              <div
-                className={`file-drop-zone ${dragActive ? "drag-active" : ""}`}
-                onDragEnter={handleDrag}
-                onDragLeave={handleDrag}
-                onDragOver={handleDrag}
-                onDrop={handleDrop}
-                onClick={() => document.getElementById("fileInput").click()}
-              >
-                {selectedFile ? (
-                  <div className="file-selected">
-                    {previewUrl && <img src={previewUrl} alt="Preview" className="file-preview" />}
-                    <p>{selectedFile.name}</p>
-                    <p className="file-size">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
-                  </div>
-                ) : (
-                  <div className="file-drop-text">
-                    <p>📁 Drag and drop {mediaType === "photo" ? "a photo" : "a video"} here</p>
-                    <p>or click to browse</p>
-                    <small>Max file size: 10MB</small>
-                  </div>
-                )}
-              </div>
-              <input
-                id="fileInput"
-                type="file"
-                accept={mediaType === "photo" ? "image/jpeg,image/png,image/gif" : "video/mp4,video/mov,video/avi"}
-                onChange={handleFileInputChange}
-                style={{ display: "none" }}
-              />
-            </div>
+        <div className="admin-form-group">
+          <label>Thumbnail URL</label>
+          <input
+            type="url"
+            value={mediaForm.thumbnail}
+            onChange={(e) => setMediaForm({ ...mediaForm, thumbnail: e.target.value })}
+            placeholder="https://example.com/thumbnail.jpg"
+            required
+          />
+          <small>Upload thumbnail to Imgur or use a direct image URL</small>
+        </div>
 
-            {mediaType === "video" && (
-              <div className="admin-form-group">
-                <label>Video URL (Optional - for YouTube embeds)</label>
-                <input
-                  type="url"
-                  value={mediaForm.videoUrl}
-                  onChange={(e) => setMediaForm({ ...mediaForm, videoUrl: e.target.value })}
-                  placeholder="https://www.youtube.com/embed/VIDEO_ID"
-                />
-                <small>If you want to use a YouTube video instead of uploaded file</small>
-              </div>
-            )}
-          </>
-        ) : (
-          <>
-            <div className="admin-form-group">
-              <label>{mediaType === "photo" ? "Photo URL" : "Thumbnail URL"}</label>
-              <input
-                type="url"
-                value={mediaForm.url}
-                onChange={(e) => setMediaForm({ ...mediaForm, url: e.target.value })}
-                placeholder="https://example.com/image.jpg"
-                required
-              />
-              <small>Upload to a service like Imgur or use a direct image URL</small>
-            </div>
-
-            {mediaType === "video" && (
-              <div className="admin-form-group">
-                <label>Video URL (YouTube Embed)</label>
-                <input
-                  type="url"
-                  value={mediaForm.videoUrl}
-                  onChange={(e) => setMediaForm({ ...mediaForm, videoUrl: e.target.value })}
-                  placeholder="https://www.youtube.com/embed/VIDEO_ID"
-                  required
-                />
-                <small>Use YouTube embed URL format</small>
-              </div>
-            )}
-          </>
-        )}
+        <div className="admin-form-group">
+          <label>YouTube Embed URL</label>
+          <input
+            type="url"
+            value={mediaForm.videoUrl}
+            onChange={(e) => setMediaForm({ ...mediaForm, videoUrl: e.target.value })}
+            placeholder="https://www.youtube.com/embed/VIDEO_ID"
+            required
+          />
+          <small>Use YouTube embed URL format (not regular youtube.com URL)</small>
+        </div>
 
         <div className="admin-form-group">
           <label>Date</label>
@@ -423,7 +229,7 @@ function MediaManagement() {
         </div>
 
         <button type="submit" className="admin-btn-primary">
-          {uploadMode === "file" ? "Upload" : "Add"} {mediaType === "photo" ? "Photo" : "Video"}
+          Add Video
         </button>
 
         {uploadStatus && <p className="admin-success">{uploadStatus}</p>}
