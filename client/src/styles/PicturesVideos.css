@@ -2,6 +2,8 @@
   min-height: 100vh;
   background: linear-gradient(to bottom, #000 0%, #1a0033 50%, #000 100%);
   padding: 20px;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .pictures-videos-header {
@@ -274,7 +276,7 @@
   .media-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
-    padding: 10px;
+    padding: 12px;
   }
 
   .lightbox-media iframe {
@@ -294,5 +296,26 @@
 
   .lightbox-right {
     right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pictures-videos-container {
+    padding: 12px;
+  }
+
+  .media-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 8px;
+  }
+
+  .tab-button {
+    font-size: 16px;
+    padding: 8px 12px;
+  }
+
+  .tab-separator {
+    font-size: 16px;
   }
 }

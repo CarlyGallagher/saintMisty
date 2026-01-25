@@ -152,9 +152,19 @@ h3 {
   padding: 24px;
 }
 
+@media (max-width: 1024px) {
+  .y2k-grid {
+    grid-template-columns: 300px 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
+}
+
 @media (max-width: 768px) {
   .y2k-grid {
     grid-template-columns: 1fr;
+    padding: 12px;
+    gap: 20px;
   }
 }
 

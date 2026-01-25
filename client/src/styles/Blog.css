@@ -2,6 +2,14 @@
   min-height: 100vh;
   background: linear-gradient(to bottom, #000 0%, #1a0033 50%, #000 100%);
   padding: 20px;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 480px) {
+  .blog-container {
+    padding: 12px;
+  }
 }
 
 .blog-header {
