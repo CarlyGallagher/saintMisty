@@ -30,15 +30,15 @@
 
 @media (max-width: 768px) {
   .shows-header-gif {
-    width: 90%;
-    max-width: 350px;
+    width: 90% !important;
+    max-width: 350px !important;
   }
 }
 
 @media (max-width: 480px) {
   .shows-header-gif {
-    width: 95%;
-    max-width: 280px;
+    width: 95% !important;
+    max-width: 280px !important;
   }
 }
 

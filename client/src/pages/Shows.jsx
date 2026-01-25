@@ -14,7 +14,6 @@ export default function Shows() {
   });
   const [subscribeSuccess, setSubscribeSuccess] = useState(false);
   const [upcomingShows, setUpcomingShows] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   // Fetch shows from backend
   useEffect(() => {
@@ -24,8 +23,6 @@ export default function Shows() {
         setUpcomingShows(shows);
       } catch (error) {
         console.error("Failed to fetch shows:", error);
-      } finally {
-        setLoading(false);
       }
     })();
   }, []);

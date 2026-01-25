@@ -19,14 +19,14 @@
 
 @media (max-width: 768px) {
   .home-title-gif {
-    width: 90%;
-    max-width: 400px;
+    width: 90% !important;
+    max-width: 400px !important;
   }
 }
 
 @media (max-width: 480px) {
   .home-title-gif {
-    width: 95%;
-    max-width: 300px;
+    width: 95% !important;
+    max-width: 300px !important;
   }
 }
