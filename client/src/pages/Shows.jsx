@@ -83,7 +83,11 @@ export default function Shows() {
     <div className="shows-container">
       {/* Header */}
       <div className="shows-header">
-        <img src="http://www.gigaglitters.com/created/LZFycy67hT.gif" width="450" height="80" border="0" alt="http://www.rasaint.net/ - Glitter Graphics"></img>
+        <img
+          src="http://www.gigaglitters.com/created/LZFycy67hT.gif"
+          alt="Upcoming Shows - Glitter Graphics"
+          className="shows-header-gif"
+        />
       </div>
 
       {/* Subscribe Card */}

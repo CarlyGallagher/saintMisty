@@ -17,11 +17,8 @@ export default function Home() {
         <h1 className="home-title">
           <img
             src="http://www.gigaglitters.com/created/7N3HmxwSxu.gif"
-            width="500"
-            height="150"
-            border="0"
             alt="Saint Misty - Glitter Graphics"
-            style={{ display: 'block', margin: '0 auto' }}
+            className="home-title-gif"
           />
         </h1>
       </div>
