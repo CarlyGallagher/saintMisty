@@ -290,10 +290,9 @@
   }
 
   .y2k-nav-accessibility {
-    position: fixed;
+    position: absolute;
     top: 14px;
     right: 70px;
-    z-index: 1001;
     box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.6);
   }
 }
