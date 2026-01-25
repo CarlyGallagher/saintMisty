@@ -28,6 +28,14 @@
   margin: 0;
 }
 
+/* Tablet sizes (iPad, etc.) */
+@media (max-width: 1024px) {
+  .shows-header-gif {
+    width: 85% !important;
+    max-width: 400px !important;
+  }
+}
+
 @media (max-width: 768px) {
   .shows-header-gif {
     width: 90% !important;

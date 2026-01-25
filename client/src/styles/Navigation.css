@@ -186,6 +186,27 @@
   margin-left: auto;
 }
 
+/* Tablet Responsive (820px-1024px iPads, etc.) */
+@media (max-width: 1024px) {
+  .y2k-nav-container {
+    gap: 16px;
+    padding: 12px 20px;
+  }
+
+  .y2k-nav-logo img {
+    width: 220px;
+  }
+
+  .y2k-nav-link {
+    font-size: 18px;
+    padding: 6px 10px;
+  }
+
+  .y2k-nav-dropdown-item {
+    font-size: 12px;
+  }
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .y2k-nav-container {
