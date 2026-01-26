@@ -242,17 +242,44 @@ export default function Navigation() {
               </button>
             </>
           )}
+
+          {/* Accessibility Toggle in Mobile Menu */}
+          {isMobile && (
+            <div className="y2k-nav-theme-toggle-container">
+              <button
+                className="y2k-nav-theme-toggle"
+                onClick={toggleHighContrast}
+                aria-label={highContrast ? "Switch to normal mode" : "Switch to high contrast mode"}
+                aria-pressed={highContrast}
+              >
+                <span className="toggle-track">
+                  <span className={`toggle-thumb ${highContrast ? 'active' : ''}`}>
+                    {highContrast ? '🌙' : '☀️'}
+                  </span>
+                </span>
+                <span className="toggle-label">
+                  {highContrast ? 'High Contrast' : 'Normal Mode'}
+                </span>
+              </button>
+            </div>
+          )}
         </div>
 
-        <button
-          className="y2k-nav-accessibility"
-          onClick={toggleHighContrast}
-          aria-label={highContrast ? "Disable high contrast mode" : "Enable high contrast mode"}
-          aria-pressed={highContrast}
-          title="Toggle High Contrast Mode"
-        >
-          ♿
-        </button>
+        {/* Accessibility Toggle for Desktop */}
+        {!isMobile && (
+          <button
+            className="y2k-nav-theme-toggle"
+            onClick={toggleHighContrast}
+            aria-label={highContrast ? "Switch to normal mode" : "Switch to high contrast mode"}
+            aria-pressed={highContrast}
+          >
+            <span className="toggle-track">
+              <span className={`toggle-thumb ${highContrast ? 'active' : ''}`}>
+                {highContrast ? '🌙' : '☀️'}
+              </span>
+            </span>
+          </button>
+        )}
       </div>
     </nav>
   );

@@ -158,28 +158,81 @@
   color: #FFF;
 }
 
-.y2k-nav-accessibility {
-  background: #FFF;
-  border: 2px solid #000;
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  min-width: 44px;
-  min-height: 44px;
-  font-size: 18px;
+/* Theme Toggle Switch */
+.y2k-nav-theme-toggle {
+  background: transparent;
+  border: none;
   cursor: pointer;
-  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
-  transition: all 0.15s ease;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 12px;
+  padding: 8px;
   margin-left: auto;
   flex-shrink: 0;
 }
 
-.y2k-nav-accessibility:hover {
-  background: #000;
-  transform: scale(1.1);
+.toggle-track {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  transition: background 0.3s ease;
+}
+
+.toggle-track:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.toggle-thumb {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: #fff;
+  border-radius: 50%;
+  border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: transform 0.3s ease;
+  left: 3px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-thumb.active {
+  transform: translateX(30px);
+}
+
+.toggle-label {
+  font-family: Consolas, monospace;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+  white-space: nowrap;
+  display: none;
+}
+
+.y2k-nav-theme-toggle-container {
+  width: 100%;
+  padding: 16px 20px;
+  border-top: 2px solid rgba(0, 0, 0, 0.2);
+  margin-top: 16px;
+}
+
+.y2k-nav-theme-toggle-container .y2k-nav-theme-toggle {
+  width: 100%;
+  margin-left: 0;
+  justify-content: center;
+}
+
+.y2k-nav-theme-toggle-container .toggle-label {
+  display: block;
 }
 
 .y2k-nav-logout {
@@ -287,13 +340,6 @@
 
   .y2k-nav-logout {
     margin-left: 0;
-  }
-
-  .y2k-nav-accessibility {
-    position: absolute;
-    top: 14px;
-    right: 70px;
-    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.6);
   }
 }
 
