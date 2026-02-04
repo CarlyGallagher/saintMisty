@@ -99,7 +99,11 @@ export default function PicturesVideos() {
   return (
     <div className="pictures-videos-container">
       <div className="pictures-videos-header">
-        <h1>Saint Misty's Photos & Videos</h1>
+        <img
+          src="http://www.gigaglitters.com/created/6HqSXNrTXq.gif"
+          alt="Photos & Videos - Glitter Graphics"
+          className="pictures-videos-header-gif"
+        />
       </div>
 
       <div className="pictures-videos-tabs">

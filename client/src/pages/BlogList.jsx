@@ -23,7 +23,11 @@ export default function BlogList() {
   return (
     <div className="blog-container">
       <div className="blog-header">
-        <h1>Saint Misty's Blog</h1>
+        <img
+          src="http://www.gigaglitters.com/created/GsQYqk5eJB.gif"
+          alt="Blog - Glitter Graphics"
+          className="blog-header-gif"
+        />
       </div>
       <ul className="blog-list">
         {posts.map(p => (
