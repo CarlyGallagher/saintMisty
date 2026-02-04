@@ -380,3 +380,8 @@
     height: 40px;
   }
 }
+
+/* High Contrast Mode for Hamburger Menu */
+.high-contrast .y2k-nav-hamburger span {
+  background: #003366 !important;
+}
