@@ -119,7 +119,7 @@ export default function Navigation() {
                   TikTok
                 </a>
                 <a
-                  href="https://www.instagram.com/saintmisty"
+                  href="https://www.instagram.com/thesaintmisty"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="y2k-nav-dropdown-item"

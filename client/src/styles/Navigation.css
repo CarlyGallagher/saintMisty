@@ -124,14 +124,23 @@
 
 .y2k-nav-dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 8px);
   left: 0;
   background: #FFF;
   border: 2px solid #000;
   min-width: 160px;
-  margin-top: 8px;
   z-index: 1001;
   box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
+}
+
+.y2k-nav-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: transparent;
 }
 
 .y2k-nav-dropdown-item {
