@@ -276,11 +276,11 @@
 }
 
 .lightbox-left {
-  left: 20px;
+  left: -80px;
 }
 
 .lightbox-right {
-  right: 20px;
+  right: -80px;
 }
 
 .lightbox-title {
@@ -347,4 +347,74 @@
   .tab-separator {
     font-size: 16px;
   }
+}
+
+/* High Contrast / Accessibility Mode */
+.high-contrast .tab-button {
+  color: #0066cc !important;
+  text-shadow: none !important;
+}
+
+.high-contrast .tab-button:hover {
+  color: #003366 !important;
+  text-shadow: none !important;
+}
+
+.high-contrast .tab-button.active {
+  color: #003366 !important;
+  text-shadow: none !important;
+  background: #e6f0ff !important;
+}
+
+.high-contrast .tab-separator {
+  color: #003366 !important;
+}
+
+.high-contrast .media-item {
+  background: #ffffff !important;
+  border: 2px solid #6699cc !important;
+  box-shadow: none !important;
+}
+
+.high-contrast .media-item:hover {
+  border-color: #003366 !important;
+  box-shadow: 0 2px 8px rgba(0, 51, 102, 0.2) !important;
+}
+
+.high-contrast .play-button {
+  background: rgba(0, 51, 102, 0.9) !important;
+  box-shadow: none !important;
+}
+
+.high-contrast .lightbox-media img {
+  border-color: #003366 !important;
+  box-shadow: none !important;
+}
+
+.high-contrast .lightbox-media iframe {
+  border-color: #003366 !important;
+  box-shadow: none !important;
+}
+
+.high-contrast .lightbox-close {
+  background: #6699cc !important;
+  box-shadow: none !important;
+}
+
+.high-contrast .lightbox-close:hover {
+  background: #003366 !important;
+}
+
+.high-contrast .lightbox-arrow {
+  background: rgba(102, 153, 204, 0.9) !important;
+  box-shadow: none !important;
+}
+
+.high-contrast .lightbox-arrow:hover {
+  background: #003366 !important;
+}
+
+.high-contrast .lightbox-title {
+  color: #003366 !important;
+  text-shadow: none !important;
 }
