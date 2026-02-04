@@ -1,3 +1,6 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemap location (helps search engines discover all pages)
+Sitemap: https://saintmisty.onrender.com/sitemap.xml
