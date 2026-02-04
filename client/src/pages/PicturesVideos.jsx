@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchMedia } from "../api/media";
 import { getMediaUrl } from "../utils/mediaAssets";
+import { useAccessibility } from "../context/AccessibilityContext";
 import "../styles/PicturesVideos.css";
 
 // Tab button component
@@ -59,6 +60,7 @@ function Lightbox({ media, onClose, onPrevious, onNext }) {
 
 // Main component
 export default function PicturesVideos() {
+  const { highContrast } = useAccessibility();
   const [activeTab, setActiveTab] = useState("all");
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -99,11 +101,15 @@ export default function PicturesVideos() {
   return (
     <div className="pictures-videos-container">
       <div className="pictures-videos-header">
-        <img
-          src="http://www.gigaglitters.com/created/6HqSXNrTXq.gif"
-          alt="Photos & Videos - Glitter Graphics"
-          className="pictures-videos-header-gif"
-        />
+        {highContrast ? (
+          <h1>Saint Misty's Photos & Videos</h1>
+        ) : (
+          <img
+            src="http://www.gigaglitters.com/created/6HqSXNrTXq.gif"
+            alt="Photos & Videos - Glitter Graphics"
+            className="pictures-videos-header-gif"
+          />
+        )}
       </div>
 
       <div className="pictures-videos-tabs">

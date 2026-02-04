@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchBlogs } from "../api/blogs";
+import { useAccessibility } from "../context/AccessibilityContext";
 import "../styles/Blog.css";
 
 export default function BlogList() {
+  const { highContrast } = useAccessibility();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,11 +25,15 @@ export default function BlogList() {
   return (
     <div className="blog-container">
       <div className="blog-header">
-        <img
-          src="http://www.gigaglitters.com/created/GsQYqk5eJB.gif"
-          alt="Blog - Glitter Graphics"
-          className="blog-header-gif"
-        />
+        {highContrast ? (
+          <h1>Saint Misty's Blog</h1>
+        ) : (
+          <img
+            src="http://www.gigaglitters.com/created/GsQYqk5eJB.gif"
+            alt="Blog - Glitter Graphics"
+            className="blog-header-gif"
+          />
+        )}
       </div>
       <ul className="blog-list">
         {posts.map(p => (
