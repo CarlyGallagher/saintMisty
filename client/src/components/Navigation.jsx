@@ -257,9 +257,6 @@ export default function Navigation() {
                     {highContrast ? '🌙' : '☀️'}
                   </span>
                 </span>
-                <span className="toggle-label">
-                  {highContrast ? 'High Contrast' : 'Normal Mode'}
-                </span>
               </button>
             </div>
           )}
