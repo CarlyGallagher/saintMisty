@@ -85,7 +85,7 @@ export default function Home() {
           {" | "}
           <a href="https://youtu.be/dQw4w9WgXcQ?si=ZDxVBO8ixFw3J5K1" target="_blank" rel="noopener noreferrer">Deezer</a>
           {" | "}
-          <a href="https://youtube.com/@thesaintmisty?si=YnOon4BxonWhl4dc" target="_blank" rel="noopener noreferrer">YouTube</a>
+          <a href="https://youtube.com/@thesaintmisty?si=2suFEl1EUfF6BJiP" target="_blank" rel="noopener noreferrer">YouTube</a>
         </p>
         <p style={{ margin: "8px 0 0 0", color: "#666" }}>
           © 2026 Saint Misty

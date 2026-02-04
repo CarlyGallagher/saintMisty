@@ -108,7 +108,7 @@ export default function Navigation() {
             {showSocials && (
               <div className="y2k-nav-dropdown-menu" role="menu" aria-label="Social media links">
                 <a
-                  href="https://www.tiktok.com/@saintmisty"
+                  href="https://www.tiktok.com/@sexybenfranklin?is_from_webapp=1&sender_device=pc"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="y2k-nav-dropdown-item"
@@ -130,7 +130,7 @@ export default function Navigation() {
                   Instagram
                 </a>
                 <a
-                  href="https://www.youtube.com/@saintmisty"
+                  href="https://youtube.com/@thesaintmisty?si=qmSVssxdcYAkEZcJ"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="y2k-nav-dropdown-item"
@@ -176,7 +176,7 @@ export default function Navigation() {
             {showMusic && (
               <div className="y2k-nav-dropdown-menu" role="menu" aria-label="Music streaming platforms">
                 <a
-                  href="https://open.spotify.com/artist/saintmisty"
+                  href="https://open.spotify.com/artist/3ATKsyAg4Ua8cs2VJJN0CC?si=MIyE6ajeQ8q4WuERuLhpIg"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="y2k-nav-dropdown-item"
@@ -187,7 +187,7 @@ export default function Navigation() {
                   Spotify
                 </a>
                 <a
-                  href="https://music.apple.com/artist/saintmisty"
+                  href="https://music.apple.com/us/artist/saint-misty/1708411597"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="y2k-nav-dropdown-item"
