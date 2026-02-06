@@ -41,7 +41,7 @@ A nostalgic tribute to the MySpace era artist pages, featuring a Y2K aesthetic f
 
 ### Homepage - Light Mode
 <img width="1348" height="748" alt="Screenshot 2026-02-05 at 11 55 22 AM" src="https://github.com/user-attachments/assets/fca390a5-ff62-433d-b975-f1068cffdd8c" />
-*Alternative color scheme with blue accents*
+*Alternative color scheme with traditional Myspace coloring*
 
 ## 🚀 Getting Started
 
