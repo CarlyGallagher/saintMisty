@@ -1,7 +1,6 @@
 # 💋 Saint Misty Space - MySpace Tribute Website
 
 <div align="center">
-  <img src="./screenshots/homepage.png" alt="Saint Misty Space Homepage" width="800"/>
   
   [![Live Site](https://img.shields.io/badge/Live%20Demo-saintmisty.com-ff69b4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.saintmisty.com/)
   [![GitHub](https://img.shields.io/badge/GitHub-CarlyGallagher%2FsaintMisty-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/CarlyGallagher/saintMisty)
@@ -46,6 +45,8 @@ Watch the full walkthrough of Saint Misty Space in action:
   referrerpolicy="strict-origin-when-cross-origin"
   allowfullscreen
 ></iframe>
+
+*Click to see all features including the music player, theme toggle, and interactive elements*
 
 </div>
 
