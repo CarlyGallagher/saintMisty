@@ -32,7 +32,7 @@ A nostalgic tribute to the MySpace era artist pages, featuring a Y2K aesthetic f
 ## 🖼️ Screenshots
 
 ### Homepage - Dark Mode
-<img width="1348" height="748" alt="Screenshot 2026-02-05 at 11 55 22 AM" src="https://github.com/user-attachments/assets/fca390a5-ff62-433d-b975-f1068cffdd8c" />
+<img width="1460" height="809" alt="Saint-Misty-Space" src="https://github.com/user-attachments/assets/57c9f032-4f80-41a1-ae36-a0e134b31bea" />
 *Classic MySpace-inspired layout with hot pink and leopard print theme*
 
 ### About Section & Music Player
@@ -40,7 +40,7 @@ A nostalgic tribute to the MySpace era artist pages, featuring a Y2K aesthetic f
 *Custom music player with biography, interests, and friends section*
 
 ### Homepage - Light Mode
-<img width="1460" height="809" alt="Saint-Misty-Space" src="https://github.com/user-attachments/assets/57c9f032-4f80-41a1-ae36-a0e134b31bea" />
+<img width="1348" height="748" alt="Screenshot 2026-02-05 at 11 55 22 AM" src="https://github.com/user-attachments/assets/fca390a5-ff62-433d-b975-f1068cffdd8c" />
 *Alternative color scheme with blue accents*
 
 ## 🚀 Getting Started
