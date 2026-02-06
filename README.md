@@ -32,15 +32,15 @@ A nostalgic tribute to the MySpace era artist pages, featuring a Y2K aesthetic f
 ## 🖼️ Screenshots
 
 ### Homepage - Dark Mode
-![Homepage Dark](./screenshots/Saint-Misty-Space.png)
+<img width="1348" height="748" alt="Screenshot 2026-02-05 at 11 55 22 AM" src="https://github.com/user-attachments/assets/fca390a5-ff62-433d-b975-f1068cffdd8c" />
 *Classic MySpace-inspired layout with hot pink and leopard print theme*
 
 ### About Section & Music Player
-![About Section](./screenshots/Screenshot_2026-02-05_at_11_53_48_AM.png)
+<img width="1222" height="791" alt="Screenshot 2026-02-05 at 11 53 48 AM" src="https://github.com/user-attachments/assets/41cb04fe-20a9-49c4-9106-784005af1bfb" />
 *Custom music player with biography, interests, and friends section*
 
 ### Homepage - Light Mode
-![Homepage Light](./screenshots/Screenshot_2026-02-05_at_11_55_22_AM.png)
+<img width="1460" height="809" alt="Saint-Misty-Space" src="https://github.com/user-attachments/assets/57c9f032-4f80-41a1-ae36-a0e134b31bea" />
 *Alternative color scheme with blue accents*
 
 ## 🚀 Getting Started
@@ -52,9 +52,7 @@ A nostalgic tribute to the MySpace era artist pages, featuring a Y2K aesthetic f
 
 ### Installation
 
-1. Clone the repository<img width="1348" height="748" alt="Screenshot 2026-02-05 at 11 55 22 AM" src="https://github.com/user-attachments/assets/fca390a5-ff62-433d-b975-f1068cffdd8c" />
-<img width="1222" height="791" alt="Screenshot 2026-02-05 at 11 53 48 AM" src="https://github.com/user-attachments/assets/41cb04fe-20a9-49c4-9106-784005af1bfb" />
-<img width="1460" height="809" alt="Saint-Misty-Space" src="https://github.com/user-attachments/assets/57c9f032-4f80-41a1-ae36-a0e134b31bea" />
+1. Clone the repository
 
 ```bash
 git clone https://github.com/CarlyGallagher/saintMisty.git
