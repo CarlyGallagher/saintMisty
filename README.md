@@ -29,26 +29,19 @@ A nostalgic tribute to the MySpace era artist pages, featuring a Y2K aesthetic f
 - 💌 Interactive messaging and social features
 - 👩‍💻 Integrated blog, photo, and video section
 
-## 🎬 Live Demo Video
+## 🖼️ Screenshots
 
-<div align="center">
-  
-Watch the full walkthrough of Saint Misty Space in action:
+### Homepage - Dark Mode
+![Homepage Dark](./screenshots/Saint-Misty-Space.png)
+*Classic MySpace-inspired layout with hot pink and leopard print theme*
 
-<iframe
-  width="720"
-  height="600"
-  src="https://app.screencastify.com/watch/x889CxsHhQTXnNngF1iK/embed"
-  title="Saint Misty - Full Site Demo"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-  referrerpolicy="strict-origin-when-cross-origin"
-  allowfullscreen
-></iframe>
+### About Section & Music Player
+![About Section](./screenshots/Screenshot_2026-02-05_at_11_53_48_AM.png)
+*Custom music player with biography, interests, and friends section*
 
-*Click to see all features including the music player, theme toggle, and interactive elements*
-
-</div>
+### Homepage - Light Mode
+![Homepage Light](./screenshots/Screenshot_2026-02-05_at_11_55_22_AM.png)
+*Alternative color scheme with blue accents*
 
 ## 🚀 Getting Started
 
