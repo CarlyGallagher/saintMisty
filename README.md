@@ -6,6 +6,7 @@
   [![Live Site](https://img.shields.io/badge/Live%20Demo-saintmisty.com-ff69b4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.saintmisty.com/)
   [![GitHub](https://img.shields.io/badge/GitHub-CarlyGallagher%2FsaintMisty-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/CarlyGallagher/saintMisty)
 </div>
+
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
@@ -102,14 +103,9 @@ saintMisty/
 ```
 
 ## 🎯 Future Enhancements
-- [ ] User authentication and profiles
 - [ ] Comment system on blog posts
-- [ ] Shopping cart functionality
-- [ ] Music streaming integration
-- [ ] Friend request system
+- [ ] Shopify integration
 - [ ] Message inbox
-- [ ] Photo gallery with albums
-- [ ] Custom profile themes
 
 ## 🤝 Contributing
 
