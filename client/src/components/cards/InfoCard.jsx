@@ -11,13 +11,13 @@ export default function InfoCard() {
             src={profileImg}
             alt="Saint Misty"
             className="y2k-img"
-            style={{ width: "150px", height: "150px", flexShrink: 0, marginBottom: "8px" }}
+            style={{ width: "100%", height: "auto", flexShrink: 0, marginBottom: "8px" }}
           />
           <p style={{ fontSize: "15px", textAlign: "center", margin: 0 }}>
             <span style={{ fontWeight: "bold" }}>Mood:</span> Gorgeous 💅
           </p>
         </div>
-        <table style={{ width: "100%", fontSize: "12px" }}>
+        <table style={{ width: "100%", fontSize: "" }}>
           <tbody>
             <tr>
               <td style={{ fontWeight: "bold", padding: "1px" }}>Age:</td>

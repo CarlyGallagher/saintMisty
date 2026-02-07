@@ -158,6 +158,14 @@ h3 {
     gap: 16px;
     padding: 16px;
   }
+
+  .y2k-img {
+    width: 30%;
+  }
+
+  .y2k-card {
+    font-size: 100%;
+  }
 }
 
 @media (max-width: 768px) {
