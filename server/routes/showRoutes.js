@@ -1,90 +1,81 @@
 const express = require("express");
-const Show = require("../models/show");
-const mongoose = require("mongoose");
-const { requireAuth } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-// Get all shows (public)
+const BANDSINTOWN_BASE = "https://rest.bandsintown.com";
+const APP_ID = process.env.BANDSINTOWN_APP_ID;
+const ARTIST = process.env.BANDSINTOWN_ARTIST || "Saint Misty";
+
+// Simple in-memory cache (5 min TTL)
+let cache = { data: null, expiry: 0 };
+const CACHE_TTL = 5 * 60 * 1000;
+
+function formatDate(isoString) {
+  const d = new Date(isoString);
+  const months = [
+    "Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.",
+    "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."
+  ];
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+
+function formatTime(isoString) {
+  const d = new Date(isoString);
+  let hours = d.getHours();
+  const minutes = d.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12 || 12;
+  const mins = minutes.toString().padStart(2, "0");
+  return `${hours}:${mins} ${ampm}`;
+}
+
+function transformEvent(event) {
+  const venue = event.venue || {};
+  const city = venue.region
+    ? `${venue.city}, ${venue.region}`
+    : venue.city || "";
+
+  // Use the first offer URL if available, otherwise fall back to the Bandsintown event page
+  const offer = (event.offers || []).find((o) => o.url);
+  const ticketUrl = offer ? offer.url : event.url || "";
+
+  return {
+    id: event.id,
+    date: formatDate(event.datetime),
+    time: formatTime(event.datetime),
+    venue: venue.name || "",
+    city,
+    ticketUrl,
+    bandsintownUrl: event.url || "",
+  };
+}
+
+// Get all upcoming shows (public, proxied from Bandsintown)
 router.get("/", async (_req, res) => {
   try {
-    const shows = await Show.find().sort({ createdAt: -1 });
-    res.json(shows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to fetch shows" });
-  }
-});
-
-// Get a single show by ID (public)
-router.get("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ error: "Invalid id" });
-
-    const show = await Show.findById(id);
-    if (!show) return res.status(404).json({ error: "Not found" });
-
-    res.json(show);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to fetch show" });
-  }
-});
-
-// Create a new show (protected)
-router.post("/", requireAuth, async (req, res) => {
-  try {
-    const { date, time, venue, city, ticketUrl } = req.body;
-
-    if (!date || !time || !venue || !city || !ticketUrl) {
-      return res.status(400).json({ error: "All fields are required" });
+    // Return cached data if still valid
+    if (cache.data && Date.now() < cache.expiry) {
+      return res.json(cache.data);
     }
 
-    const show = new Show({ date, time, venue, city, ticketUrl });
-    await show.save();
-    res.status(201).json(show);
+    const url = `${BANDSINTOWN_BASE}/artists/${encodeURIComponent(ARTIST)}/events/?app_id=${APP_ID}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      console.error(`Bandsintown API error: ${response.status}`);
+      return res.status(502).json({ error: "Failed to fetch shows from Bandsintown" });
+    }
+
+    const events = await response.json();
+    const shows = Array.isArray(events) ? events.map(transformEvent) : [];
+
+    // Update cache
+    cache = { data: shows, expiry: Date.now() + CACHE_TTL };
+
+    res.json(shows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to create show" });
-  }
-});
-
-// Update a show (protected)
-router.put("/:id", requireAuth, async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ error: "Invalid id" });
-
-    const { date, time, venue, city, ticketUrl } = req.body;
-
-    const updated = await Show.findByIdAndUpdate(
-      id,
-      { date, time, venue, city, ticketUrl },
-      { new: true, runValidators: true }
-    );
-    if (!updated) return res.status(404).json({ error: "Not found" });
-
-    res.json(updated);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to update show" });
-  }
-});
-
-// Delete a show (protected)
-router.delete("/:id", requireAuth, async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ error: "Invalid id" });
-
-    const deleted = await Show.findByIdAndDelete(id);
-    if (!deleted) return res.status(404).json({ error: "Not found" });
-
-    res.status(204).send();
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to delete show" });
+    console.error("Failed to fetch shows from Bandsintown:", err);
+    res.status(500).json({ error: "Failed to fetch shows" });
   }
 });
 

@@ -121,14 +121,25 @@ export default function Shows() {
                   <div className="show-venue">{show.venue}</div>
                 </div>
                 <div className="show-actions">
-                  <a
-                    href={show.ticketUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="tickets-button"
-                  >
-                    TICKETS
-                  </a>
+                  {show.ticketUrl ? (
+                    <a
+                      href={show.ticketUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="tickets-button"
+                    >
+                      TICKETS
+                    </a>
+                  ) : show.bandsintownUrl ? (
+                    <a
+                      href={`${show.bandsintownUrl}&trigger=notify_me`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="tickets-button"
+                    >
+                      NOTIFY ME
+                    </a>
+                  ) : null}
                 </div>
               </div>
             </div>
