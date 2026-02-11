@@ -1,4 +1,5 @@
 const express = require("express");
+const axios = require("axios");
 
 const router = express.Router();
 
@@ -58,15 +59,8 @@ router.get("/", async (_req, res) => {
       return res.json(cache.data);
     }
 
-    const url = `${BANDSINTOWN_BASE}/artists/${encodeURIComponent(ARTIST)}/events/?app_id=${APP_ID}`;
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      console.error(`Bandsintown API error: ${response.status}`);
-      return res.status(502).json({ error: "Failed to fetch shows from Bandsintown" });
-    }
-
-    const events = await response.json();
+    const url = `${BANDSINTOWN_BASE}/artists/${encodeURIComponent(ARTIST)}/events/`;
+    const { data: events } = await axios.get(url, { params: { app_id: APP_ID } });
     const shows = Array.isArray(events) ? events.map(transformEvent) : [];
 
     // Update cache
