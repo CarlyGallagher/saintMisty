@@ -45,7 +45,7 @@ export default function FriendCard() {
   ];
 
   return (
-    <div className="y2k-card">
+    <div className="y2k-card" style={{ background: "rgba(253, 66, 154, 0.8)" }}>
       <div className="y2k-card-header">
         Saint Misty's Friends ({friends.length})
       </div>

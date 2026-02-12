@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useAccessibility } from "../context/AccessibilityContext";
+import { fetchPresave } from "../api/presave";
 import "../styles/Navigation.css";
 
 export default function Navigation() {
@@ -11,6 +12,7 @@ export default function Navigation() {
   const [showMusic, setShowMusic] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [presaveData, setPresaveData] = useState(null);
 
   // Detect mobile screen size
   useEffect(() => {
@@ -35,6 +37,18 @@ export default function Navigation() {
       return () => document.removeEventListener('click', handleClickOutside);
     }
   }, [mobileMenuOpen, isMobile]);
+
+  // Fetch pre-save data for Music dropdown
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await fetchPresave();
+        setPresaveData(data);
+      } catch (error) {
+        // No pre-save configured
+      }
+    })();
+  }, []);
 
   const toggleDropdown = (dropdown) => {
     if (isMobile) {
@@ -87,6 +101,79 @@ export default function Navigation() {
           <Link to="/" className="y2k-nav-link" onClick={handleLinkClick}>
             HOME
           </Link>
+
+          <Link to="/shows" className="y2k-nav-link" role="menuitem" onClick={handleLinkClick}>
+            SHOWS
+          </Link>
+
+          <div
+            className="y2k-nav-dropdown"
+            {...(!isMobile && {
+              onMouseEnter: () => setShowMusic(true),
+              onMouseLeave: () => setShowMusic(false),
+            })}
+            role="menuitem"
+            aria-haspopup="true"
+            aria-expanded={showMusic}
+          >
+            <button
+              className="y2k-nav-link y2k-nav-dropdown-button"
+              onClick={() => toggleDropdown('music')}
+              aria-label="Music streaming platforms"
+            >
+              MUSIC
+            </button>
+            {showMusic && (
+              <div className="y2k-nav-dropdown-menu" role="menu" aria-label="Music streaming platforms">
+                <a
+                  href="https://open.spotify.com/artist/3ATKsyAg4Ua8cs2VJJN0CC?si=MIyE6ajeQ8q4WuERuLhpIg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="y2k-nav-dropdown-item"
+                  role="menuitem"
+                  aria-label="Listen on Spotify"
+                  onClick={handleLinkClick}
+                >
+                  Spotify
+                </a>
+                <a
+                  href="https://music.apple.com/us/artist/saint-misty/1708411597"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="y2k-nav-dropdown-item"
+                  role="menuitem"
+                  aria-label="Listen on Apple Music"
+                  onClick={handleLinkClick}
+                >
+                  Apple Music
+                </a>
+                <a
+                  href="https://www.deezer.com/us/artist/231301315?host=6747341883&utm_campaign=clipboard-generic&utm_source=user_sharing&utm_content=artist-231301315&deferredFl=1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="y2k-nav-dropdown-item"
+                  role="menuitem"
+                  aria-label="Listen on Deezer"
+                  onClick={handleLinkClick}
+                >
+                  Deezer
+                </a>
+                {presaveData && (
+                  <a
+                    href={presaveData.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="y2k-nav-dropdown-item"
+                    role="menuitem"
+                    aria-label={`Pre-save ${presaveData.songName}`}
+                    onClick={handleLinkClick}
+                  >
+                    Pre-Save
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
 
           <div
             className="y2k-nav-dropdown"
@@ -155,66 +242,6 @@ export default function Navigation() {
           >
             SHOP
           </a>
-
-          <div
-            className="y2k-nav-dropdown"
-            {...(!isMobile && {
-              onMouseEnter: () => setShowMusic(true),
-              onMouseLeave: () => setShowMusic(false),
-            })}
-            role="menuitem"
-            aria-haspopup="true"
-            aria-expanded={showMusic}
-          >
-            <button
-              className="y2k-nav-link y2k-nav-dropdown-button"
-              onClick={() => toggleDropdown('music')}
-              aria-label="Music streaming platforms"
-            >
-              MUSIC
-            </button>
-            {showMusic && (
-              <div className="y2k-nav-dropdown-menu" role="menu" aria-label="Music streaming platforms">
-                <a
-                  href="https://open.spotify.com/artist/3ATKsyAg4Ua8cs2VJJN0CC?si=MIyE6ajeQ8q4WuERuLhpIg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="y2k-nav-dropdown-item"
-                  role="menuitem"
-                  aria-label="Listen on Spotify"
-                  onClick={handleLinkClick}
-                >
-                  Spotify
-                </a>
-                <a
-                  href="https://music.apple.com/us/artist/saint-misty/1708411597"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="y2k-nav-dropdown-item"
-                  role="menuitem"
-                  aria-label="Listen on Apple Music"
-                  onClick={handleLinkClick}
-                >
-                  Apple Music
-                </a>
-                <a
-                  href="https://www.deezer.com/us/artist/231301315?host=6747341883&utm_campaign=clipboard-generic&utm_source=user_sharing&utm_content=artist-231301315&deferredFl=1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="y2k-nav-dropdown-item"
-                  role="menuitem"
-                  aria-label="Listen on Deezer"
-                  onClick={handleLinkClick}
-                >
-                  Deezer
-                </a>
-              </div>
-            )}
-          </div>
-
-          <Link to="/shows" className="y2k-nav-link" role="menuitem" onClick={handleLinkClick}>
-            SHOWS
-          </Link>
 
           <Link to="/blog" className="y2k-nav-link" role="menuitem" onClick={handleLinkClick}>
             BLOG

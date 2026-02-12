@@ -49,12 +49,14 @@ const authRoutes = require("./routes/authRoutes");
 const mediaRoutes = require("./routes/mediaRoutes");
 const showRoutes = require("./routes/showRoutes");
 const newsletterRoutes = require("./routes/newsletterRoutes");
+const presaveRoutes = require("./routes/presaveRoutes");
 
 app.use("/api/blogs", blogRoutes);
 app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/media", mediaRoutes);
 app.use("/api/shows", showRoutes);
 app.use("/api/newsletter", newsletterRoutes);
+app.use("/api/presave", presaveRoutes);
 
 // --- Example Route ---
 app.get("/", (req, res) => {
