@@ -4,6 +4,7 @@ import WebCard from "../components/cards/WebCard";
 import MusicCard from "../components/cards/MusicCard";
 import InterestsCard from "../components/cards/InterestsCard";
 import NetworkCard from "../components/cards/NetworkCard";
+import ShowCard from "../components/cards/ShowCard";
 import BlogCard from "../components/cards/BlogCard";
 import AboutCard from "../components/cards/AboutCard";
 import FriendCard from "../components/cards/FriendCard";
@@ -59,6 +60,7 @@ export default function Home() {
           </div>
 
           <NetworkCard />
+          <ShowCard />
           <BlogCard />
           <AboutCard />
           <FriendCard />

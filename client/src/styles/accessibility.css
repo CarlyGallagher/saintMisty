@@ -29,6 +29,10 @@
   color: #0066cc !important;
 }
 
+.high-contrast a:has(.y2k-card-header) {
+  text-decoration: none !important;
+}
+
 /* Buttons */
 .high-contrast .y2k-button,
 .high-contrast .y2k-button-secondary {
