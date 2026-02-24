@@ -14,7 +14,7 @@ export default function InteractCard() {
   const [subscribeSuccess, setSubscribeSuccess] = useState(false);
 
   const handleSendMessage = () => {
-    window.location.href = "mailto:saintmisty@gmail.com";
+    window.location.href = "mailto:thesaintmisty@gmail.com";
   };
 
   const handleForward = () => {
