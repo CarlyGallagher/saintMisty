@@ -3,12 +3,14 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { sendNewsletter } from "../api/newsletter";
 import { fetchPresave, updatePresave, deletePresave } from "../api/presave";
+import { fetchMedia, createMedia, deleteMedia } from "../api/media";
+import { mediaAssetsMap } from "../utils/mediaAssets";
 import "../styles/AdminDashboard.css";
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("blog"); // blog, newsletter, presave
+  const [activeTab, setActiveTab] = useState("blog"); // blog, newsletter, presave, media
 
   // Redirect if not logged in
   if (!user) {
@@ -46,6 +48,12 @@ export default function AdminDashboard() {
         >
           Pre-Save
         </button>
+        <button
+          className={`admin-tab ${activeTab === "media" ? "active" : ""}`}
+          onClick={() => setActiveTab("media")}
+        >
+          Photos
+        </button>
       </div>
 
       {/* Tab Content */}
@@ -53,6 +61,7 @@ export default function AdminDashboard() {
         {activeTab === "blog" && <BlogManagement />}
         {activeTab === "newsletter" && <NewsletterManagement />}
         {activeTab === "presave" && <PresaveManagement />}
+        {activeTab === "media" && <MediaManagement />}
       </div>
     </div>
   );
@@ -176,6 +185,118 @@ function NewsletterManagement() {
 
         {sendStatus && <p className="admin-success">{sendStatus}</p>}
       </form>
+    </div>
+  );
+}
+
+// Media Management Component
+function MediaManagement() {
+  const [mediaItems, setMediaItems] = useState([]);
+  const [form, setForm] = useState({ title: "", url: "", date: "" });
+  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const availableAssets = Object.keys(mediaAssetsMap).filter(
+    (key) => !key.includes("ProfileImg") && !key.includes("Montegue")
+  );
+
+  useEffect(() => {
+    fetchMedia()
+      .then((items) => setMediaItems(items.filter((m) => m.type === "photo")))
+      .catch(() => setStatus("Failed to load photos."))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    setStatus("");
+    try {
+      const newItem = await createMedia({
+        title: form.title,
+        type: "photo",
+        url: form.url,
+        date: form.date || new Date(),
+      });
+      setMediaItems((prev) => [newItem, ...prev]);
+      setForm({ title: "", url: "", date: "" });
+      setStatus("Photo added!");
+      setTimeout(() => setStatus(""), 4000);
+    } catch {
+      setStatus("Failed to add photo.");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this photo?")) return;
+    try {
+      await deleteMedia(id);
+      setMediaItems((prev) => prev.filter((m) => m._id !== id));
+    } catch {
+      setStatus("Failed to delete photo.");
+    }
+  };
+
+  if (loading) return <div className="admin-section"><p style={{ color: "#888" }}>Loading...</p></div>;
+
+  return (
+    <div className="admin-section">
+      <div className="admin-section-header">
+        <h2>Photos</h2>
+      </div>
+      <p className="admin-hint">Add or remove photos from the Photos & Videos page.</p>
+
+      <form onSubmit={handleAdd} className="admin-form" style={{ marginBottom: "32px" }}>
+        <div className="admin-form-group">
+          <label>Title</label>
+          <input
+            type="text"
+            value={form.title}
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            placeholder="e.g., Ken Club Show"
+            required
+          />
+        </div>
+        <div className="admin-form-group">
+          <label>Photo</label>
+          <select
+            value={form.url}
+            onChange={(e) => setForm({ ...form, url: e.target.value })}
+            required
+          >
+            <option value="">Select a photo...</option>
+            {availableAssets.map((key) => (
+              <option key={key} value={key}>
+                {key.replace("/static/media/", "")}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="admin-form-group">
+          <label>Date (optional)</label>
+          <input
+            type="date"
+            value={form.date}
+            onChange={(e) => setForm({ ...form, date: e.target.value })}
+          />
+        </div>
+        <button type="submit" className="admin-btn-primary">+ Add Photo</button>
+        {status && <p className="admin-success">{status}</p>}
+      </form>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+        {mediaItems.length === 0 && <p style={{ color: "#888" }}>No photos yet.</p>}
+        {mediaItems.map((item) => (
+          <div key={item._id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#1a1a1a", padding: "12px 16px", borderRadius: "8px" }}>
+            <span style={{ color: "#fff" }}>{item.title}</span>
+            <button
+              onClick={() => handleDelete(item._id)}
+              style={{ background: "#ff4444", color: "#fff", border: "none", borderRadius: "6px", padding: "6px 14px", cursor: "pointer", fontWeight: "bold" }}
+            >
+              Delete
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
