@@ -551,6 +551,133 @@
   background: #003366 !important;
 }
 
+/* EPK page - high contrast / bright mode */
+.high-contrast .epk-page {
+  background: #f8f6f2 !important;
+  color: #000000 !important;
+}
+
+.high-contrast .epk-hero-fade {
+  background: linear-gradient(to bottom, transparent 0%, #f8f6f2 100%) !important;
+}
+
+/* Hero: clear the dark gradient overlay so the bright photo shows through */
+.high-contrast .epk-hero-overlay {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%) !important;
+  border-bottom: none !important;
+}
+
+.high-contrast .epk-hero-eyebrow {
+  color: #f39450 !important;
+}
+
+.high-contrast .epk-hero-name {
+  color: #003366 !important;
+  -webkit-text-fill-color: #003366 !important;
+  background: none !important;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8) !important;
+}
+
+.high-contrast .epk-hero-quote {
+  color: #000000 !important;
+  border-left-color: #f39450 !important;
+}
+
+.high-contrast .epk-hero-cite {
+  color: #0066cc !important;
+}
+
+.high-contrast .epk-hero-eyebrow {
+  color: #f39450 !important;
+}
+
+/* Body */
+.high-contrast .epk-body {
+  background: #f8f6f2 !important;
+}
+
+.high-contrast .epk-section {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border-left-color: #f39450 !important;
+}
+
+.high-contrast .epk-divider {
+  background: #6699cc !important;
+  opacity: 0.4 !important;
+}
+
+/* Section titles - match orange card headers */
+.high-contrast .epk-section-title {
+  color: #f39450 !important;
+}
+
+/* Contact */
+.high-contrast .epk-contact-role {
+  color: #000000 !important;
+}
+
+.high-contrast .epk-contact-email {
+  color: #0066cc !important;
+}
+
+.high-contrast .epk-contact-email:hover {
+  color: #003366 !important;
+}
+
+/* Bio */
+.high-contrast .epk-bio {
+  color: #000000 !important;
+}
+
+/* Stats */
+.high-contrast .epk-hero-stat {
+  background: rgba(255, 255, 255, 0.75) !important;
+  border: 1px solid #6699cc !important;
+}
+
+.high-contrast .epk-stat-number {
+  color: #003366 !important;
+}
+
+.high-contrast .epk-stat-platform {
+  color: #000000 !important;
+}
+
+/* Videos */
+.high-contrast .epk-video-label {
+  color: #000000 !important;
+}
+
+/* Press */
+.high-contrast .epk-press-quote {
+  background: #f0f6ff !important;
+  border-left-color: #f39450 !important;
+  color: #000000 !important;
+}
+
+.high-contrast .epk-press-cite,
+.high-contrast .epk-press-cite a {
+  color: #0066cc !important;
+}
+
+.high-contrast .epk-press-link {
+  color: #0066cc !important;
+}
+
+.high-contrast .epk-press-link:hover {
+  color: #003366 !important;
+}
+
+/* Venue / Festival lists */
+.high-contrast .epk-venue-list li {
+  color: #000000 !important;
+  border-bottom-color: #6699cc !important;
+}
+
+.high-contrast .epk-venue-list li span {
+  color: #666666 !important;
+}
+
 /* Screen reader only */
 .sr-only {
   position: absolute;

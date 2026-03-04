@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { subscribe } from "../../api/newsletter";
 import "../../styles/Shows.css";
+import "../../styles/ContactCard.css";
 
 export default function InteractCard() {
   const [copied, setCopied] = useState(false);
@@ -36,32 +38,24 @@ export default function InteractCard() {
   };
 
   const handleCheckboxChange = (option) => {
-    setSubscribeOptions((prev) => ({
-      ...prev,
-      [option]: !prev[option],
-    }));
+    setSubscribeOptions((prev) => ({ ...prev, [option]: !prev[option] }));
   };
 
   const handleSubmitSubscription = async (e) => {
     e.preventDefault();
-
     if (!email || !email.includes("@")) {
       alert("Please enter a valid email address");
       return;
     }
-
     const hasSelection = Object.values(subscribeOptions).some((val) => val);
     if (!hasSelection) {
       alert("Please select at least one update option");
       return;
     }
-
     try {
       await subscribe({ email, name: "" });
       setSubscribeSuccess(true);
-      setTimeout(() => {
-        handleCloseModal();
-      }, 2000);
+      setTimeout(() => handleCloseModal(), 2000);
     } catch (error) {
       console.error("Subscription failed:", error);
       alert("Failed to subscribe. Please try again.");
@@ -70,28 +64,32 @@ export default function InteractCard() {
 
   return (
     <>
-      <div className="y2k-card" style={{ background: "rgba(253, 66, 154, 0.8)" }}>
-        <div className="y2k-card-header">Interact</div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          <button className="y2k-button" onClick={handleSendMessage}>
-            Send Message
+      <div className="y2k-card contact-card">
+        <div className="contact-card-header">Interact</div>
+        <div className="contact-card-grid">
+          <button className="contact-card-item" onClick={handleSendMessage}>
+            <span className="contact-card-icon">✉</span>
+            <span>Send Message</span>
           </button>
-          <button className="y2k-button-secondary y2k-button" onClick={handleForward}>
-            {copied ? "Link Copied!" : "Forward to Friend"}
+          <button className="contact-card-item" onClick={handleForward}>
+            <span className="contact-card-icon">↪</span>
+            <span>{copied ? "Link Copied!" : "Forward to Friend"}</span>
           </button>
-          <button className="y2k-button-secondary y2k-button" onClick={handleSubscribeClick}>
-            Subscribe
+          <button className="contact-card-item" onClick={handleSubscribeClick}>
+            <span className="contact-card-icon">★</span>
+            <span>Subscribe</span>
           </button>
+          <Link to="/pictures" className="contact-card-item">
+            <span className="contact-card-icon">◈</span>
+            <span>View Photos</span>
+          </Link>
         </div>
       </div>
 
       {showSubscribeModal && (
         <div className="subscribe-modal-overlay" onClick={handleCloseModal}>
           <div className="subscribe-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={handleCloseModal}>
-              ✕
-            </button>
-
+            <button className="modal-close" onClick={handleCloseModal}>✕</button>
             {subscribeSuccess ? (
               <div className="subscribe-success">
                 <h3>✓ Subscribed!</h3>
@@ -101,37 +99,21 @@ export default function InteractCard() {
               <>
                 <h3>Get Saint Misty Updates</h3>
                 <p className="modal-subtitle">Choose what you'd like to hear about:</p>
-
                 <form onSubmit={handleSubmitSubscription}>
                   <div className="checkbox-group">
                     <label className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={subscribeOptions.music}
-                        onChange={() => handleCheckboxChange("music")}
-                      />
+                      <input type="checkbox" checked={subscribeOptions.music} onChange={() => handleCheckboxChange("music")} />
                       <span>Music Releases</span>
                     </label>
-
                     <label className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={subscribeOptions.merch}
-                        onChange={() => handleCheckboxChange("merch")}
-                      />
+                      <input type="checkbox" checked={subscribeOptions.merch} onChange={() => handleCheckboxChange("merch")} />
                       <span>Merch & Shop Updates</span>
                     </label>
-
                     <label className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={subscribeOptions.shows}
-                        onChange={() => handleCheckboxChange("shows")}
-                      />
+                      <input type="checkbox" checked={subscribeOptions.shows} onChange={() => handleCheckboxChange("shows")} />
                       <span>Show Announcements</span>
                     </label>
                   </div>
-
                   <div className="email-input-group">
                     <input
                       type="email"
@@ -142,10 +124,7 @@ export default function InteractCard() {
                       required
                     />
                   </div>
-
-                  <button type="submit" className="modal-subscribe-button">
-                    Subscribe
-                  </button>
+                  <button type="submit" className="modal-subscribe-button">Subscribe</button>
                 </form>
               </>
             )}

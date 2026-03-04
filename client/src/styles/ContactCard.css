@@ -1,0 +1,66 @@
+/* ===========================
+   ContactCard — MySpace "Contacting" style
+   =========================== */
+
+.contact-card {
+  padding: 0;
+  overflow: hidden;
+  background: rgb(253, 66, 154) !important;
+}
+
+.contact-card-header {
+  color: #fff;
+  font-family: "Arial Black", sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 12px;
+}
+
+.contact-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 6px 4px;
+}
+
+.contact-card-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  color: #000;
+  text-decoration: underline;
+  text-align: left;
+  transition: color 0.15s ease;
+}
+
+.contact-card-item:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Link variant (for react-router Link) */
+a.contact-card-item {
+  text-decoration: underline;
+}
+
+a.contact-card-item:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.contact-card-icon {
+  font-size: 20px;
+  width: 15px;
+  text-align: center;
+  flex-shrink: 0;
+  font-style: normal;
+}
