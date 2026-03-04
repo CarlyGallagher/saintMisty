@@ -1,4 +1,5 @@
 import InfoCard from "../components/cards/InfoCard";
+import ListenCard from "../components/cards/ListenCard";
 import InteractCard from "../components/cards/InteractCard";
 import WebCard from "../components/cards/WebCard";
 import MusicCard from "../components/cards/MusicCard";
@@ -29,6 +30,7 @@ export default function Home() {
         {/* Left Column */}
         <div className="y2k-column-left">
           <InfoCard />
+          <ListenCard />
           <InteractCard />
           <WebCard />
           <MusicCard />

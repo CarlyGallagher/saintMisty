@@ -134,7 +134,6 @@ export default function PicturesVideos() {
             onClick={() => handleMediaClick(media, index)}
           >
             <MediaThumbnail media={media} />
-            <p className="media-title">{media.title}</p>
           </div>
         ))}
       </div>

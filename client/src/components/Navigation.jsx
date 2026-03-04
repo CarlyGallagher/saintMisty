@@ -251,6 +251,10 @@ export default function Navigation() {
             PICS
           </Link>
 
+          <Link to="/epk" className="y2k-nav-link" role="menuitem" onClick={handleLinkClick}>
+            EPK
+          </Link>
+
           {user && (
             <>
               <Link to="/admin/dashboard" className="y2k-nav-link" role="menuitem" onClick={handleLinkClick}>

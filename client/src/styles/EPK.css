@@ -1,0 +1,416 @@
+/* ===========================
+   EPK Page
+   =========================== */
+
+.epk-page {
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, #510612 0%, #1c050b 45%, #2b0e11 80%);
+  color: #fff;
+}
+
+/* ===========================
+   Hero
+   =========================== */
+
+.epk-hero {
+  position: relative;
+  width: 100%;
+}
+
+.epk-hero-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.epk-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 48px 48px 60px;
+  background: linear-gradient(to bottom, rgba(15, 2, 5, 0.88) 20%, rgba(20, 5, 8, 0.5) 65%, transparent 100%);
+}
+
+
+/* Stats inside hero */
+.epk-hero-stats {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  padding: 16px 16px;
+}
+
+.epk-hero-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: 12px 8px;
+}
+
+.epk-hero-eyebrow {
+  font-size: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: #fd429a;
+  margin: 0 0 12px 0;
+}
+
+.epk-hero-name {
+  font-family: "Arial Black", "Arial Bold", sans-serif;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #fff;
+  margin: 0 0 24px 0;
+  line-height: 1;
+}
+
+.epk-hero-quote {
+  max-width: 560px;
+  margin: 0;
+  font-size: 16px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+  border-left: 3px solid #fd429a;
+  padding-left: 16px;
+}
+
+.epk-hero-cite {
+  display: block;
+  margin-top: 8px;
+  font-style: normal;
+  font-size: 13px;
+  font-weight: bold;
+  color: #fd429a;
+  letter-spacing: 0.5px;
+}
+
+/* ===========================
+   Body
+   =========================== */
+
+.epk-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 64px 32px;
+}
+
+.epk-divider {
+  height: 1px;
+  margin: 48px 0;
+}
+
+/* ===========================
+   Section
+   =========================== */
+
+.epk-section {
+  margin: 0;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 28px 32px;
+  border-left: 2px solid rgba(180, 20, 40, 0.35);
+}
+
+.epk-section-title {
+  font-family: "Arial Black", "Arial Bold", sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: #fd429a;
+  margin: 0 0 28px 0;
+}
+
+/* ===========================
+   Contact
+   =========================== */
+
+.epk-contact-grid {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.epk-contact-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  text-align: center;
+}
+
+.epk-contact-role {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.epk-contact-email {
+  font-size: 15px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.15s ease;
+}
+
+.epk-contact-email:hover {
+  color: #fd429a;
+}
+
+/* ===========================
+   Bio
+   =========================== */
+
+.epk-bio {
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 720px;
+  margin: 0;
+}
+
+/* ===========================
+   Stats
+   =========================== */
+
+.epk-stats-grid {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.epk-stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid rgba(253, 66, 154, 0.3);
+  padding: 24px 40px;
+  min-width: 140px;
+}
+
+.epk-stat-number {
+  font-family: "Arial Black", "Arial Bold", sans-serif;
+  font-size: 36px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.epk-stat-platform {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #fd429a;
+  margin-top: 6px;
+}
+
+/* ===========================
+   Videos
+   =========================== */
+
+.epk-video-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.epk-video-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.epk-video-label {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+.epk-video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  background: #000;
+}
+
+.epk-video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ===========================
+   Press
+   =========================== */
+
+.epk-press-quote {
+  margin: 0 0 28px 0;
+  padding: 24px 28px;
+  border-left: 4px solid #fd429a;
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.epk-press-cite {
+  display: block;
+  margin-top: 12px;
+  font-style: normal;
+  font-size: 13px;
+  font-weight: bold;
+  color: #fd429a;
+}
+
+.epk-press-cite a {
+  color: #fd429a;
+  text-decoration: underline;
+}
+
+.epk-press-cite a:hover {
+  text-decoration: none;
+}
+
+.epk-press-link-row {
+  margin-top: 8px;
+}
+
+.epk-press-link {
+  font-size: 14px;
+  color:#fd429a;
+  text-decoration: underline;
+  transition: color 0.15s ease;
+}
+
+.epk-press-link:hover {
+  color: #fd429a;
+  text-decoration: none;
+}
+
+/* ===========================
+   Venue / Festival History
+   =========================== */
+
+.epk-history-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+
+.epk-venue-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.epk-venue-list li {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 15px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.epk-venue-list li:last-child {
+  border-bottom: none;
+}
+
+.epk-venue-list li span {
+  font-size: 12px;
+  font-weight: normal;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 2px;
+  letter-spacing: 0.3px;
+}
+
+/* ===========================
+   Responsive
+   =========================== */
+
+@media (min-width: 1024px) {
+  .epk-hero {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .epk-hero-img {
+    height: 130%;
+    object-fit: cover;
+    object-position: center 80%;
+  }
+
+  .epk-hero-stats {
+    position: absolute;
+    bottom: 100px;
+    right: 48px;
+    padding: 0;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .epk-hero-stat {
+    flex: none;
+    min-width: 120px;
+    padding: 12px 28px;
+    background: none;
+    border: 2px solid rgba(253, 66, 154, 0.4);
+  }
+}
+
+@media (max-width: 768px) {
+  .epk-hero-overlay {
+    padding: 36px 24px 48px;
+  }
+
+  .epk-body {
+    padding: 48px 20px;
+  }
+
+  .epk-contact-grid {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .epk-stats-grid {
+    gap: 16px;
+  }
+
+  .epk-stat-card {
+    padding: 20px 28px;
+    min-width: 110px;
+  }
+
+  .epk-video-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .epk-history-section {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .epk-stats-grid {
+    justify-content: center;
+  }
+}
