@@ -1,5 +1,5 @@
-import motoImg from "../assets/SM-Moto.JPEG";
-import motoBrightImg from "../assets/sm-motoBright.JPEG";
+import motoImg from "../assets/SM-Moto.webp";
+import motoBrightImg from "../assets/sm-motoBright.webp";
 import { useAccessibility } from "../context/AccessibilityContext";
 import "../styles/EPK.css";
 
@@ -15,6 +15,9 @@ export default function EPK() {
           src={highContrast ? motoBrightImg : motoImg}
           alt="Saint Misty on a motorbike"
           className="epk-hero-img"
+          loading="lazy"
+          width="1920"
+          height="1080"
         />
         <div className="epk-hero-overlay">
           <p className="epk-hero-eyebrow">Electronic Press Kit</p>
