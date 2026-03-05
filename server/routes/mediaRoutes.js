@@ -21,10 +21,9 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 100 * 1024 * 1024 }, // 100MB
   fileFilter: (_req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|webp|mp4|mov|avi/;
-    const ext = allowedTypes.test(file.originalname.split(".").pop().toLowerCase());
-    const mime = allowedTypes.test(file.mimetype);
-    if (ext && mime) return cb(null, true);
+    const isImage = file.mimetype.startsWith("image/");
+    const isVideo = file.mimetype.startsWith("video/");
+    if (isImage || isVideo) return cb(null, true);
     cb(new Error("Only image and video files are allowed"));
   },
 });
