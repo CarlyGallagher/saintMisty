@@ -1,7 +1,7 @@
 const express = require("express");
 const multer = require("multer");
-const path = require("path");
 const sanitizeHtml = require("sanitize-html");
+const { v2: cloudinary } = require("cloudinary");
 const Media = require("../models/media");
 const mongoose = require("mongoose");
 const { requireAuth } = require("../middleware/authMiddleware");
@@ -9,32 +9,40 @@ const logger = require("../utils/logger");
 
 const router = express.Router();
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  },
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// Use memory storage — file goes straight to Cloudinary, not disk
 const upload = multer({
-  storage: storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
-  fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|mp4|mov|avi/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
-
-    if (mimetype && extname) {
-      return cb(null, true);
-    } else {
-      cb(new Error("Only image and video files are allowed"));
-    }
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB
+  fileFilter: (_req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|gif|webp|mp4|mov|avi/;
+    const ext = allowedTypes.test(file.originalname.split(".").pop().toLowerCase());
+    const mime = allowedTypes.test(file.mimetype);
+    if (ext && mime) return cb(null, true);
+    cb(new Error("Only image and video files are allowed"));
   },
 });
+
+// Upload buffer to Cloudinary
+function uploadToCloudinary(buffer, mimetype) {
+  return new Promise((resolve, reject) => {
+    const resourceType = mimetype.startsWith("video") ? "video" : "image";
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: "saintmisty", resource_type: resourceType },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+    stream.end(buffer);
+  });
+}
 
 // Get all media (public)
 router.get("/", async (_req, res) => {
@@ -52,10 +60,8 @@ router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     if (!mongoose.isValidObjectId(id)) return res.status(400).json({ error: "Invalid id" });
-
     const media = await Media.findById(id);
     if (!media) return res.status(404).json({ error: "Not found" });
-
     res.json(media);
   } catch (err) {
     logger.error("Failed to fetch media:", err);
@@ -63,35 +69,28 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Upload file endpoint (protected)
+// Upload file to Cloudinary (protected)
 router.post("/upload", requireAuth, upload.single("file"), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: "No file uploaded" });
-    }
+    if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
     const { title, type, videoUrl, date } = req.body;
+    if (!title || !type) return res.status(400).json({ error: "Title and type are required" });
 
-    if (!title || !type) {
-      return res.status(400).json({ error: "Title and type are required" });
-    }
-
-    // Sanitize title
     const sanitizedTitle = sanitizeHtml(title, { allowedTags: [], allowedAttributes: {} });
 
-    // Generate URL for the uploaded file
-    const fileUrl = `/uploads/${req.file.filename}`;
+    const result = await uploadToCloudinary(req.file.buffer, req.file.mimetype);
 
     const mediaData = {
       title: sanitizedTitle,
       type,
+      url: result.secure_url,
+      cloudinaryId: result.public_id,
       date: date || new Date(),
     };
 
-    if (type === "photo") {
-      mediaData.url = fileUrl;
-    } else if (type === "video") {
-      mediaData.thumbnail = fileUrl;
+    if (type === "video") {
+      mediaData.thumbnail = result.secure_url;
       mediaData.videoUrl = videoUrl || "";
     }
 
@@ -104,18 +103,13 @@ router.post("/upload", requireAuth, upload.single("file"), async (req, res) => {
   }
 });
 
-// Create a new media item with URL (protected)
+// Create a media item with a URL (protected) — kept for legacy/manual entries
 router.post("/", requireAuth, async (req, res) => {
   try {
     const { title, type, url, thumbnail, videoUrl, date } = req.body;
+    if (!title || !type || !url) return res.status(400).json({ error: "Title, type, and URL are required" });
 
-    if (!title || !type || !url) {
-      return res.status(400).json({ error: "Title, type, and URL are required" });
-    }
-
-    // Sanitize title
     const sanitizedTitle = sanitizeHtml(title, { allowedTags: [], allowedAttributes: {} });
-
     const media = new Media({ title: sanitizedTitle, type, url, thumbnail, videoUrl, date });
     await media.save();
     res.status(201).json(media);
@@ -132,8 +126,6 @@ router.put("/:id", requireAuth, async (req, res) => {
     if (!mongoose.isValidObjectId(id)) return res.status(400).json({ error: "Invalid id" });
 
     const { title, type, url, thumbnail, videoUrl, date } = req.body;
-
-    // Sanitize title
     const sanitizedTitle = sanitizeHtml(title, { allowedTags: [], allowedAttributes: {} });
 
     const updated = await Media.findByIdAndUpdate(
@@ -150,14 +142,19 @@ router.put("/:id", requireAuth, async (req, res) => {
   }
 });
 
-// Delete a media item (protected)
+// Delete a media item + remove from Cloudinary (protected)
 router.delete("/:id", requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     if (!mongoose.isValidObjectId(id)) return res.status(400).json({ error: "Invalid id" });
 
-    const deleted = await Media.findByIdAndDelete(id);
-    if (!deleted) return res.status(404).json({ error: "Not found" });
+    const media = await Media.findByIdAndDelete(id);
+    if (!media) return res.status(404).json({ error: "Not found" });
+
+    if (media.cloudinaryId) {
+      const resourceType = media.type === "video" ? "video" : "image";
+      await cloudinary.uploader.destroy(media.cloudinaryId, { resource_type: resourceType });
+    }
 
     res.status(204).send();
   } catch (err) {

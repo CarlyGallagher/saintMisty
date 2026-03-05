@@ -3,8 +3,8 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { sendNewsletter } from "../api/newsletter";
 import { fetchPresave, updatePresave, deletePresave } from "../api/presave";
-import { fetchMedia, createMedia, deleteMedia } from "../api/media";
-import { mediaAssetsMap } from "../utils/mediaAssets";
+import { fetchMedia, updateMedia, deleteMedia, uploadMediaFile } from "../api/media";
+import { getMediaUrl } from "../utils/mediaAssets";
 import "../styles/AdminDashboard.css";
 
 export default function AdminDashboard() {
@@ -192,47 +192,79 @@ function NewsletterManagement() {
 // Media Management Component
 function MediaManagement() {
   const [mediaItems, setMediaItems] = useState([]);
-  const [form, setForm] = useState({ title: "", url: "", date: "" });
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(true);
-
-  const availableAssets = Object.keys(mediaAssetsMap).filter(
-    (key) => !key.includes("ProfileImg") && !key.includes("Montegue")
-  );
+  const [dragging, setDragging] = useState(false);
+  const [preview, setPreview] = useState(null); // { file, objectUrl, title, type, date }
+  const [uploading, setUploading] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [editForm, setEditForm] = useState({ title: "", date: "" });
 
   useEffect(() => {
     fetchMedia()
-      .then((items) => setMediaItems(items.filter((m) => m.type === "photo")))
-      .catch(() => setStatus("Failed to load photos."))
+      .then(setMediaItems)
+      .catch(() => setStatus("Failed to load media."))
       .finally(() => setLoading(false));
   }, []);
 
-  const handleAdd = async (e) => {
+  const handleFile = (file) => {
+    if (!file) return;
+    const isVideo = file.type.startsWith("video/");
+    const isImage = file.type.startsWith("image/");
+    if (!isVideo && !isImage) return;
+    setPreview({ file, objectUrl: URL.createObjectURL(file), title: "", type: isVideo ? "video" : "photo", date: "" });
+  };
+
+  const handleDrop = (e) => {
     e.preventDefault();
+    setDragging(false);
+    handleFile(e.dataTransfer.files[0]);
+  };
+
+  const handleUpload = async (e) => {
+    e.preventDefault();
+    if (!preview?.file || !preview.title) return;
+    setUploading(true);
     setStatus("");
     try {
-      const newItem = await createMedia({
-        title: form.title,
-        type: "photo",
-        url: form.url,
-        date: form.date || new Date(),
-      });
+      const formData = new FormData();
+      formData.append("file", preview.file);
+      formData.append("title", preview.title);
+      formData.append("type", preview.type);
+      if (preview.date) formData.append("date", preview.date);
+      const newItem = await uploadMediaFile(formData);
       setMediaItems((prev) => [newItem, ...prev]);
-      setForm({ title: "", url: "", date: "" });
-      setStatus("Photo added!");
+      URL.revokeObjectURL(preview.objectUrl);
+      setPreview(null);
+      setStatus("Uploaded successfully!");
       setTimeout(() => setStatus(""), 4000);
     } catch {
-      setStatus("Failed to add photo.");
+      setStatus("Upload failed. Please try again.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleEditSave = async (id) => {
+    try {
+      const item = mediaItems.find((m) => m._id === id);
+      const updated = await updateMedia(id, { ...item, title: editForm.title, date: editForm.date || item.date });
+      setMediaItems((prev) => prev.map((m) => (m._id === id ? updated : m)));
+      setEditingId(null);
+      setStatus("Updated!");
+      setTimeout(() => setStatus(""), 3000);
+    } catch {
+      setStatus("Failed to update.");
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this photo?")) return;
+    if (!window.confirm("Delete this item? This cannot be undone.")) return;
     try {
       await deleteMedia(id);
       setMediaItems((prev) => prev.filter((m) => m._id !== id));
     } catch {
-      setStatus("Failed to delete photo.");
+      setStatus("Failed to delete.");
     }
   };
 
@@ -241,59 +273,114 @@ function MediaManagement() {
   return (
     <div className="admin-section">
       <div className="admin-section-header">
-        <h2>Photos</h2>
+        <h2>Photos & Videos</h2>
       </div>
-      <p className="admin-hint">Add or remove photos from the Photos & Videos page.</p>
+      <p className="admin-hint">Upload photos or videos. They are stored permanently on Cloudinary.</p>
 
-      <form onSubmit={handleAdd} className="admin-form" style={{ marginBottom: "32px" }}>
-        <div className="admin-form-group">
-          <label>Title</label>
-          <input
-            type="text"
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-            placeholder="e.g., Ken Club Show"
-            required
-          />
-        </div>
-        <div className="admin-form-group">
-          <label>Photo</label>
-          <select
-            value={form.url}
-            onChange={(e) => setForm({ ...form, url: e.target.value })}
-            required
-          >
-            <option value="">Select a photo...</option>
-            {availableAssets.map((key) => (
-              <option key={key} value={key}>
-                {key.replace("/static/media/", "")}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="admin-form-group">
-          <label>Date (optional)</label>
-          <input
-            type="date"
-            value={form.date}
-            onChange={(e) => setForm({ ...form, date: e.target.value })}
-          />
-        </div>
-        <button type="submit" className="admin-btn-primary">+ Add Photo</button>
-        {status && <p className="admin-success">{status}</p>}
-      </form>
+      {!preview ? (
+        <label
+          onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={handleDrop}
+          style={{
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+            border: `2px dashed ${dragging ? "#fff" : "#555"}`, borderRadius: "12px",
+            padding: "48px 24px", cursor: "pointer", background: dragging ? "#1a1a1a" : "transparent",
+            marginBottom: "24px", transition: "all 0.2s",
+          }}
+        >
+          <span style={{ fontSize: "2rem", marginBottom: "8px" }}>📁</span>
+          <span style={{ color: "#aaa" }}>Drag a photo or video here, or <span style={{ color: "#fff", textDecoration: "underline" }}>click to browse</span></span>
+          <input type="file" accept="image/*,video/*" style={{ display: "none" }} onChange={(e) => handleFile(e.target.files[0])} />
+        </label>
+      ) : (
+        <form onSubmit={handleUpload} className="admin-form" style={{ marginBottom: "24px" }}>
+          <div style={{ display: "flex", gap: "16px", alignItems: "flex-start", marginBottom: "16px" }}>
+            {preview.type === "photo" ? (
+              <img src={preview.objectUrl} alt="preview" style={{ width: "120px", height: "80px", objectFit: "cover", borderRadius: "8px", flexShrink: 0 }} />
+            ) : (
+              <video src={preview.objectUrl} style={{ width: "120px", height: "80px", objectFit: "cover", borderRadius: "8px", flexShrink: 0 }} muted />
+            )}
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "10px" }}>
+              <div className="admin-form-group" style={{ margin: 0 }}>
+                <label>Title</label>
+                <input
+                  type="text"
+                  value={preview.title}
+                  onChange={(e) => setPreview({ ...preview, title: e.target.value })}
+                  placeholder="e.g., Ken Club Show"
+                  required
+                  autoFocus
+                />
+              </div>
+              <div className="admin-form-group" style={{ margin: 0 }}>
+                <label>Date (optional)</label>
+                <input type="date" value={preview.date} onChange={(e) => setPreview({ ...preview, date: e.target.value })} />
+              </div>
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <button type="submit" className="admin-btn-primary" disabled={uploading}>
+              {uploading ? "Uploading..." : "Upload"}
+            </button>
+            <button
+              type="button"
+              onClick={() => { URL.revokeObjectURL(preview.objectUrl); setPreview(null); }}
+              style={{ padding: "12px 20px", borderRadius: "8px", border: "1px solid #555", background: "transparent", color: "#aaa", cursor: "pointer", fontWeight: "bold" }}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
+
+      {status && <p className="admin-success" style={{ marginBottom: "16px" }}>{status}</p>}
 
       <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-        {mediaItems.length === 0 && <p style={{ color: "#888" }}>No photos yet.</p>}
+        {mediaItems.length === 0 && <p style={{ color: "#888" }}>No media yet.</p>}
         {mediaItems.map((item) => (
-          <div key={item._id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#1a1a1a", padding: "12px 16px", borderRadius: "8px" }}>
-            <span style={{ color: "#fff" }}>{item.title}</span>
-            <button
-              onClick={() => handleDelete(item._id)}
-              style={{ background: "#ff4444", color: "#fff", border: "none", borderRadius: "6px", padding: "6px 14px", cursor: "pointer", fontWeight: "bold" }}
-            >
-              Delete
-            </button>
+          <div key={item._id} style={{ background: "#1a1a1a", borderRadius: "8px", overflow: "hidden" }}>
+            {editingId === item._id ? (
+              <div style={{ padding: "12px 16px", display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+                <input
+                  value={editForm.title}
+                  onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
+                  style={{ flex: 1, minWidth: "150px", padding: "6px 10px", borderRadius: "6px", border: "1px solid #555", background: "#111", color: "#fff" }}
+                />
+                <input
+                  type="date"
+                  value={editForm.date}
+                  onChange={(e) => setEditForm({ ...editForm, date: e.target.value })}
+                  style={{ padding: "6px 10px", borderRadius: "6px", border: "1px solid #555", background: "#111", color: "#fff" }}
+                />
+                <button onClick={() => handleEditSave(item._id)} className="admin-btn-primary" style={{ padding: "6px 14px" }}>Save</button>
+                <button onClick={() => setEditingId(null)} style={{ padding: "6px 14px", borderRadius: "6px", border: "1px solid #555", background: "transparent", color: "#aaa", cursor: "pointer" }}>Cancel</button>
+              </div>
+            ) : (
+              <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px" }}>
+                <img
+                  src={getMediaUrl(item.thumbnail || item.url)}
+                  alt={item.title}
+                  style={{ width: "60px", height: "40px", objectFit: "cover", borderRadius: "4px", flexShrink: 0 }}
+                />
+                <div style={{ flex: 1 }}>
+                  <span style={{ color: "#fff", fontWeight: "bold" }}>{item.title}</span>
+                  <span style={{ color: "#888", fontSize: "12px", marginLeft: "10px" }}>{item.type}</span>
+                </div>
+                <button
+                  onClick={() => { setEditingId(item._id); setEditForm({ title: item.title, date: item.date ? item.date.split("T")[0] : "" }); }}
+                  style={{ background: "#444", color: "#fff", border: "none", borderRadius: "6px", padding: "6px 14px", cursor: "pointer", fontWeight: "bold" }}
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(item._id)}
+                  style={{ background: "#ff4444", color: "#fff", border: "none", borderRadius: "6px", padding: "6px 14px", cursor: "pointer", fontWeight: "bold" }}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>
