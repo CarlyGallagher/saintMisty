@@ -15,6 +15,9 @@ const mediaSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    cloudinaryId: {
+      type: String, // Public ID for Cloudinary deletion
+    },
     thumbnail: {
       type: String, // Thumbnail URL for videos
     },
