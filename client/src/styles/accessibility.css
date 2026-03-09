@@ -29,6 +29,17 @@
   color: #0066cc !important;
 }
 
+/* Contact card items - keep black, not blue */
+.high-contrast .contact-card-item {
+  color: #000000 !important;
+}
+
+.high-contrast .contact-card-item:hover,
+.high-contrast a.contact-card-item:hover {
+  color: #f39450 !important;
+  text-decoration: none !important;
+}
+
 .high-contrast a:has(.y2k-card-header) {
   text-decoration: none !important;
 }

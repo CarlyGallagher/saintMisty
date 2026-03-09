@@ -8,12 +8,12 @@
 }
 
 .y2k-nav-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 12px 24px;
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 16px;
   position: relative;
 }
 
@@ -74,19 +74,19 @@
 .y2k-nav-links {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 4px;
   flex: 1;
 }
 
 .y2k-nav-link {
   font-family: Consolas, monospace;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 400;
   color: #ffffff;
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 6px 12px;
+  padding: 6px 10px;
   border-radius: 4px;
   transition: all 0.15s ease;
   cursor: pointer;
@@ -95,6 +95,7 @@
   min-height: 44px;
   display: flex;
   align-items: center;
+  white-space: nowrap;
 }
 
 .y2k-nav-link:hover {
@@ -251,17 +252,17 @@
 /* Tablet Responsive (820px-1024px iPads, etc.) */
 @media (max-width: 1024px) {
   .y2k-nav-container {
-    gap: 16px;
-    padding: 12px 20px;
+    gap: 8px;
+    padding: 12px 16px;
   }
 
   .y2k-nav-logo img {
-    width: 220px;
+    width: 200px;
   }
 
   .y2k-nav-link {
-    font-size: 18px;
-    padding: 6px 10px;
+    font-size: 14px;
+    padding: 6px 8px;
   }
 
   .y2k-nav-dropdown-item {
