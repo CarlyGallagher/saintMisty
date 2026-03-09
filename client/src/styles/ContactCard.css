@@ -43,7 +43,7 @@
 }
 
 .contact-card-item:hover {
-  color: #fff;
+  color: #fff ;
   text-decoration: none;
 }
 
@@ -55,6 +55,13 @@ a.contact-card-item {
 a.contact-card-item:hover {
   color: #fff;
   text-decoration: none;
+}
+
+/* Dark mode - hover white for buttons too */
+@media (prefers-color-scheme: dark) {
+  .contact-card-item:hover {
+    color: #fff;
+  }
 }
 
 .contact-card-icon {

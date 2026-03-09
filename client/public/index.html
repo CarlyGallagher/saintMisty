@@ -37,7 +37,23 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Saint Misty</title>
+    <title>Saint Misty - Official Website</title>
+
+    <!-- Structured data: helps Google show a music artist card in search results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MusicGroup",
+      "name": "Saint Misty",
+      "url": "https://saintmisty.onrender.com",
+      "description": "Official website of Saint Misty — Y2K pop artist. Listen to music, watch videos, view photos, and find upcoming show dates.",
+      "genre": ["Pop", "Y2K Pop"],
+      "potentialAction": {
+        "@type": "ListenAction",
+        "target": "https://saintmisty.onrender.com"
+      }
+    }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
