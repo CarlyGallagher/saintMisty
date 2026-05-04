@@ -29,43 +29,43 @@ export default function Home() {
       <div className="y2k-grid">
         {/* Left Column */}
         <div className="y2k-column-left">
-          <InfoCard />
-          <ListenCard />
-          <InteractCard />
-          <WebCard />
-          <MusicCard />
-          <InterestsCard />
+          <div className="mobile-order-1"><InfoCard /></div>
+          <div className="mobile-order-2"><ListenCard /></div>
+          <div className="mobile-order-3"><InteractCard /></div>
+          <div className="mobile-order-4"><WebCard /></div>
+          <div className="mobile-order-7"><MusicCard /></div>
+          <div className="mobile-order-10"><InterestsCard /></div>
         </div>
 
         {/* Right Column */}
         <div className="y2k-column-right">
-          {/* Hero Video Section */}
-          <div className="hero-video y2k-card">
-            <div className="y2k-card-header">Night ButterFly Music Video</div>
-            <div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
-              <iframe
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  border: "none",
-                  borderRadius: "4px",
-                }}
-                src="https://www.youtube.com/embed/S6FHOY4ZwAE?autoplay=1&mute=1&loop=1&playlist=S6FHOY4ZwAE"
-                title="Night ButterFly Music Video"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
+          <div className="mobile-order-5"><NetworkCard /></div>
+          <div className="mobile-order-6"><ShowCard /></div>
+          <div className="mobile-order-8">
+            <div className="hero-video y2k-card">
+              <div className="y2k-card-header">Night ButterFly Music Video</div>
+              <div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
+                <iframe
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    border: "none",
+                    borderRadius: "4px",
+                  }}
+                  src="https://www.youtube.com/embed/S6FHOY4ZwAE?autoplay=1&mute=1&loop=1&playlist=S6FHOY4ZwAE"
+                  title="Night ButterFly Music Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
             </div>
           </div>
-
-          <NetworkCard />
-          <ShowCard />
-          <BlogCard />
-          <AboutCard />
-          <FriendCard />
+          <div className="mobile-order-9"><AboutCard /></div>
+          <div className="mobile-order-11"><BlogCard /></div>
+          <div className="mobile-order-12"><FriendCard /></div>
         </div>
       </div>
 

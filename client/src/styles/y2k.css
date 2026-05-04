@@ -99,6 +99,7 @@ h3 {
 
 .y2k-button:hover {
   background: linear-gradient(180deg, #FF8080 0%, #FF1A1A 50%, #DD0000 100%);
+  color: #FFF;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
   transform: translateY(-1px);
 }
@@ -152,6 +153,19 @@ h3 {
   padding: 24px;
 }
 
+/* Column Layouts — defined before media queries so mobile overrides take effect */
+.y2k-column-left {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.y2k-column-right {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 @media (max-width: 1024px) {
   .y2k-grid {
     grid-template-columns: 300px 1fr;
@@ -174,19 +188,26 @@ h3 {
     padding: 12px;
     gap: 20px;
   }
-}
 
-/* Column Layouts */
-.y2k-column-left {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
+  /* Dissolve column containers so cards become direct grid children */
+  .y2k-column-left,
+  .y2k-column-right {
+    display: contents;
+  }
 
-.y2k-column-right {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  /* Mobile card order */
+  .mobile-order-1  { order: 1; }
+  .mobile-order-2  { order: 2; }
+  .mobile-order-3  { order: 3; }
+  .mobile-order-4  { order: 4; }
+  .mobile-order-5  { order: 5; }
+  .mobile-order-6  { order: 6; }
+  .mobile-order-7  { order: 7; }
+  .mobile-order-8  { order: 8; }
+  .mobile-order-9  { order: 9; }
+  .mobile-order-10 { order: 10; }
+  .mobile-order-11 { order: 11; }
+  .mobile-order-12 { order: 12; }
 }
 
 /* Dividers */
