@@ -32,11 +32,11 @@ export default function EPK() {
             <span className="epk-stat-platform">TikTok</span>
           </div>
           <div className="epk-hero-stat">
-            <span className="epk-stat-number">10K</span>
+            <span className="epk-stat-number">11K</span>
             <span className="epk-stat-platform">Instagram</span>
           </div>
           <div className="epk-hero-stat">
-            <span className="epk-stat-number">1.5K</span>
+            <span className="epk-stat-number">3.5K</span>
             <span className="epk-stat-platform">Spotify</span>
           </div>
         </div>
@@ -142,8 +142,8 @@ export default function EPK() {
         <div className="epk-divider" />
 
         {/* Shows & Festivals */}
-        <section className="epk-section epk-history-section">
-          <div className="epk-history-col">
+        <div className="epk-history-grid">
+          <section className="epk-section epk-history-col">
             <h2 className="epk-section-title">Venue History</h2>
             <ul className="epk-venue-list">
               <li>Kensington Club <span>San Diego, CA</span></li>
@@ -151,16 +151,19 @@ export default function EPK() {
               <li>Soda Bar <span>San Diego, CA</span></li>
               <li>Public Square <span>La Mesa, CA</span></li>
               <li>The Basement <span>Nashville, TN</span></li>
+              <li>Cocoa Legato <span>Seattle, WA</span></li>
+              <li>The Blue Room <span>Bellingham, WA</span></li>
+              <li>Turn! Turn!<span>Portland, OR</span></li>
             </ul>
-          </div>
-          <div className="epk-history-col">
+          </section>
+          <section className="epk-section epk-history-col">
             <h2 className="epk-section-title">Festival History</h2>
             <ul className="epk-venue-list">
               <li>Dali's Gras <span>San Diego, CA — Apr 2025</span></li>
               <li>SD SheFest Pride <span>San Diego, CA — Oct 2025</span></li>
             </ul>
-          </div>
-        </section>
+          </section>
+        </div>
 
       </div>
     </div>

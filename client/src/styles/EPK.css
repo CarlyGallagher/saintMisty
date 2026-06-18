@@ -308,16 +308,19 @@
    Venue / Festival History
    =========================== */
 
-.epk-history-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
+.epk-history-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .epk-venue-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 32px;
 }
 
 .epk-venue-list li {
@@ -328,10 +331,6 @@
   font-size: 15px;
   font-weight: bold;
   color: #fff;
-}
-
-.epk-venue-list li:last-child {
-  border-bottom: none;
 }
 
 .epk-venue-list li span {
@@ -403,9 +402,8 @@
     grid-template-columns: 1fr;
   }
 
-  .epk-history-section {
+  .epk-venue-list {
     grid-template-columns: 1fr;
-    gap: 32px;
   }
 }
 
