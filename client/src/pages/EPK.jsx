@@ -32,11 +32,11 @@ export default function EPK() {
             <span className="epk-stat-platform">TikTok</span>
           </div>
           <div className="epk-hero-stat">
-            <span className="epk-stat-number">11K</span>
+            <span className="epk-stat-number">14K</span>
             <span className="epk-stat-platform">Instagram</span>
           </div>
           <div className="epk-hero-stat">
-            <span className="epk-stat-number">3.5K</span>
+            <span className="epk-stat-number">7.4K</span>
             <span className="epk-stat-platform">Spotify</span>
           </div>
         </div>

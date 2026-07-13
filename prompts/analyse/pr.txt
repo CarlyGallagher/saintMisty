@@ -1,0 +1,40 @@
+
+A few tips for using it:
+
+Paste the Jira description when you have it — the extra context (like the unbalanced order book details from PR #790) helps a lot with the "cannot test" reasoning
+If you know which API folders are relevant, mention them explicitly to speed things up
+You can also add "this is a backport" if it is, so the analysis accounts for that
+
+5. We do not have a UI test suite yet, and please let me know all components that need manual UI verification
+
+--------------------------------
+
+
+I am the QA engineer on a project. I need you to analyze a GitHub PR and my existing test suite to determine what QA action is needed. Please do the following:
+
+1. Fetch the PR using the gh CLI:
+
+Title, description, and list of changed files
+Full diff to understand what actually changed
+Check if the dev team added any unit or integration tests (note if any are skipped and why)
+2. Search my test suite in the relevant API folders (e.g. /api/Order/, /api/Trade/, /api/Position/, /api/Brackets/, /api/Violations/, etc.) for existing coverage related to the PR's changes. Use grep to search for keywords from the PR (e.g. endpoint names, feature terms, error codes).
+
+3. Provide a structured analysis:
+
+What the PR does — plain English summary of the change
+Did dev add tests? — yes/no, what they cover, any skipped and why
+Do I have existing tests? — what files, what they cover, any gaps
+What action is needed — one of:
+✅ No new tests needed — existing suite covers regression, explain why
+🔧 New tests needed — describe what scenarios to add and where
+❌ Cannot test — explain why (e.g. requires live infrastructure, internal worker behavior, unreproducible conditions)
+4. Draft a ticket comment I can paste directly, covering:
+
+What testing I did (regression)
+Why the specific scenario can or cannot be tested in QA
+Any recommendations for production monitoring if applicable
+My test suite is a Playwright/TypeScript API test suite located at /Users/nickmennen/topstepx-qa/api/.
+
+PR to analyze: [paste PR URL here]
+
+Jira ticket context (optional): [paste description here if available]

@@ -1,0 +1,6 @@
+Can you review the tests and make sure we do not have any true equals true tests? 
+We also need to make sure that we match the spirit of the tests, and update any test titles and qase titles to match what is being tested ensuring that no TC type titles were brought over from the test case documentation.
+We want to capture the state and behavior of the system so that the tests become the documentation of how the code works, and if the developers want to change the behavior they will need to do so in a PR.
+That information is given as context of thought, and not meant to be distilled into comments in the code base.
+Please check the superadminApi if you need to understand the system under test.
+I hope that all makes sense, and please ask questions if needed.
