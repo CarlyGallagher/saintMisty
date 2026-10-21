@@ -172,7 +172,7 @@ export default function Navigation() {
           </div>
 
           <a
-            href="https://saint-misty.printify.me/category/all/1"
+            href="https://saintmistymerch.myshopify.com/"
             target="_blank"
             rel="noopener noreferrer"
             className="y2k-nav-link"
