@@ -12,8 +12,19 @@ describe('Navigation', () => {
     renderWithProviders(<Navigation />);
     expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /shows/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /blog/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /epk/i })).toBeInTheDocument();
+  });
+
+  it('Blog nav item opens the newsletter signup modal instead of navigating', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<Navigation />);
+    const blogButton = screen.getByRole('button', { name: /blog/i });
+    await user.click(blogButton);
+    expect(screen.getByRole('heading', { name: /get saint misty updates/i })).toBeInTheDocument();
+  });
+
+  it('does not show an EPK link (private, unlisted page)', () => {
+    renderWithProviders(<Navigation />);
+    expect(screen.queryByRole('link', { name: /epk/i })).not.toBeInTheDocument();
   });
 
   it('does not show admin or logout links when logged out', () => {

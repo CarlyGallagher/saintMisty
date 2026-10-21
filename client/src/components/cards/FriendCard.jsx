@@ -28,18 +28,13 @@ export default function FriendCard() {
       url: "https://www.the-band-cope.com/",
     },
     {
-      name: "The Whole Damn Dog",
-      image: mustacheAnon,
-      url: "https://www.wholedamndog.com/",
-    },
-    {
       name: "Ty Fox Photo",
       image: princessAnon,
       url: "https://www.tyfox.photography/",
     },
     {
       name: "Raspberry Management",
-      image: angelAnon,
+      image: mustacheAnon,
       url: "https://www.raspberryrecords.co/artists/",
     },
   ];

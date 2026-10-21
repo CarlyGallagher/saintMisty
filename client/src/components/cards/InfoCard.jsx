@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import profileImg from "../../assets/SaintMistyProfileImg.jpeg";
 
 export default function InfoCard() {
@@ -39,9 +38,14 @@ export default function InfoCard() {
         </table>
       </div>
       <div className="y2k-divider"></div>
-      <Link to="/pictures" style={{ fontSize: "12px", fontWeight: "bold" }}>
+      <a
+        href="https://www.instagram.com/thesaintmisty"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ fontSize: "12px", fontWeight: "bold" }}
+      >
         VIEW MY PICS | VIDEOS
-      </Link>
+      </a>
     </div>
   );
 }

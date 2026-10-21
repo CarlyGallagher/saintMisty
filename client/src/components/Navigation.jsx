@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useAccessibility } from "../context/AccessibilityContext";
+import { useSubscribeModal } from "../context/SubscribeModalContext";
 import { fetchPresave } from "../api/presave";
 import "../styles/Navigation.css";
 
 export default function Navigation() {
   const { user, logout } = useAuth();
   const { highContrast, toggleHighContrast } = useAccessibility();
-  const [showSocials, setShowSocials] = useState(false);
+  const { openSubscribeModal } = useSubscribeModal();
   const [showMusic, setShowMusic] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -52,12 +53,8 @@ export default function Navigation() {
 
   const toggleDropdown = (dropdown) => {
     if (isMobile) {
-      if (dropdown === 'socials') {
-        setShowSocials(!showSocials);
-        setShowMusic(false);
-      } else if (dropdown === 'music') {
+      if (dropdown === 'music') {
         setShowMusic(!showMusic);
-        setShowSocials(false);
       }
     }
   };
@@ -65,7 +62,6 @@ export default function Navigation() {
   const handleLinkClick = () => {
     if (isMobile) {
       setMobileMenuOpen(false);
-      setShowSocials(false);
       setShowMusic(false);
     }
   };
@@ -175,62 +171,6 @@ export default function Navigation() {
             )}
           </div>
 
-          <div
-            className="y2k-nav-dropdown"
-            {...(!isMobile && {
-              onMouseEnter: () => setShowSocials(true),
-              onMouseLeave: () => setShowSocials(false),
-            })}
-            role="menuitem"
-            aria-haspopup="true"
-            aria-expanded={showSocials}
-          >
-            <button
-              className="y2k-nav-link y2k-nav-dropdown-button"
-              onClick={() => toggleDropdown('socials')}
-              aria-label="Social media links"
-            >
-              SOCIALS
-            </button>
-            {showSocials && (
-              <div className="y2k-nav-dropdown-menu" role="menu" aria-label="Social media links">
-                <a
-                  href="https://www.tiktok.com/@sexybenfranklin?is_from_webapp=1&sender_device=pc"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="y2k-nav-dropdown-item"
-                  role="menuitem"
-                  aria-label="Visit Saint Misty on TikTok"
-                  onClick={handleLinkClick}
-                >
-                  TikTok
-                </a>
-                <a
-                  href="https://www.instagram.com/thesaintmisty"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="y2k-nav-dropdown-item"
-                  role="menuitem"
-                  aria-label="Visit Saint Misty on Instagram"
-                  onClick={handleLinkClick}
-                >
-                  Instagram
-                </a>
-                <a
-                  href="https://youtube.com/@thesaintmisty?si=qmSVssxdcYAkEZcJ"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="y2k-nav-dropdown-item"
-                  role="menuitem"
-                  aria-label="Visit Saint Misty on YouTube"
-                  onClick={handleLinkClick}
-                >
-                  YouTube
-                </a>
-              </div>
-            )}
-          </div>
-
           <a
             href="https://saint-misty.printify.me/category/all/1"
             target="_blank"
@@ -243,17 +183,16 @@ export default function Navigation() {
             SHOP
           </a>
 
-          <Link to="/blog" className="y2k-nav-link" role="menuitem" onClick={handleLinkClick}>
+          <button
+            className="y2k-nav-link"
+            role="menuitem"
+            onClick={() => {
+              openSubscribeModal();
+              handleLinkClick();
+            }}
+          >
             BLOG
-          </Link>
-
-          <Link to="/pictures" className="y2k-nav-link" role="menuitem" onClick={handleLinkClick}>
-            PICS
-          </Link>
-
-          <Link to="/epk" className="y2k-nav-link" role="menuitem" onClick={handleLinkClick}>
-            EPK
-          </Link>
+          </button>
 
           {user && (
             <>

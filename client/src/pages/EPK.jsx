@@ -50,8 +50,8 @@ export default function EPK() {
           <div className="epk-contact-grid">
             <div className="epk-contact-block">
               <p className="epk-contact-role">Management</p>
-              <a href="mailto:natalie@raspberrymanagement.com" className="epk-contact-email">
-                natalie@raspberrymanagement.com
+              <a href="mailto:olivia@purcellmgmt.com" className="epk-contact-email">
+                olivia@purcellmgmt.com
               </a>
             </div>
             <div className="epk-contact-block">

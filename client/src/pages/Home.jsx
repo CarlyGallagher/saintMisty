@@ -6,7 +6,6 @@ import MusicCard from "../components/cards/MusicCard";
 import InterestsCard from "../components/cards/InterestsCard";
 import NetworkCard from "../components/cards/NetworkCard";
 import ShowCard from "../components/cards/ShowCard";
-import BlogCard from "../components/cards/BlogCard";
 import AboutCard from "../components/cards/AboutCard";
 import FriendCard from "../components/cards/FriendCard";
 import "../styles/Home.css";
@@ -29,8 +28,8 @@ export default function Home() {
       <div className="y2k-grid">
         {/* Left Column */}
         <div className="y2k-column-left">
-          <div className="mobile-order-1"><InfoCard /></div>
-          <div className="mobile-order-2"><ListenCard /></div>
+          <div className="mobile-order-2"><InfoCard /></div>
+          <div className="mobile-order-1"><ListenCard /></div>
           <div className="mobile-order-3"><InteractCard /></div>
           <div className="mobile-order-4"><WebCard /></div>
           <div className="mobile-order-7"><MusicCard /></div>
@@ -64,7 +63,6 @@ export default function Home() {
             </div>
           </div>
           <div className="mobile-order-9"><AboutCard /></div>
-          <div className="mobile-order-11"><BlogCard /></div>
           <div className="mobile-order-12"><FriendCard /></div>
         </div>
       </div>

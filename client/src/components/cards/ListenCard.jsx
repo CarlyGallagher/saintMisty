@@ -1,4 +1,21 @@
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { fetchPresave } from "../../api/presave";
+
 export default function ListenCard() {
+  const [presave, setPresave] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await fetchPresave();
+        setPresave(data);
+      } catch (error) {
+        // No pre-save configured, hide the button
+      }
+    })();
+  }, []);
+
   return (
     <div className="y2k-card" style={{ background: "rgba(253, 66, 154, 0.8)" }}>
       <div className="y2k-card-header">Listen</div>
@@ -22,14 +39,32 @@ export default function ListenCard() {
           Apple Music
         </a>
         <a
-          href="https://www.deezer.com/us/artist/231301315?host=6747341883&utm_campaign=clipboard-generic&utm_source=user_sharing&utm_content=artist-231301315&deferredFl=1"
+          href="https://youtube.com/@thesaintmisty?si=qmSVssxdcYAkEZcJ"
           target="_blank"
           rel="noopener noreferrer"
           className="y2k-button"
           style={{ textAlign: "center", textDecoration: "none", display: "block" }}
         >
-          Deezer
+          YouTube
         </a>
+        <Link
+          to="/shows"
+          className="y2k-button"
+          style={{ textAlign: "center", textDecoration: "none", display: "block" }}
+        >
+          Tour
+        </Link>
+        {presave && (
+          <a
+            href={presave.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="y2k-button"
+            style={{ textAlign: "center", textDecoration: "none", display: "block" }}
+          >
+            Pre-Save {presave.songName}
+          </a>
+        )}
       </div>
     </div>
   );

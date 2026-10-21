@@ -53,6 +53,51 @@
   box-shadow: 0 0 15px rgba(255, 105, 180, 0.8);
 }
 
+/* Private EPK Link */
+.admin-epk-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  border: 2px solid #ff69b4;
+  border-radius: 12px;
+}
+
+.admin-epk-link-label {
+  color: #ff69b4;
+  font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.admin-epk-link-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.admin-epk-link-input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 2px solid #666;
+  border-radius: 8px;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 13px;
+}
+
+.admin-epk-link-open {
+  text-decoration: none;
+  display: inline-block;
+}
+
 /* Tabs */
 .admin-tabs {
   display: flex;
@@ -456,6 +501,15 @@
 
   .admin-header h1 {
     font-size: 28px;
+  }
+
+  .admin-epk-link {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-epk-link-row {
+    min-width: 0;
   }
 
   .admin-tabs {
