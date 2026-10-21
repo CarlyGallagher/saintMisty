@@ -11,12 +11,20 @@ export default function AdminDashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("blog"); // blog, newsletter, presave, media
+  const [epkLinkCopied, setEpkLinkCopied] = useState(false);
+  const epkUrl = `${window.location.origin}/epk-0a02faa10e`;
 
   // Redirect if not logged in
   if (!user) {
     navigate("/admin/login");
     return null;
   }
+
+  const handleCopyEpkLink = () => {
+    navigator.clipboard.writeText(epkUrl);
+    setEpkLinkCopied(true);
+    setTimeout(() => setEpkLinkCopied(false), 2000);
+  };
 
   return (
     <div className="admin-dashboard">
@@ -25,6 +33,31 @@ export default function AdminDashboard() {
         <div className="admin-header-actions">
           <span className="admin-user">Welcome, {user.email}</span>
           <button onClick={logout} className="admin-logout-btn">Logout</button>
+        </div>
+      </div>
+
+      {/* Private EPK Link */}
+      <div className="admin-epk-link">
+        <span className="admin-epk-link-label">Private EPK Link (share with bookers):</span>
+        <div className="admin-epk-link-row">
+          <input
+            type="text"
+            readOnly
+            value={epkUrl}
+            onFocus={(e) => e.target.select()}
+            className="admin-epk-link-input"
+          />
+          <button onClick={handleCopyEpkLink} className="admin-btn-secondary">
+            {epkLinkCopied ? "Copied!" : "Copy"}
+          </button>
+          <a
+            href={epkUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="admin-btn-secondary admin-epk-link-open"
+          >
+            Open
+          </a>
         </div>
       </div>
 

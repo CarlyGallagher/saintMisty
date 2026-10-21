@@ -29,7 +29,7 @@ export default function BlogList() {
           <h1>Saint Misty's Blog</h1>
         ) : (
           <img
-            src="http://www.gigaglitters.com/created/GsQYqk5eJB.gif"
+            src="https://www.gigaglitters.com/g/0ee8c72xqn6.gif"
             alt="Blog - Glitter Graphics"
             className="blog-header-gif"
           />
