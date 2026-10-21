@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { fetchBlog, deleteBlog } from "../api/blogs";
 import { useAuth } from "../context/AuthContext";
+import useNoIndex from "../utils/useNoIndex";
 import "../styles/Blog.css";
 
 export default function BlogPost() {
   const { id } = useParams();
   const nav = useNavigate();
   const { user } = useAuth();
+  useNoIndex();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
 

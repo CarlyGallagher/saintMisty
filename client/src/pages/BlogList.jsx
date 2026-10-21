@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchBlogs } from "../api/blogs";
 import { useAccessibility } from "../context/AccessibilityContext";
+import useNoIndex from "../utils/useNoIndex";
 import "../styles/Blog.css";
 
 export default function BlogList() {
   const { highContrast } = useAccessibility();
+  useNoIndex();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 

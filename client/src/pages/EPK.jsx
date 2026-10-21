@@ -1,10 +1,12 @@
 import motoImg from "../assets/SM-Moto.webp";
 import motoBrightImg from "../assets/sm-motoBright.webp";
 import { useAccessibility } from "../context/AccessibilityContext";
+import useNoIndex from "../utils/useNoIndex";
 import "../styles/EPK.css";
 
 export default function EPK() {
   const { highContrast } = useAccessibility();
+  useNoIndex();
 
   return (
     <div className="epk-page">
