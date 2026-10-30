@@ -192,47 +192,6 @@
   margin-top: 20px;
 }
 
-/* Admin Actions */
-.blog-admin-actions {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 2px solid #ff69b4;
-  display: flex;
-  gap: 15px;
-}
-
-.blog-edit-link,
-.blog-delete-button {
-  padding: 10px 25px;
-  border-radius: 8px;
-  font-weight: bold;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.blog-edit-link {
-  background: #ffeb3b;
-  color: #000;
-}
-
-.blog-edit-link:hover {
-  background: #fff;
-  box-shadow: 0 0 15px rgba(255, 235, 59, 0.8);
-}
-
-.blog-delete-button {
-  background: #ff1493;
-  color: #fff;
-}
-
-.blog-delete-button:hover {
-  background: #b00020;
-  box-shadow: 0 0 15px rgba(176, 0, 32, 0.8);
-}
-
 /* Responsive */
 @media (max-width: 768px) {
   .blog-header h1,

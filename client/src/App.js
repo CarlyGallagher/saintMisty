@@ -5,8 +5,6 @@ import "./styles/accessibility.css";
 import Home from "./pages/Home";
 import BlogList from "./pages/BlogList";
 import BlogPost from "./pages/BlogPost";
-import NewBlog from "./pages/NewBlog";
-import EditBlog from "./pages/EditBlog";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import Shows from "./pages/Shows";
@@ -37,8 +35,6 @@ function App() {
                   <Route path="/shows" element={<Shows />} />
                   <Route path="/epk-0a02faa10e" element={<EPK />} />
                   <Route path="/blog" element={<BlogList />} />
-                  <Route path="/blog/new" element={<ProtectedRoute><NewBlog /></ProtectedRoute>} />
-                  <Route path="/blog/:id/edit" element={<ProtectedRoute><EditBlog /></ProtectedRoute>} />
                   <Route path="/blog/:id" element={<BlogPost />} />
                   <Route path="/admin/login" element={<AdminLogin />} />
                   <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />

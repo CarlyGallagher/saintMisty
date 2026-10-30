@@ -23,17 +23,3 @@ export async function fetchBlog(id) {
   const { data } = await api.get(`/api/blogs/${id}`);
   return data;
 }
-
-export async function createBlog(payload) {
-  const { data } = await api.post("/api/blogs", payload);
-  return data;
-}
-
-export async function updateBlog(id, payload) {
-  const { data } = await api.put(`/api/blogs/${id}`, payload);
-  return data;
-}
-
-export async function deleteBlog(id) {
-  await api.delete(`/api/blogs/${id}`);
-}

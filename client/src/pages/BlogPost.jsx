@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { fetchBlog, deleteBlog } from "../api/blogs";
-import { useAuth } from "../context/AuthContext";
+import { useParams, Link } from "react-router-dom";
+import { fetchBlog } from "../api/blogs";
 import useNoIndex from "../utils/useNoIndex";
 import "../styles/Blog.css";
 
 export default function BlogPost() {
   const { id } = useParams();
-  const nav = useNavigate();
-  const { user } = useAuth();
   useNoIndex();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,19 +28,6 @@ export default function BlogPost() {
         <small className="blog-post-date">{new Date(post.createdAt).toLocaleString()}</small>
         {post.image && <img src={post.image} alt="" className="blog-post-image" />}
         <p className="blog-post-text">{post.content}</p>
-
-        {/* Admin-only actions */}
-        {user && (
-          <div className="blog-admin-actions">
-            <Link to={`/blog/${id}/edit`} className="blog-edit-link">Edit Post</Link>
-            <button
-              onClick={async () => { await deleteBlog(id); nav("/blog"); }}
-              className="blog-delete-button"
-            >
-              Delete Post
-            </button>
-          </div>
-        )}
       </article>
     </div>
   );
