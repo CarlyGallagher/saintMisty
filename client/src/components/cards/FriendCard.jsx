@@ -33,7 +33,7 @@ export default function FriendCard() {
       url: "https://www.tyfox.photography/",
     },
     {
-      name: "Raspberry Management",
+      name: "Raspberry",
       image: mustacheAnon,
       url: "https://www.raspberryrecords.co/artists/",
     },
