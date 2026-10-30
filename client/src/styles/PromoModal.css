@@ -1,0 +1,112 @@
+/* Promo modal (see src/config/promo.js) */
+.promo-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001;
+  padding: 16px;
+  animation: promoModalFadeIn 0.3s ease;
+}
+
+@keyframes promoModalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.promo-modal {
+  position: relative;
+  width: min(500px, 100%);
+  aspect-ratio: 1 / 1;
+  background-size: cover;
+  background-position: center;
+  border: 3px solid #ff1493;
+  border-radius: 12px;
+  box-shadow: 0 0 50px rgba(255, 20, 147, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px 24px 32px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.promo-modal-close {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid #fff;
+  color: #fff;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.promo-modal-close:hover {
+  background: #ff1493;
+  transform: rotate(90deg);
+}
+
+.promo-modal-title {
+  font-family: "Comic Sans MS", "Chalkboard SE", "Arial", sans-serif;
+  font-size: clamp(26px, 7vw, 38px);
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  text-shadow: 0 0 8px #000, 0 0 18px rgba(255, 20, 147, 0.9);
+}
+
+.promo-modal-buttons {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.promo-modal-button {
+  flex: 1 1 140px;
+  max-width: 180px;
+  background: #000;
+  color: #fff;
+  border: 2px solid #ff1493;
+  padding: 14px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.promo-modal-button:hover,
+.promo-modal-button:focus-visible {
+  background: #ff1493;
+  box-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
+}
+
+@media (max-width: 480px) {
+  .promo-modal {
+    padding: 56px 16px 20px;
+  }
+
+  .promo-modal-button {
+    padding: 12px 14px;
+    font-size: 16px;
+  }
+}
