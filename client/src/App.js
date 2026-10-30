@@ -16,6 +16,8 @@ import { AccessibilityProvider } from "./context/AccessibilityContext";
 import { SubscribeModalProvider } from "./context/SubscribeModalContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navigation from "./components/Navigation";
+import PromoModal from "./components/PromoModal";
+import promo from "./config/promo";
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
             <a href="#main-content" className="skip-to-main">
               Skip to main content
             </a>
+            <PromoModal promo={promo} />
             <div className="App">
               <Navigation />
               <main id="main-content">
