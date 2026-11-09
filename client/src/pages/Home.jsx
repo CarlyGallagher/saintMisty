@@ -85,8 +85,6 @@ export default function Home() {
           {" | "}
           <a href="https://music.apple.com/us/artist/saint-misty/1708411597" target="_blank" rel="noopener noreferrer">Apple Music</a>
           {" | "}
-          <a href="https://youtu.be/dQw4w9WgXcQ?si=ZDxVBO8ixFw3J5K1" target="_blank" rel="noopener noreferrer">Deezer</a>
-          {" | "}
           <a href="https://youtube.com/@thesaintmisty?si=2suFEl1EUfF6BJiP" target="_blank" rel="noopener noreferrer">YouTube</a>
         </p>
         <p style={{ margin: "8px 0 0 0", color: "#666" }}>
