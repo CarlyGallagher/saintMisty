@@ -413,7 +413,7 @@ const ALL_INTERESTS = Object.keys(INTEREST_LABELS);
 
 function SubscriberList() {
   const [subscribers, setSubscribers] = useState([]);
-  const [filter, setFilter] = useState("everyone"); // everyone, all, music, merch, shows
+  const [filter, setFilter] = useState("all"); // all (everyone), music, merch, shows
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -437,12 +437,12 @@ function SubscriberList() {
     if (interests.length === 0 || ALL_INTERESTS.every((i) => interests.includes(i))) return ["all"];
     return interests;
   };
-  const matches = (s, key) => key === "everyone" || categoriesOf(s).includes(key);
+  // "all" shows the whole list; a category shows people who chose just that one
+  const matches = (s, key) => key === "all" || categoriesOf(s).includes(key);
   const countFor = (key) => subscribers.filter((s) => matches(s, key)).length;
   const visible = subscribers.filter((s) => matches(s, filter));
 
   const filters = [
-    { key: "everyone", label: "Everyone" },
     { key: "all", label: "All" },
     { key: "music", label: "Music" },
     { key: "merch", label: "Merch" },
@@ -463,8 +463,9 @@ function SubscriberList() {
         <h2>Subscribers ({subscribers.length})</h2>
       </div>
       <p className="admin-hint">
-        Everyone signed up for the mailing list and the updates they chose. People who chose every
-        update, or signed up before categories were saved, are in <strong>All</strong>.
+        Everyone signed up for the mailing list and the updates they chose. People tagged
+        <strong> All</strong> chose every update or signed up before categories were saved, and
+        they get every newsletter.
       </p>
 
       {error && <p className="admin-success">{error}</p>}
