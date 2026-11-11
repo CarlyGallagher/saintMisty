@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { fetchSettings } from "../api/settings";
 import "../styles/PromoModal.css";
 
 // Pages where the promo shouldn't interrupt
@@ -8,14 +9,25 @@ const EXCLUDED_PATHS = ["/admin", "/epk-"];
 const PromoModal = ({ promo }) => {
   const { pathname } = useLocation();
   const seenKey = promo ? `promoSeen:${promo.id}` : null;
-  const [open, setOpen] = useState(() => {
-    if (!promo || EXCLUDED_PATHS.some((p) => pathname.startsWith(p))) return false;
+  const [open, setOpen] = useState(false);
+
+  // Only open once the server confirms the admin hasn't disabled the promo
+  useEffect(() => {
+    if (!promo || EXCLUDED_PATHS.some((p) => pathname.startsWith(p))) return;
     try {
-      return !sessionStorage.getItem(seenKey);
-    } catch {
-      return true;
-    }
-  });
+      if (sessionStorage.getItem(seenKey)) return;
+    } catch {}
+
+    let cancelled = false;
+    fetchSettings()
+      .then(({ promoEnabled }) => !cancelled && promoEnabled && setOpen(true))
+      .catch(() => !cancelled && setOpen(true)); // fall back to showing if settings can't load
+    return () => {
+      cancelled = true;
+    };
+    // Only decide on first load, like before; don't pop up on later navigation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const close = useCallback(() => {
     setOpen(false);

@@ -33,7 +33,7 @@ export default function ShowCard() {
             <div className="y2k-card-header">Upcoming Shows</div>
           ) : (
             <img
-              src="http://www.gigaglitters.com/created/LZFycy67hT.gif"
+              src="https://www.gigaglitters.com/created/LZFycy67hT.gif"
               alt="Upcoming Shows - Glitter Graphics"
               style={{ maxWidth: "100%", height: "auto", width: "600px" }}
             />
@@ -52,7 +52,7 @@ export default function ShowCard() {
             <div className="y2k-card-header">Upcoming Shows</div>
           ) : (
             <img
-              src="http://www.gigaglitters.com/created/LZFycy67hT.gif"
+              src="https://www.gigaglitters.com/created/LZFycy67hT.gif"
               alt="Upcoming Shows - Glitter Graphics"
               style={{ maxWidth: "100%", height: "auto", width: "600px" }}
             />
@@ -70,7 +70,7 @@ export default function ShowCard() {
           <div className="y2k-card-header">Upcoming Shows</div>
         ) : (
           <img
-            src="http://www.gigaglitters.com/created/LZFycy67hT.gif"
+            src="https://www.gigaglitters.com/created/LZFycy67hT.gif"
             alt="Upcoming Shows - Glitter Graphics"
             style={{ maxWidth: "100%", height: "auto", width: "600px" }}
           />

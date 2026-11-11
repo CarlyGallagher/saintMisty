@@ -71,7 +71,7 @@ export default function Navigation() {
       <div className="y2k-nav-container">
         <Link to="/" className="y2k-nav-logo" aria-label="Saint Misty Home" onClick={handleLinkClick}>
           <img
-            src="http://www.gigaglitters.com/created/4cxtwBEwKC.gif"
+            src="https://www.gigaglitters.com/created/4cxtwBEwKC.gif"
             width="294"
             height="67"
             alt="Saint Misty Logo"

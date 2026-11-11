@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { sendNewsletter } from "../api/newsletter";
+import { sendNewsletter, fetchSubscribers } from "../api/newsletter";
 import { fetchPresave, updatePresave, deletePresave } from "../api/presave";
+import { fetchSettings, updateSettings } from "../api/settings";
+import promo from "../config/promo";
 import "../styles/AdminDashboard.css";
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("newsletter"); // newsletter, presave
+  const [activeTab, setActiveTab] = useState("newsletter"); // newsletter, subscribers, presave, promo
   const [epkLinkCopied, setEpkLinkCopied] = useState(false);
   const epkUrl = `${window.location.origin}/epk-0a02faa10e`;
 
@@ -68,17 +70,31 @@ export default function AdminDashboard() {
           Newsletter
         </button>
         <button
+          className={`admin-tab ${activeTab === "subscribers" ? "active" : ""}`}
+          onClick={() => setActiveTab("subscribers")}
+        >
+          Subscribers
+        </button>
+        <button
           className={`admin-tab ${activeTab === "presave" ? "active" : ""}`}
           onClick={() => setActiveTab("presave")}
         >
           Pre-Save
+        </button>
+        <button
+          className={`admin-tab ${activeTab === "promo" ? "active" : ""}`}
+          onClick={() => setActiveTab("promo")}
+        >
+          Pop-up
         </button>
       </div>
 
       {/* Tab Content */}
       <div className="admin-content">
         {activeTab === "newsletter" && <NewsletterManagement />}
+        {activeTab === "subscribers" && <SubscriberList />}
         {activeTab === "presave" && <PresaveManagement />}
+        {activeTab === "promo" && <PromoManagement />}
       </div>
     </div>
   );
@@ -310,6 +326,198 @@ function PresaveManagement() {
 
         {status && <p className="admin-success">{status}</p>}
       </form>
+    </div>
+  );
+}
+
+// Promo Pop-up Management Component
+function PromoManagement() {
+  const [enabled, setEnabled] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await fetchSettings();
+        setEnabled(data.promoEnabled);
+      } catch (error) {
+        console.error("Failed to load settings:", error);
+        setStatus("Couldn't load the pop-up setting. Please refresh and try again.");
+      }
+    })();
+  }, []);
+
+  const handleToggle = async () => {
+    setSaving(true);
+    setStatus("");
+    try {
+      const data = await updateSettings({ promoEnabled: !enabled });
+      setEnabled(data.promoEnabled);
+      setStatus(data.promoEnabled ? "Pop-up turned on." : "Pop-up turned off.");
+    } catch (error) {
+      console.error("Failed to update settings:", error);
+      setStatus("Failed to update the pop-up. Please try again.");
+    } finally {
+      setSaving(false);
+      setTimeout(() => setStatus(""), 5000);
+    }
+  };
+
+  return (
+    <div className="admin-section">
+      <div className="admin-section-header">
+        <h2>Promo Pop-up</h2>
+      </div>
+      <p className="admin-hint">
+        The pop-up shows visitors the current promo when they first open the site.
+        {promo ? <> Current promo: <strong>{promo.title}</strong>.</> : " No promo is set up in the code right now."}
+      </p>
+
+      {enabled === null && !status && <p style={{ color: "#888" }}>Loading...</p>}
+
+      {enabled !== null && (
+        <div style={{ display: "flex", gap: "16px", alignItems: "center", flexWrap: "wrap" }}>
+          <span>
+            Status: <strong style={{ color: enabled ? "#2e9e4f" : "#ff4444" }}>{enabled ? "On" : "Off"}</strong>
+          </span>
+          <button
+            type="button"
+            onClick={handleToggle}
+            disabled={saving}
+            className={enabled ? undefined : "admin-btn-primary"}
+            style={enabled ? {
+              padding: "12px 25px",
+              borderRadius: "8px",
+              fontWeight: "bold",
+              cursor: saving ? "wait" : "pointer",
+              border: "none",
+              fontSize: "14px",
+              background: "#ff4444",
+              color: "#fff",
+            } : undefined}
+          >
+            {saving ? "Saving..." : enabled ? "Disable Pop-up" : "Enable Pop-up"}
+          </button>
+        </div>
+      )}
+
+      {status && <p className="admin-success">{status}</p>}
+    </div>
+  );
+}
+
+// Mailing List Subscribers Component
+const INTEREST_LABELS = { music: "Music", merch: "Merch", shows: "Shows" };
+const ALL_INTERESTS = Object.keys(INTEREST_LABELS);
+
+function SubscriberList() {
+  const [subscribers, setSubscribers] = useState([]);
+  const [filter, setFilter] = useState("everyone"); // everyone, all, music, merch, shows, none
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setSubscribers(await fetchSubscribers());
+      } catch (err) {
+        console.error("Failed to load subscribers:", err);
+        setError("Couldn't load subscribers. Please refresh and try again.");
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  // Someone who picked every option is in the "all" category instead of each individual one
+  const categoriesOf = (s) => {
+    const interests = s.interests || [];
+    if (interests.length === 0) return ["none"];
+    if (ALL_INTERESTS.every((i) => interests.includes(i))) return ["all"];
+    return interests;
+  };
+  const matches = (s, key) => key === "everyone" || categoriesOf(s).includes(key);
+  const countFor = (key) => subscribers.filter((s) => matches(s, key)).length;
+  const visible = subscribers.filter((s) => matches(s, filter));
+
+  const filters = [
+    { key: "everyone", label: "Everyone" },
+    { key: "all", label: "All" },
+    { key: "music", label: "Music" },
+    { key: "merch", label: "Merch" },
+    { key: "shows", label: "Shows" },
+    { key: "none", label: "Not recorded" },
+  ];
+
+  if (loading) {
+    return (
+      <div className="admin-section">
+        <p style={{ color: "#888" }}>Loading...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="admin-section">
+      <div className="admin-section-header">
+        <h2>Subscribers ({subscribers.length})</h2>
+      </div>
+      <p className="admin-hint">
+        Everyone signed up for the mailing list and the updates they chose. People who chose every
+        update are in <strong>All</strong>. People who signed up before categories were saved show
+        as <strong>Not recorded</strong>.
+      </p>
+
+      {error && <p className="admin-success">{error}</p>}
+
+      <div className="admin-subscriber-filters">
+        {filters.map(({ key, label }) => (
+          <button
+            key={key}
+            type="button"
+            className={`admin-subscriber-filter ${filter === key ? "active" : ""}`}
+            onClick={() => setFilter(key)}
+          >
+            {label} ({countFor(key)})
+          </button>
+        ))}
+      </div>
+
+      {visible.length === 0 ? (
+        <p style={{ color: "#888" }}>No subscribers in this category yet.</p>
+      ) : (
+        <div className="admin-subscriber-table-wrap">
+          <table className="admin-subscriber-table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Categories</th>
+                <th>Signed up</th>
+              </tr>
+            </thead>
+            <tbody>
+              {visible.map((s) => (
+                <tr key={s._id}>
+                  <td>{s.email}</td>
+                  <td>
+                    {categoriesOf(s).map((c) =>
+                      c === "none" ? (
+                        <span key={c} className="admin-subscriber-none">Not recorded</span>
+                      ) : (
+                        <span key={c} className="admin-subscriber-tag">
+                          {c === "all" ? "All" : INTEREST_LABELS[c] || c}
+                        </span>
+                      )
+                    )}
+                  </td>
+                  <td>{new Date(s.subscribedAt || s.createdAt).toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

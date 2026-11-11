@@ -20,6 +20,10 @@ router.get("/subscribers", requireAuth, async (_req, res) => {
 router.post("/subscribe", async (req, res) => {
   try {
     const { email, name } = req.body;
+    const VALID_INTERESTS = ["music", "merch", "shows"];
+    const interests = Array.isArray(req.body.interests)
+      ? [...new Set(req.body.interests.filter((i) => VALID_INTERESTS.includes(i)))]
+      : [];
 
     if (!email) {
       return res.status(400).json({ error: "Email is required" });
@@ -31,7 +35,7 @@ router.post("/subscribe", async (req, res) => {
       return res.status(400).json({ error: "Already subscribed" });
     }
 
-    const subscriber = new Subscriber({ email, name });
+    const subscriber = new Subscriber({ email, name, interests });
     await subscriber.save();
     res.status(201).json({ message: "Subscribed successfully" });
   } catch (err) {
