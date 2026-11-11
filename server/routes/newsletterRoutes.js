@@ -53,12 +53,31 @@ router.post("/send", requireAuth, async (req, res) => {
       return res.status(400).json({ error: "Subject and message are required" });
     }
 
-    // Get subscribers
-    const subscribers = await Subscriber.find();
+    const SEGMENTS = ["all", "music", "merch", "shows"];
+    const target = segment || "all";
+    if (!SEGMENTS.includes(target)) {
+      return res.status(400).json({ error: "Invalid segment" });
+    }
+
+    // "all" goes to everyone. A specific segment goes to subscribers who chose it,
+    // plus those with no recorded categories (they're treated as signed up for everything).
+    const filter =
+      target === "all"
+        ? {}
+        : {
+            $or: [
+              { interests: target },
+              { interests: { $size: 0 } },
+              { interests: { $exists: false } },
+            ],
+          };
+    const subscribers = await Subscriber.find(filter);
 
     if (subscribers.length === 0) {
       return res.status(400).json({
-        error: "No subscribers found. Add subscribers first before sending newsletters."
+        error: target === "all"
+          ? "No subscribers found. Add subscribers first before sending newsletters."
+          : `No subscribers found for ${target}.`
       });
     }
 
