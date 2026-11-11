@@ -17,7 +17,7 @@ export default function Home() {
       <div className="home-header">
         <h1 className="home-title">
           <img
-            src="http://www.gigaglitters.com/created/7N3HmxwSxu.gif"
+            src="https://www.gigaglitters.com/created/7N3HmxwSxu.gif"
             alt="Saint Misty - Glitter Graphics"
             className="home-title-gif"
           />
@@ -77,7 +77,7 @@ export default function Home() {
         width: "100%"
       }}>
         <p style={{ margin: "0 0 8px 0" }}>
-          <a href="https://www.tiktok.com/@sexybenfranklin?_r=1&_t=ZT-92pW9qq9YJp" target="_blank" rel="noopener noreferrer">TikTok</a>
+          <span>TikTok: @sexybenfranklin</span>
           {" | "}
           <a href="https://www.instagram.com/thesaintmisty?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">Instagram</a>
           {" | "}

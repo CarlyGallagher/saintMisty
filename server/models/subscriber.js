@@ -13,6 +13,11 @@ const subscriberSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    // Which updates they asked for when signing up
+    interests: {
+      type: [{ type: String, enum: ["music", "merch", "shows"] }],
+      default: [],
+    },
     subscribedAt: {
       type: Date,
       default: Date.now,

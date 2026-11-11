@@ -38,6 +38,13 @@ export const SubscribeModalProvider = ({ children }) => {
     setSubscribeOptions((prev) => ({ ...prev, [option]: !prev[option] }));
   };
 
+  // "All" is checked whenever every option is; toggling it checks or unchecks them all
+  const allSelected = Object.values(subscribeOptions).every(Boolean);
+  const handleAllChange = () => {
+    const next = !allSelected;
+    setSubscribeOptions({ music: next, merch: next, shows: next });
+  };
+
   const handleSubmitSubscription = async (e) => {
     e.preventDefault();
     if (!email || !email.includes("@")) {
@@ -50,7 +57,8 @@ export const SubscribeModalProvider = ({ children }) => {
       return;
     }
     try {
-      await subscribe({ email, name: "" });
+      const interests = Object.keys(subscribeOptions).filter((key) => subscribeOptions[key]);
+      await subscribe({ email, name: "", interests });
       setSubscribeSuccess(true);
       setTimeout(() => handleCloseModal(), 2000);
     } catch (error) {
@@ -89,6 +97,10 @@ export const SubscribeModalProvider = ({ children }) => {
                     <label className="checkbox-label">
                       <input type="checkbox" checked={subscribeOptions.shows} onChange={() => handleCheckboxChange("shows")} />
                       <span>Show Announcements</span>
+                    </label>
+                    <label className="checkbox-label">
+                      <input type="checkbox" checked={allSelected} onChange={handleAllChange} />
+                      <span>you actually don't have a choice, you'll be hearing about all of this</span>
                     </label>
                   </div>
                   <div className="email-input-group">

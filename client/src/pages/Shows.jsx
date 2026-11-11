@@ -81,7 +81,7 @@ export default function Shows() {
       {/* Header */}
       <div className="shows-header">
         <img
-          src="http://www.gigaglitters.com/created/LZFycy67hT.gif"
+          src="https://www.gigaglitters.com/created/LZFycy67hT.gif"
           alt="Upcoming Shows - Glitter Graphics"
           className="shows-header-gif"
         />
