@@ -413,7 +413,7 @@ const ALL_INTERESTS = Object.keys(INTEREST_LABELS);
 
 function SubscriberList() {
   const [subscribers, setSubscribers] = useState([]);
-  const [filter, setFilter] = useState("everyone"); // everyone, all, music, merch, shows, none
+  const [filter, setFilter] = useState("everyone"); // everyone, all, music, merch, shows
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -430,11 +430,11 @@ function SubscriberList() {
     })();
   }, []);
 
-  // Someone who picked every option is in the "all" category instead of each individual one
+  // Someone who picked every option, or whose categories weren't recorded, is in "all"
+  // (matches how the newsletter treats them)
   const categoriesOf = (s) => {
     const interests = s.interests || [];
-    if (interests.length === 0) return ["none"];
-    if (ALL_INTERESTS.every((i) => interests.includes(i))) return ["all"];
+    if (interests.length === 0 || ALL_INTERESTS.every((i) => interests.includes(i))) return ["all"];
     return interests;
   };
   const matches = (s, key) => key === "everyone" || categoriesOf(s).includes(key);
@@ -447,7 +447,6 @@ function SubscriberList() {
     { key: "music", label: "Music" },
     { key: "merch", label: "Merch" },
     { key: "shows", label: "Shows" },
-    { key: "none", label: "Not recorded" },
   ];
 
   if (loading) {
@@ -465,8 +464,7 @@ function SubscriberList() {
       </div>
       <p className="admin-hint">
         Everyone signed up for the mailing list and the updates they chose. People who chose every
-        update are in <strong>All</strong>. People who signed up before categories were saved show
-        as <strong>Not recorded</strong>.
+        update, or signed up before categories were saved, are in <strong>All</strong>.
       </p>
 
       {error && <p className="admin-success">{error}</p>}
@@ -501,15 +499,11 @@ function SubscriberList() {
                 <tr key={s._id}>
                   <td>{s.email}</td>
                   <td>
-                    {categoriesOf(s).map((c) =>
-                      c === "none" ? (
-                        <span key={c} className="admin-subscriber-none">Not recorded</span>
-                      ) : (
-                        <span key={c} className="admin-subscriber-tag">
-                          {c === "all" ? "All" : INTEREST_LABELS[c] || c}
-                        </span>
-                      )
-                    )}
+                    {categoriesOf(s).map((c) => (
+                      <span key={c} className="admin-subscriber-tag">
+                        {c === "all" ? "All" : INTEREST_LABELS[c] || c}
+                      </span>
+                    ))}
                   </td>
                   <td>{new Date(s.subscribedAt || s.createdAt).toLocaleDateString()}</td>
                 </tr>
