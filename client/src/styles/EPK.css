@@ -412,3 +412,8 @@
     justify-content: center;
   }
 }
+
+/* EPK text isn't black, so it keeps Arial (the site default is Comic Sans for black text) */
+.epk-page {
+  font-family: Arial, Helvetica, sans-serif;
+}

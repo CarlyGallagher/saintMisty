@@ -110,3 +110,8 @@
     font-size: 16px;
   }
 }
+
+/* Pop-up text isn't black, so it keeps Arial (the title sets its own font) */
+.promo-modal {
+  font-family: Arial, Helvetica, sans-serif;
+}

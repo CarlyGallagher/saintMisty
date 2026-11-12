@@ -170,6 +170,8 @@ export default function MusicCard() {
       style={{
         background: "linear-gradient(180deg, #E8E8E8 0%, #B0B0B0 100%)",
         border: "3px solid #8A8A8A",
+        // The player's text is grey and white, so it keeps Arial rather than the site's Comic Sans
+        fontFamily: "Arial, Helvetica, sans-serif",
         borderRadius: "8px",
         padding: "12px",
         boxShadow: "inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.3)",
@@ -480,6 +482,7 @@ export default function MusicCard() {
                   flex: 1,
                   fontWeight: index === currentTrack ? "bold" : "normal",
                   color: index === currentTrack ? "#000" : "#444",
+                  fontFamily: index === currentTrack ? "var(--font-comic)" : undefined,
                 }}
               >
                 {track.title}

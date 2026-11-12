@@ -86,7 +86,7 @@ export default function Home() {
           {" | "}
           <a href="https://youtube.com/@thesaintmisty?si=2suFEl1EUfF6BJiP" target="_blank" rel="noopener noreferrer">YouTube</a>
         </p>
-        <p style={{ margin: "8px 0 0 0", color: "#666" }}>
+        <p style={{ margin: "8px 0 0 0", color: "#666", fontFamily: "Arial, Helvetica, sans-serif" }}>
           © 2026 Saint Misty
         </p>
       </div>
