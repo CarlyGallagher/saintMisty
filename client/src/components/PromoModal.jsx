@@ -4,7 +4,8 @@ import { fetchSettings } from "../api/settings";
 import "../styles/PromoModal.css";
 
 // Pages where the promo shouldn't interrupt
-const EXCLUDED_PATHS = ["/admin", "/epk-", "/email-preferences"];
+// (/blog opens the email sign-up pop-up instead, so the promo would stack on top of it)
+const EXCLUDED_PATHS = ["/admin", "/epk-", "/email-preferences", "/blog"];
 
 const PromoModal = ({ promo }) => {
   const { pathname } = useLocation();

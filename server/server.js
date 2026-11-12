@@ -43,14 +43,12 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-const blogRoutes = require("./routes/blogRoutes");
 const authRoutes = require("./routes/authRoutes");
 const showRoutes = require("./routes/showRoutes");
 const newsletterRoutes = require("./routes/newsletterRoutes");
 const presaveRoutes = require("./routes/presaveRoutes");
 const settingsRoutes = require("./routes/settingsRoutes");
 
-app.use("/api/blogs", blogRoutes);
 app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/shows", showRoutes);
 app.use("/api/newsletter", newsletterRoutes);

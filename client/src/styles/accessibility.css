@@ -130,11 +130,9 @@
 }
 
 /* Page backgrounds */
-.high-contrast .blog-container,
 .high-contrast .shows-container,
 .high-contrast .pictures-videos-container,
 .high-contrast .admin-dashboard,
-.high-contrast .blog-post-container,
 .high-contrast .home-container {
   background: #ffffff !important;
 }
@@ -162,22 +160,17 @@
   color: #003366 !important;
 }
 
-/* Blog/Shows/Media items */
-.high-contrast .blog-list-item,
+/* Shows/Media items */
 .high-contrast .show-item > div,
 .high-contrast .media-item,
-.high-contrast .admin-section,
-.high-contrast .blog-post-content {
+.high-contrast .admin-section {
   background: #ffffff !important;
   border: 2px solid #6699cc !important;
   color: #000000 !important;
 }
 
-.high-contrast .blog-list-item h3 a,
-.high-contrast .blog-post-title,
 .high-contrast .shows-header h1,
-.high-contrast .pictures-videos-header h1,
-.high-contrast .blog-header h1 {
+.high-contrast .pictures-videos-header h1 {
   color: #0066cc !important;
   background: transparent !important;
   -webkit-text-fill-color: #0066cc !important;
@@ -359,8 +352,6 @@
   font-size: 18px !important;
 }
 
-.large-text .blog-list-item h3,
-.large-text .blog-post-title,
 .large-text .shows-header h1,
 .large-text .pictures-videos-header h1 {
   font-size: 56px !important;
