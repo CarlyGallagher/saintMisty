@@ -77,7 +77,6 @@ export default function Home() {
         width: "100%"
       }}>
         <p style={{ margin: "0 0 8px 0" }}>
-          {" | "}
           <a href="https://www.instagram.com/thesaintmisty?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">Instagram</a>
           {" | "}
           <a href="https://open.spotify.com/artist/3ATKsyAg4Ua8cs2VJJN0CC?si=MsJYW4RKSOWXFqz6YyiPQg" target="_blank" rel="noopener noreferrer">Spotify</a>
