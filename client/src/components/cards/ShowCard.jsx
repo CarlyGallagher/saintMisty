@@ -27,7 +27,7 @@ export default function ShowCard() {
 
   if (loading) {
     return (
-      <div className="y2k-card" style={{ background: "transparent" }}>
+      <div className="y2k-card" style={{ background: "rgba(253, 66, 154, 0.8)" }}>
         <Link to="/shows" style={{ display: "block", textAlign: "center", marginBottom: "2px" }}>
           {highContrast ? (
             <div className="y2k-card-header">Upcoming Shows</div>
@@ -46,7 +46,7 @@ export default function ShowCard() {
 
   if (!nextShow) {
     return (
-      <div className="y2k-card" style={{ background: "transparent" }}>
+      <div className="y2k-card" style={{ background: "rgba(253, 66, 154, 0.8)" }}>
         <Link to="/shows" style={{ display: "block", textAlign: "center", marginBottom: "8px" }}>
           {highContrast ? (
             <div className="y2k-card-header">Upcoming Shows</div>
@@ -64,7 +64,7 @@ export default function ShowCard() {
   }
 
   return (
-    <div className="y2k-card" style={{ background: "transparent", padding: "16px" }}>
+    <div className="y2k-card" style={{ background: "rgba(253, 66, 154, 0.8)", padding: "16px" }}>
       <Link to="/shows" style={{ display: "block", textAlign: "center", marginBottom: "12px" }}>
         {highContrast ? (
           <div className="y2k-card-header">Upcoming Shows</div>
