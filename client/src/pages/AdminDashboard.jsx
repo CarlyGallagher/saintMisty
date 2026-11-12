@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { sendNewsletter, fetchSubscribers } from "../api/newsletter";
+import { sendNewsletter, fetchSubscribers, previewNewsletter, uploadNewsletterImage } from "../api/newsletter";
 import { fetchPresave, updatePresave, deletePresave } from "../api/presave";
 import { fetchSettings, updateSettings } from "../api/settings";
 import promo from "../config/promo";
@@ -12,6 +12,7 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("newsletter"); // newsletter, subscribers, presave, promo
   const [epkLinkCopied, setEpkLinkCopied] = useState(false);
+  const [recipient, setRecipient] = useState(null); // a single subscriber to email, picked from the list
   const epkUrl = `${window.location.origin}/epk-0a02faa10e`;
 
   // Redirect if not logged in
@@ -91,8 +92,17 @@ export default function AdminDashboard() {
 
       {/* Tab Content */}
       <div className="admin-content">
-        {activeTab === "newsletter" && <NewsletterManagement />}
-        {activeTab === "subscribers" && <SubscriberList />}
+        {activeTab === "newsletter" && (
+          <NewsletterManagement recipient={recipient} onClearRecipient={() => setRecipient(null)} />
+        )}
+        {activeTab === "subscribers" && (
+          <SubscriberList
+            onEmail={(subscriber) => {
+              setRecipient(subscriber);
+              setActiveTab("newsletter");
+            }}
+          />
+        )}
         {activeTab === "presave" && <PresaveManagement />}
         {activeTab === "promo" && <PromoManagement />}
       </div>
@@ -101,43 +111,91 @@ export default function AdminDashboard() {
 }
 
 // Newsletter Management Component
-function NewsletterManagement() {
-  const [newsletter, setNewsletter] = useState({
-    subject: "",
-    message: "",
-    sendTo: "all" // all, music, merch, shows
-  });
+const MAX_NEWSLETTER_IMAGES = 3;
+const EMPTY_NEWSLETTER = { subject: "", message: "", sendTo: "all", images: [] };
+
+function NewsletterManagement({ recipient, onClearRecipient }) {
+  const [newsletter, setNewsletter] = useState(EMPTY_NEWSLETTER);
   const [sendStatus, setSendStatus] = useState("");
+  const [sending, setSending] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [previewHtml, setPreviewHtml] = useState("");
+  const [previewHeight, setPreviewHeight] = useState(600);
+  const fileInputRef = useRef(null);
+
+  const showStatus = (text) => {
+    setSendStatus(text);
+    setTimeout(() => setSendStatus(""), 5000);
+  };
+
+  // Re-render the preview shortly after typing stops
+  useEffect(() => {
+    let cancelled = false;
+    const timer = setTimeout(async () => {
+      try {
+        const html = await previewNewsletter({ message: newsletter.message, images: newsletter.images });
+        if (!cancelled) setPreviewHtml(html);
+      } catch (error) {
+        console.error("Failed to load preview:", error);
+      }
+    }, 400);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [newsletter.message, newsletter.images]);
+
+  const handleAddImages = async (e) => {
+    const room = MAX_NEWSLETTER_IMAGES - newsletter.images.length;
+    const files = Array.from(e.target.files || []).slice(0, room);
+    e.target.value = "";
+    if (files.length === 0) return;
+
+    setUploading(true);
+    try {
+      const urls = [];
+      for (const file of files) {
+        urls.push(await uploadNewsletterImage(file));
+      }
+      setNewsletter((n) => ({ ...n, images: [...n.images, ...urls].slice(0, MAX_NEWSLETTER_IMAGES) }));
+    } catch (error) {
+      console.error("Failed to upload photo:", error);
+      showStatus(error.response?.data?.error || "Failed to upload photo. Please try again.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemoveImage = (url) => {
+    setNewsletter((n) => ({ ...n, images: n.images.filter((u) => u !== url) }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSendStatus("");
+    setSending(true);
 
     try {
       const payload = {
         subject: newsletter.subject,
         message: newsletter.message,
-        segment: newsletter.sendTo
+        images: newsletter.images,
+        ...(recipient ? { recipientId: recipient._id } : { segment: newsletter.sendTo }),
       };
 
       const result = await sendNewsletter(payload);
-      setSendStatus(result.message || `Newsletter sent successfully to ${result.count || 0} subscribers!`);
-
-      // Reset form
-      setNewsletter({
-        subject: "",
-        message: "",
-        sendTo: "all"
-      });
-
-      setTimeout(() => setSendStatus(""), 5000);
+      showStatus(result.message || `Newsletter sent successfully to ${result.count || 0} subscribers!`);
+      setNewsletter(EMPTY_NEWSLETTER);
+      if (recipient) onClearRecipient();
     } catch (error) {
       console.error("Failed to send newsletter:", error);
-      const errorMessage = error.response?.data?.error || "Failed to send newsletter. Please check your email configuration and try again.";
-      setSendStatus(errorMessage);
-      setTimeout(() => setSendStatus(""), 5000);
+      showStatus(error.response?.data?.error || "Failed to send newsletter. Please check your email configuration and try again.");
+    } finally {
+      setSending(false);
     }
   };
+
+  const imagesFull = newsletter.images.length >= MAX_NEWSLETTER_IMAGES;
 
   return (
     <div className="admin-section">
@@ -146,20 +204,32 @@ function NewsletterManagement() {
       </div>
       <p className="admin-hint">
         Send email updates to your mailing list. Subscribers can choose to receive updates about music, merch, shows, or all three.
+        To email one person, click their address in the Subscribers tab.
       </p>
 
       <form onSubmit={handleSubmit} className="admin-form">
         <div className="admin-form-group">
           <label>Send To</label>
-          <select
-            value={newsletter.sendTo}
-            onChange={(e) => setNewsletter({ ...newsletter, sendTo: e.target.value })}
-          >
-            <option value="all">All Subscribers</option>
-            <option value="music">Music Subscribers</option>
-            <option value="merch">Merch Subscribers</option>
-            <option value="shows">Show Subscribers</option>
-          </select>
+          {recipient ? (
+            <div className="admin-recipient">
+              <span>
+                Just <strong>{recipient.email}</strong>
+              </span>
+              <button type="button" className="admin-btn-secondary" onClick={onClearRecipient}>
+                Send to a group instead
+              </button>
+            </div>
+          ) : (
+            <select
+              value={newsletter.sendTo}
+              onChange={(e) => setNewsletter({ ...newsletter, sendTo: e.target.value })}
+            >
+              <option value="all">All Subscribers</option>
+              <option value="music">Music Subscribers</option>
+              <option value="merch">Merch Subscribers</option>
+              <option value="shows">Show Subscribers</option>
+            </select>
+          )}
         </div>
 
         <div className="admin-form-group">
@@ -182,14 +252,66 @@ function NewsletterManagement() {
             rows={10}
             required
           />
+          <small>Leave a blank line between paragraphs.</small>
         </div>
 
-        <button type="submit" className="admin-btn-primary">
-          Send Newsletter
+        <div className="admin-form-group">
+          <label>Photos ({newsletter.images.length}/{MAX_NEWSLETTER_IMAGES})</label>
+          {newsletter.images.length > 0 && (
+            <div className="admin-newsletter-images">
+              {newsletter.images.map((url) => (
+                <div key={url} className="admin-newsletter-image">
+                  <img src={url} alt="" />
+                  <button type="button" onClick={() => handleRemoveImage(url)} aria-label="Remove photo">
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleAddImages}
+            style={{ display: "none" }}
+          />
+          <button
+            type="button"
+            className="admin-btn-secondary"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading || imagesFull}
+          >
+            {uploading ? "Uploading..." : imagesFull ? "3 photos max" : "Add Photos"}
+          </button>
+          <small>One photo shows centered. Two or three show side by side.</small>
+        </div>
+
+        <button type="submit" className="admin-btn-primary" disabled={sending || uploading}>
+          {sending ? "Sending..." : recipient ? `Send to ${recipient.email}` : "Send Newsletter"}
         </button>
 
         {sendStatus && <p className="admin-success">{sendStatus}</p>}
       </form>
+
+      <div className="admin-newsletter-preview">
+        <h3>Preview</h3>
+        {previewHtml ? (
+          <iframe
+            title="Email preview"
+            srcDoc={previewHtml}
+            sandbox="allow-same-origin"
+            style={{ height: previewHeight }}
+            onLoad={(e) => {
+              const doc = e.target.contentDocument;
+              if (doc) setPreviewHeight(doc.documentElement.scrollHeight);
+            }}
+          />
+        ) : (
+          <p style={{ color: "#888" }}>Loading preview...</p>
+        )}
+      </div>
     </div>
   );
 }
@@ -411,7 +533,7 @@ function PromoManagement() {
 const INTEREST_LABELS = { music: "Music", merch: "Merch", shows: "Shows" };
 const ALL_INTERESTS = Object.keys(INTEREST_LABELS);
 
-function SubscriberList() {
+function SubscriberList({ onEmail }) {
   const [subscribers, setSubscribers] = useState([]);
   const [filter, setFilter] = useState("all"); // all (everyone), music, merch, shows
   const [loading, setLoading] = useState(true);
@@ -465,7 +587,7 @@ function SubscriberList() {
       <p className="admin-hint">
         Everyone signed up for the mailing list and the updates they chose. People tagged
         <strong> All</strong> chose every update or signed up before categories were saved, and
-        they get every newsletter.
+        they get every newsletter. Click an email address to send a message to just that person.
       </p>
 
       {error && <p className="admin-success">{error}</p>}
@@ -498,7 +620,16 @@ function SubscriberList() {
             <tbody>
               {visible.map((s) => (
                 <tr key={s._id}>
-                  <td>{s.email}</td>
+                  <td>
+                    <button
+                      type="button"
+                      className="admin-subscriber-email"
+                      onClick={() => onEmail(s)}
+                      title={`Email ${s.email}`}
+                    >
+                      {s.email}
+                    </button>
+                  </td>
                   <td>
                     {categoriesOf(s).map((c) => (
                       <span key={c} className="admin-subscriber-tag">

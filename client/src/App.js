@@ -9,6 +9,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import Shows from "./pages/Shows";
 import EPK from "./pages/EPK";
+import EmailPreferences from "./pages/EmailPreferences";
 import { AuthProvider } from "./context/AuthContext";
 import { AccessibilityProvider } from "./context/AccessibilityContext";
 import { SubscribeModalProvider } from "./context/SubscribeModalContext";
@@ -36,6 +37,7 @@ function App() {
                   <Route path="/epk-0a02faa10e" element={<EPK />} />
                   <Route path="/blog" element={<BlogList />} />
                   <Route path="/blog/:id" element={<BlogPost />} />
+                  <Route path="/email-preferences/:id/:token" element={<EmailPreferences />} />
                   <Route path="/admin/login" element={<AdminLogin />} />
                   <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
                 </Routes>

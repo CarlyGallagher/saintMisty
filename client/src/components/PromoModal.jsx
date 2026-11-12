@@ -4,7 +4,7 @@ import { fetchSettings } from "../api/settings";
 import "../styles/PromoModal.css";
 
 // Pages where the promo shouldn't interrupt
-const EXCLUDED_PATHS = ["/admin", "/epk-"];
+const EXCLUDED_PATHS = ["/admin", "/epk-", "/email-preferences"];
 
 const PromoModal = ({ promo }) => {
   const { pathname } = useLocation();
