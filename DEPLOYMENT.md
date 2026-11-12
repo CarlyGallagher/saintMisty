@@ -38,7 +38,30 @@ CLIENT_URL=<your-frontend-url-after-deployment>
 **Note:**
 - Get `MONGO_URI` from your MongoDB Atlas dashboard
 - Copy `JWT_SECRET` from `server/.env` file (keep this secret!)
-- Update `CLIENT_URL` with your actual frontend URL once deployed
+- Update `CLIENT_URL` with your actual frontend URL once deployed. Newsletter "Update your preferences" and "Unsubscribe" links are built from it, so in production it must be `https://www.saintmisty.com`
+- Set `PUBLIC_SERVER_URL` to the API's public URL (used for the one-click unsubscribe button in Gmail/Apple Mail)
+
+#### Newsletter email settings
+
+Gmail (current default):
+
+```
+EMAIL_USER=<gmail address>
+EMAIL_PASSWORD=<gmail app password>
+```
+
+Resend, sending as noreply@saintmisty.com (switch once the domain shows as verified in Resend):
+
+```
+EMAIL_HOST=smtp.resend.com
+EMAIL_PORT=465
+EMAIL_USER=resend
+EMAIL_PASSWORD=<resend API key>
+EMAIL_FROM=noreply@saintmisty.com
+```
+
+Optional: `EMAIL_FROM_NAME` (defaults to "Saint Misty") and `EMAIL_REPLY_TO`.
+With Resend, `EMAIL_FROM` is required, because `EMAIL_USER` is just the word "resend", not an address.
 
 #### Frontend Environment Variables (saintmisty-frontend)
 

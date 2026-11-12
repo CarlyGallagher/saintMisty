@@ -77,8 +77,6 @@ export default function Home() {
         width: "100%"
       }}>
         <p style={{ margin: "0 0 8px 0" }}>
-          <span>TikTok: @sexybenfranklin</span>
-          {" | "}
           <a href="https://www.instagram.com/thesaintmisty?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">Instagram</a>
           {" | "}
           <a href="https://open.spotify.com/artist/3ATKsyAg4Ua8cs2VJJN0CC?si=MsJYW4RKSOWXFqz6YyiPQg" target="_blank" rel="noopener noreferrer">Spotify</a>
@@ -87,7 +85,7 @@ export default function Home() {
           {" | "}
           <a href="https://youtube.com/@thesaintmisty?si=2suFEl1EUfF6BJiP" target="_blank" rel="noopener noreferrer">YouTube</a>
         </p>
-        <p style={{ margin: "8px 0 0 0", color: "#666" }}>
+        <p style={{ margin: "8px 0 0 0", color: "#666", fontFamily: "Arial, Helvetica, sans-serif" }}>
           © 2026 Saint Misty
         </p>
       </div>

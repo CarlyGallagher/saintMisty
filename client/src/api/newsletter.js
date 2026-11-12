@@ -32,3 +32,32 @@ export async function sendNewsletter(payload) {
 export async function deleteSubscriber(id) {
   await api.delete(`/api/newsletter/subscribers/${id}`);
 }
+
+export async function previewNewsletter(payload) {
+  const { data } = await api.post("/api/newsletter/preview", payload);
+  return data.html;
+}
+
+export async function uploadNewsletterImage(file) {
+  const form = new FormData();
+  form.append("image", file);
+  const { data } = await api.post("/api/newsletter/images", form);
+  return data.url;
+}
+
+// Public: subscriber email settings, reached from the links in each newsletter
+const prefsPath = (id, token) => `/api/newsletter/preferences/${encodeURIComponent(id)}/${encodeURIComponent(token)}`;
+
+export async function fetchEmailPreferences(id, token) {
+  const { data } = await api.get(prefsPath(id, token));
+  return data;
+}
+
+export async function updateEmailPreferences(id, token, interests) {
+  const { data } = await api.put(prefsPath(id, token), { interests });
+  return data;
+}
+
+export async function unsubscribeWithToken(id, token) {
+  await api.post(`/api/newsletter/unsubscribe/${encodeURIComponent(id)}/${encodeURIComponent(token)}`);
+}

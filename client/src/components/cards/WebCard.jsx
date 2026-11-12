@@ -25,7 +25,7 @@ export default function WebCard() {
             borderRadius: "4px",
             padding: "8px",
             cursor: "pointer",
-            fontFamily: "monospace",
+            fontFamily: "var(--font-comic)",
             fontSize: "13px",
             transition: "all 0.15s ease",
           }}

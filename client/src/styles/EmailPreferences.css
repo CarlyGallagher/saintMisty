@@ -1,0 +1,141 @@
+/* Subscriber email settings page. Matches the newsletter's look. */
+.email-prefs-page {
+  min-height: 70vh;
+  padding: 40px 16px;
+  background: #FF8FCB;
+  font-family: 'Trebuchet MS', Verdana, sans-serif;
+  color: #2B0A22;
+  box-sizing: border-box;
+}
+
+.email-prefs-card {
+  max-width: 520px;
+  margin: 0 auto;
+  background: #FFFFFF;
+  border: 3px solid #2B0A22;
+  border-radius: 20px;
+  box-shadow: 7px 7px 0 #2B0A22;
+  overflow: hidden;
+  text-align: left;
+}
+
+.email-prefs-header {
+  background: #FF2E93;
+  border-bottom: 3px solid #2B0A22;
+  padding: 18px 24px;
+}
+
+.email-prefs-header h1 {
+  margin: 0;
+  color: #FFFFFF;
+  font-size: 26px;
+  text-shadow: 2px 2px 0 #2B0A22;
+}
+
+.email-prefs-body {
+  padding: 24px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.email-prefs-body h2 {
+  margin: 0 0 8px 0;
+  font-size: 19px;
+  color: #FF2E93;
+}
+
+.email-prefs-body p {
+  margin: 0 0 16px 0;
+  word-break: break-word;
+}
+
+.email-prefs-unsub-first {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 3px dashed #FF8FCB;
+}
+
+.email-prefs-options {
+  border: 0;
+  padding: 0;
+  margin: 0 0 18px 0;
+  display: grid;
+  gap: 10px;
+}
+
+.email-prefs-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 2px solid #2B0A22;
+  border-radius: 12px;
+  background: #FFE3F2;
+  cursor: pointer;
+}
+
+.email-prefs-option input {
+  width: 20px;
+  height: 20px;
+  accent-color: #FF2E93;
+  flex-shrink: 0;
+}
+
+.email-prefs-option span {
+  display: flex;
+  flex-direction: column;
+}
+
+.email-prefs-option small {
+  font-size: 13px;
+  color: #6b3a5c;
+}
+
+.email-prefs-btn {
+  background: #FF2E93;
+  color: #FFFFFF;
+  border: 3px solid #2B0A22;
+  border-radius: 12px;
+  padding: 10px 22px;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 #2B0A22;
+}
+
+.email-prefs-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.email-prefs-btn-danger {
+  background: #2B0A22;
+}
+
+.email-prefs-note {
+  font-size: 14px;
+  margin-top: 10px !important;
+}
+
+.email-prefs-message {
+  margin-top: 16px !important;
+  font-weight: bold;
+}
+
+.email-prefs-footer {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 3px dashed #FF8FCB;
+}
+
+.email-prefs-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 14px;
+  color: #2B0A22;
+  text-decoration: underline;
+  cursor: pointer;
+}
