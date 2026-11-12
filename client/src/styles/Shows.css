@@ -443,6 +443,7 @@
 
 /* Text on this page isn't black, so it keeps Arial (the site default is Comic Sans for black text) */
 .shows-container,
+.show-item,
 .subscribe-modal {
   font-family: Arial, Helvetica, sans-serif;
 }
