@@ -322,6 +322,114 @@
   background: #e6f0ff !important;
 }
 
+/* Admin dashboard in light mode: white panels with the same blue accents as the rest of the site */
+.high-contrast .admin-header,
+.high-contrast .admin-epk-link,
+.high-contrast .admin-recipient {
+  background: #ffffff !important;
+  border-color: #6699cc !important;
+  color: #000000 !important;
+}
+
+.high-contrast .admin-section {
+  box-shadow: none !important;
+}
+
+.high-contrast .admin-header h1 {
+  background: none !important;
+  -webkit-text-fill-color: #003366 !important;
+  color: #003366 !important;
+}
+
+.high-contrast .admin-user,
+.high-contrast .admin-epk-link-label,
+.high-contrast .admin-form-group label,
+.high-contrast .admin-subscriber-table th,
+.high-contrast .admin-newsletter-preview h3 {
+  color: #003366 !important;
+}
+
+.high-contrast .admin-hint,
+.high-contrast .admin-form-group small,
+.high-contrast .admin-subscriber-table td:last-child {
+  color: #444444 !important;
+}
+
+.high-contrast .admin-epk-link-input {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #6699cc !important;
+}
+
+.high-contrast .admin-btn-secondary,
+.high-contrast a.admin-btn-secondary {
+  background: #ffffff !important;
+  color: #003366 !important;
+  border: 2px solid #6699cc !important;
+}
+
+.high-contrast .admin-btn-secondary:hover,
+.high-contrast a.admin-btn-secondary:hover {
+  background: #e6f0ff !important;
+}
+
+.high-contrast .admin-logout-btn {
+  background: #6699cc !important;
+  box-shadow: none !important;
+}
+
+.high-contrast .admin-logout-btn:hover {
+  background: #003366 !important;
+}
+
+.high-contrast .admin-tab {
+  background: #ffffff !important;
+  border-color: #6699cc !important;
+  box-shadow: none !important;
+}
+
+.high-contrast .admin-tab.active {
+  border-color: #003366 !important;
+}
+
+.high-contrast .admin-subscriber-filter {
+  background: #ffffff !important;
+  border-color: #6699cc !important;
+  color: #003366 !important;
+}
+
+.high-contrast .admin-subscriber-filter.active {
+  background: #6699cc !important;
+  color: #ffffff !important;
+}
+
+.high-contrast .admin-subscriber-table td,
+.high-contrast .admin-subscriber-table th {
+  color: #000000;
+  border-bottom-color: #cccccc !important;
+}
+
+.high-contrast .admin-subscriber-email {
+  color: #000000 !important;
+  text-decoration-color: #6699cc !important;
+}
+
+.high-contrast .admin-subscriber-email:hover,
+.high-contrast .admin-subscriber-email:focus-visible {
+  color: #003366 !important;
+}
+
+.high-contrast .admin-subscriber-tag {
+  background: #e6f0ff !important;
+  border-color: #6699cc !important;
+  color: #003366 !important;
+}
+
+.high-contrast .admin-newsletter-image img,
+.high-contrast .admin-newsletter-preview iframe {
+  border-color: #6699cc !important;
+}
+
 /* Large Text Mode */
 .large-text {
   font-size: 18px !important;
