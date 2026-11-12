@@ -34,7 +34,6 @@ const authLimiter = rateLimit({
 });
 
 app.use(express.json({ limit: "10mb" }));
-app.use("/uploads", express.static("uploads"));
 
 // Request logging middleware (only in development)
 if (process.env.NODE_ENV !== 'production') {
@@ -46,7 +45,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 const blogRoutes = require("./routes/blogRoutes");
 const authRoutes = require("./routes/authRoutes");
-const mediaRoutes = require("./routes/mediaRoutes");
 const showRoutes = require("./routes/showRoutes");
 const newsletterRoutes = require("./routes/newsletterRoutes");
 const presaveRoutes = require("./routes/presaveRoutes");
@@ -54,7 +52,6 @@ const settingsRoutes = require("./routes/settingsRoutes");
 
 app.use("/api/blogs", blogRoutes);
 app.use("/api/auth", authLimiter, authRoutes);
-app.use("/api/media", mediaRoutes);
 app.use("/api/shows", showRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/presave", presaveRoutes);
