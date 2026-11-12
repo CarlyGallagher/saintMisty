@@ -9,9 +9,9 @@
 }
 
 .contact-card-header {
-  color: #fff;
-  font-family: "Arial Black", sans-serif;
-  font-size: 13px;
+  color: #000;
+  font-family: var(--font-comic);
+  font-size: 14px;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.5px;
