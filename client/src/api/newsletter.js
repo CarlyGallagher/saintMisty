@@ -33,6 +33,12 @@ export async function deleteSubscriber(id) {
   await api.delete(`/api/newsletter/subscribers/${id}`);
 }
 
+// Undo a delete: puts the subscribers back as they were
+export async function restoreSubscribers(subscribers) {
+  const { data } = await api.post("/api/newsletter/subscribers/restore", { subscribers });
+  return data;
+}
+
 export async function previewNewsletter(payload) {
   const { data } = await api.post("/api/newsletter/preview", payload);
   return data.html;

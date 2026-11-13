@@ -373,13 +373,150 @@
   letter-spacing: 0.05em;
 }
 
-.admin-subscriber-table td:first-child {
+.admin-subscriber-email-cell {
   word-break: break-all;
 }
 
-.admin-subscriber-table td:last-child {
+.admin-subscriber-table .admin-subscriber-date {
   white-space: nowrap;
   color: #aaa;
+}
+
+.admin-subscriber-table .admin-subscriber-check {
+  width: 1%;
+  padding-right: 0;
+}
+
+.admin-subscriber-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: #ff1493;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.admin-subscriber-table tr.selected td {
+  background: rgba(255, 20, 147, 0.12);
+}
+
+.admin-subscriber-table .admin-subscriber-delete-cell {
+  width: 1%;
+  text-align: right;
+}
+
+.admin-subscriber-delete {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #666;
+  background: none;
+  color: #aaa;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-subscriber-delete:hover,
+.admin-subscriber-delete:focus-visible {
+  border-color: #ff4444;
+  background: #ff4444;
+  color: #fff;
+}
+
+.admin-subscriber-delete:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Shows after a delete, until it's undone or something else is deleted */
+.admin-undo-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border: 2px dashed #ff4444;
+  border-radius: 8px;
+  background: #1a1a1a;
+  color: #fff;
+  word-break: break-all;
+}
+
+.admin-undo-bar .admin-btn-secondary {
+  padding: 8px 18px;
+}
+
+/* Shows once anyone is ticked */
+.admin-selection-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border: 2px solid #ff69b4;
+  border-radius: 8px;
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.admin-selection-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-selection-actions button {
+  padding: 8px 14px;
+}
+
+.admin-btn-danger {
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: normal;
+  cursor: pointer;
+  border: none;
+  background: #ff4444;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.admin-btn-danger:hover {
+  background: #ff6666;
+}
+
+.admin-btn-danger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  /* Room for the email address and delete button on phones */
+  .admin-subscriber-table th,
+  .admin-subscriber-table td {
+    padding: 10px 6px;
+  }
+
+  .admin-subscriber-table .admin-subscriber-date {
+    display: none;
+  }
+
+  .admin-selection-actions {
+    width: 100%;
+  }
+
+  .admin-selection-actions button {
+    flex: 1;
+  }
 }
 
 .admin-subscriber-tag {
@@ -429,6 +566,21 @@
 
 .admin-recipient .admin-btn-secondary {
   padding: 8px 14px;
+}
+
+.admin-recipient-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-recipient-list ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  max-height: 140px;
+  overflow-y: auto;
+  font-size: 13px;
+  color: #ccc;
 }
 
 .admin-newsletter-images {

@@ -1,7 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { sendNewsletter, fetchSubscribers, previewNewsletter, uploadNewsletterImage } from "../api/newsletter";
+import {
+  sendNewsletter,
+  fetchSubscribers,
+  deleteSubscriber,
+  restoreSubscribers,
+  previewNewsletter,
+  uploadNewsletterImage,
+} from "../api/newsletter";
 import { fetchPresave, updatePresave, deletePresave } from "../api/presave";
 import { fetchSettings, updateSettings } from "../api/settings";
 import promo from "../config/promo";
@@ -12,7 +19,8 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("newsletter"); // newsletter, subscribers, presave, promo
   const [epkLinkCopied, setEpkLinkCopied] = useState(false);
-  const [recipient, setRecipient] = useState(null); // a single subscriber to email, picked from the list
+  const [recipients, setRecipients] = useState([]); // subscribers hand-picked in the Subscribers tab
+  const [lastDeleted, setLastDeleted] = useState([]); // kept so a delete can be undone, even after switching tabs
   const epkUrl = `${window.location.origin}/epk-0a02faa10e`;
 
   // Redirect if not logged in
@@ -93,14 +101,26 @@ export default function AdminDashboard() {
       {/* Tab Content */}
       <div className="admin-content">
         {activeTab === "newsletter" && (
-          <NewsletterManagement recipient={recipient} onClearRecipient={() => setRecipient(null)} />
+          <NewsletterManagement
+            recipients={recipients}
+            onClearRecipients={() => setRecipients([])}
+            onEditRecipients={() => setActiveTab("subscribers")}
+          />
         )}
         {activeTab === "subscribers" && (
           <SubscriberList
-            onEmail={(subscriber) => {
-              setRecipient(subscriber);
+            initialSelectedIds={recipients.map((r) => r._id)}
+            onEmail={(chosen) => {
+              setRecipients(chosen);
               setActiveTab("newsletter");
             }}
+            lastDeleted={lastDeleted}
+            onDeleted={(removed) => {
+              const ids = removed.map((r) => r._id);
+              setRecipients((list) => list.filter((r) => !ids.includes(r._id)));
+              setLastDeleted(removed);
+            }}
+            onUndone={() => setLastDeleted([])}
           />
         )}
         {activeTab === "presave" && <PresaveManagement />}
@@ -114,7 +134,7 @@ export default function AdminDashboard() {
 const MAX_NEWSLETTER_IMAGES = 3;
 const EMPTY_NEWSLETTER = { subject: "", message: "", sendTo: "all", images: [] };
 
-function NewsletterManagement({ recipient, onClearRecipient }) {
+function NewsletterManagement({ recipients, onClearRecipients, onEditRecipients }) {
   const [newsletter, setNewsletter] = useState(EMPTY_NEWSLETTER);
   const [sendStatus, setSendStatus] = useState("");
   const [sending, setSending] = useState(false);
@@ -123,9 +143,12 @@ function NewsletterManagement({ recipient, onClearRecipient }) {
   const [previewHeight, setPreviewHeight] = useState(600);
   const fileInputRef = useRef(null);
 
-  const showStatus = (text) => {
+  // Messages that need acting on (like who didn't get an email) stay until the next send
+  const statusTimer = useRef(null);
+  const showStatus = (text, { sticky = false } = {}) => {
+    clearTimeout(statusTimer.current);
     setSendStatus(text);
-    setTimeout(() => setSendStatus(""), 5000);
+    if (!sticky) statusTimer.current = setTimeout(() => setSendStatus(""), 5000);
   };
 
   // Re-render the preview shortly after typing stops
@@ -180,16 +203,20 @@ function NewsletterManagement({ recipient, onClearRecipient }) {
         subject: newsletter.subject,
         message: newsletter.message,
         images: newsletter.images,
-        ...(recipient ? { recipientId: recipient._id } : { segment: newsletter.sendTo }),
+        ...(recipients.length ? { recipientIds: recipients.map((r) => r._id) } : { segment: newsletter.sendTo }),
       };
 
       const result = await sendNewsletter(payload);
-      showStatus(result.message || `Newsletter sent successfully to ${result.count || 0} subscribers!`);
+      showStatus(result.message || `Newsletter sent successfully to ${result.count || 0} subscribers!`, {
+        sticky: Boolean(result.failed?.length),
+      });
       setNewsletter(EMPTY_NEWSLETTER);
-      if (recipient) onClearRecipient();
+      if (recipients.length) onClearRecipients();
     } catch (error) {
       console.error("Failed to send newsletter:", error);
-      showStatus(error.response?.data?.error || "Failed to send newsletter. Please check your email configuration and try again.");
+      showStatus(error.response?.data?.error || "Failed to send newsletter. Please check your email configuration and try again.", {
+        sticky: true,
+      });
     } finally {
       setSending(false);
     }
@@ -204,20 +231,39 @@ function NewsletterManagement({ recipient, onClearRecipient }) {
       </div>
       <p className="admin-hint">
         Send email updates to your mailing list. Subscribers can choose to receive updates about music, merch, shows, or all three.
-        To email one person, click their address in the Subscribers tab.
+        To email one person, click their address in the Subscribers tab. To email a custom group, tick the people
+        you want there and press "Email selected".
       </p>
 
       <form onSubmit={handleSubmit} className="admin-form">
         <div className="admin-form-group">
           <label>Send To</label>
-          {recipient ? (
+          {recipients.length ? (
             <div className="admin-recipient">
-              <span>
-                Just <strong>{recipient.email}</strong>
-              </span>
-              <button type="button" className="admin-btn-secondary" onClick={onClearRecipient}>
-                Send to a group instead
-              </button>
+              {recipients.length === 1 ? (
+                <span>
+                  Just <strong>{recipients[0].email}</strong>
+                </span>
+              ) : (
+                <div className="admin-recipient-list">
+                  <span>
+                    <strong>{recipients.length} selected subscribers</strong>
+                  </span>
+                  <ul>
+                    {recipients.map((r) => (
+                      <li key={r._id}>{r.email}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <div className="admin-recipient-actions">
+                <button type="button" className="admin-btn-secondary" onClick={onEditRecipients}>
+                  Change who
+                </button>
+                <button type="button" className="admin-btn-secondary" onClick={onClearRecipients}>
+                  Send to a group instead
+                </button>
+              </div>
             </div>
           ) : (
             <select
@@ -289,7 +335,13 @@ function NewsletterManagement({ recipient, onClearRecipient }) {
         </div>
 
         <button type="submit" className="admin-btn-primary" disabled={sending || uploading}>
-          {sending ? "Sending..." : recipient ? `Send to ${recipient.email}` : "Send Newsletter"}
+          {sending
+            ? "Sending..."
+            : recipients.length === 1
+              ? `Send to ${recipients[0].email}`
+              : recipients.length
+                ? `Send to ${recipients.length} selected`
+                : "Send Newsletter"}
         </button>
 
         {sendStatus && <p className="admin-success">{sendStatus}</p>}
@@ -533,8 +585,15 @@ function PromoManagement() {
 const INTEREST_LABELS = { music: "Music", merch: "Merch", shows: "Shows" };
 const ALL_INTERESTS = Object.keys(INTEREST_LABELS);
 
-function SubscriberList({ onEmail }) {
+const sortNewestFirst = (list) =>
+  [...list].sort((a, b) => new Date(b.subscribedAt || b.createdAt) - new Date(a.subscribedAt || a.createdAt));
+
+function SubscriberList({ initialSelectedIds, lastDeleted, onEmail, onDeleted, onUndone }) {
   const [subscribers, setSubscribers] = useState([]);
+  const [selected, setSelected] = useState(() => new Set(initialSelectedIds));
+  const [deleting, setDeleting] = useState(false);
+  const [undoing, setUndoing] = useState(false);
+  const [notice, setNotice] = useState("");
   const [filter, setFilter] = useState("all"); // all (everyone), music, merch, shows
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -564,6 +623,68 @@ function SubscriberList({ onEmail }) {
   const countFor = (key) => subscribers.filter((s) => matches(s, key)).length;
   const visible = subscribers.filter((s) => matches(s, filter));
 
+  // Ticking works across filters: picking from "Music" then "Shows" keeps both
+  const selectedSubscribers = subscribers.filter((s) => selected.has(s._id));
+  const allVisibleSelected = visible.length > 0 && visible.every((s) => selected.has(s._id));
+
+  const toggle = (id) =>
+    setSelected((set) => {
+      const next = new Set(set);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+
+  const toggleAllVisible = () =>
+    setSelected((set) => {
+      const next = new Set(set);
+      visible.forEach((s) => (allVisibleSelected ? next.delete(s._id) : next.add(s._id)));
+      return next;
+    });
+
+  const handleDelete = async (list) => {
+    const question =
+      list.length === 1
+        ? `Delete ${list[0].email}? They'll stop getting emails.`
+        : `Delete these ${list.length} subscribers? They'll stop getting emails.`;
+    if (!window.confirm(question)) return;
+
+    setDeleting(true);
+    setNotice("");
+    const results = await Promise.allSettled(list.map((s) => deleteSubscriber(s._id)));
+    // A 404 means they were already gone (e.g. they unsubscribed themselves), which is fine
+    const removed = list.filter((s, i) => results[i].status === "fulfilled" || results[i].reason?.response?.status === 404);
+    const removedIds = removed.map((s) => s._id);
+    const failed = list.filter((s) => !removedIds.includes(s._id));
+
+    setSubscribers((all) => all.filter((s) => !removedIds.includes(s._id)));
+    setSelected((set) => new Set([...set].filter((id) => !removedIds.includes(id))));
+    onDeleted(removed);
+    setNotice(failed.length ? `Couldn't delete ${failed.map((s) => s.email).join(", ")}. Please try again.` : "");
+    setDeleting(false);
+  };
+
+  const handleUndo = async () => {
+    setUndoing(true);
+    setNotice("");
+    try {
+      const { restored, skipped } = await restoreSubscribers(lastDeleted);
+      setSubscribers((all) => sortNewestFirst([...all.filter((s) => !restored.some((r) => r._id === s._id)), ...restored]));
+      onUndone();
+      setNotice(
+        skipped.length
+          ? `Restored ${restored.length}. Already on the list: ${skipped.join(", ")}.`
+          : restored.length === 1
+            ? `Restored ${restored[0].email}.`
+            : `Restored ${restored.length} subscribers.`
+      );
+    } catch (err) {
+      console.error("Failed to undo delete:", err);
+      setNotice("Couldn't undo. Please try again.");
+    } finally {
+      setUndoing(false);
+    }
+  };
+
   const filters = [
     { key: "all", label: "All" },
     { key: "music", label: "Music" },
@@ -587,10 +708,54 @@ function SubscriberList({ onEmail }) {
       <p className="admin-hint">
         Everyone signed up for the mailing list and the updates they chose. People tagged
         <strong> All</strong> chose every update or signed up before categories were saved, and
-        they get every newsletter. Click an email address to send a message to just that person.
+        they get every newsletter. Click an email address to send a message to just that person, or tick
+        several people to email them as a group or delete them.
       </p>
 
       {error && <p className="admin-success">{error}</p>}
+      {lastDeleted.length > 0 && (
+        <div className="admin-undo-bar" role="status">
+          <span>
+            {lastDeleted.length === 1 ? (
+              <>
+                Deleted <strong>{lastDeleted[0].email}</strong>.
+              </>
+            ) : (
+              <>
+                Deleted <strong>{lastDeleted.length} subscribers</strong>.
+              </>
+            )}
+          </span>
+          <button type="button" className="admin-btn-secondary" onClick={handleUndo} disabled={undoing}>
+            {undoing ? "Undoing..." : "Undo"}
+          </button>
+        </div>
+      )}
+      {notice && <p className="admin-success" role="status">{notice}</p>}
+
+      {selected.size > 0 && (
+        <div className="admin-selection-bar">
+          <span>
+            <strong>{selected.size}</strong> selected
+          </span>
+          <div className="admin-selection-actions">
+            <button type="button" className="admin-btn-primary" onClick={() => onEmail(selectedSubscribers)}>
+              Email selected
+            </button>
+            <button
+              type="button"
+              className="admin-btn-danger"
+              onClick={() => handleDelete(selectedSubscribers)}
+              disabled={deleting}
+            >
+              {deleting ? "Deleting..." : "Delete selected"}
+            </button>
+            <button type="button" className="admin-btn-secondary" onClick={() => setSelected(new Set())}>
+              Clear
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="admin-subscriber-filters">
         {filters.map(({ key, label }) => (
@@ -612,19 +777,38 @@ function SubscriberList({ onEmail }) {
           <table className="admin-subscriber-table">
             <thead>
               <tr>
+                <th className="admin-subscriber-check">
+                  <input
+                    type="checkbox"
+                    checked={allVisibleSelected}
+                    onChange={toggleAllVisible}
+                    aria-label={allVisibleSelected ? "Unselect everyone shown" : "Select everyone shown"}
+                  />
+                </th>
                 <th>Email</th>
                 <th>Categories</th>
-                <th>Signed up</th>
+                <th className="admin-subscriber-date">Signed up</th>
+                <th>
+                  <span className="sr-only">Delete</span>
+                </th>
               </tr>
             </thead>
             <tbody>
               {visible.map((s) => (
-                <tr key={s._id}>
-                  <td>
+                <tr key={s._id} className={selected.has(s._id) ? "selected" : ""}>
+                  <td className="admin-subscriber-check">
+                    <input
+                      type="checkbox"
+                      checked={selected.has(s._id)}
+                      onChange={() => toggle(s._id)}
+                      aria-label={`Select ${s.email}`}
+                    />
+                  </td>
+                  <td className="admin-subscriber-email-cell">
                     <button
                       type="button"
                       className="admin-subscriber-email"
-                      onClick={() => onEmail(s)}
+                      onClick={() => onEmail([s])}
                       title={`Email ${s.email}`}
                     >
                       {s.email}
@@ -637,7 +821,21 @@ function SubscriberList({ onEmail }) {
                       </span>
                     ))}
                   </td>
-                  <td>{new Date(s.subscribedAt || s.createdAt).toLocaleDateString()}</td>
+                  <td className="admin-subscriber-date">
+                    {new Date(s.subscribedAt || s.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="admin-subscriber-delete-cell">
+                    <button
+                      type="button"
+                      className="admin-subscriber-delete"
+                      onClick={() => handleDelete([s])}
+                      disabled={deleting}
+                      aria-label={`Delete ${s.email}`}
+                      title={`Delete ${s.email}`}
+                    >
+                      ✕
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

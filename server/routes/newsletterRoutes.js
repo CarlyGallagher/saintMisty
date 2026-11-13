@@ -58,6 +58,14 @@ const linksFor = (req, subscriber) => {
 
 const VALID_INTERESTS = ["music", "merch", "shows"];
 
+const SEND_GAP_MS = 600;
+const RETRY_DELAY_MS = 2000;
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// A short, readable reason from a mail error (no credentials are ever in these)
+const providerReason = (err) =>
+  String(err?.response || err?.message || "unknown error").split("\n")[0].slice(0, 200);
+
 // Only keep up to MAX_IMAGES https URLs
 const cleanImages = (images) =>
   (Array.isArray(images) ? images : [])
@@ -141,11 +149,12 @@ router.post("/preview", requireAuth, (req, res) => {
   });
 });
 
-// Send newsletter (protected). Goes to one subscriber when recipientId is set,
-// otherwise to a segment.
+// Send newsletter (protected). Goes to the hand-picked subscribers in recipientIds
+// when given, otherwise to a segment.
 router.post("/send", requireAuth, async (req, res) => {
   try {
-    const { subject, message, segment, recipientId } = req.body;
+    const { subject, message, segment } = req.body;
+    const recipientIds = Array.isArray(req.body.recipientIds) ? [...new Set(req.body.recipientIds.map(String))] : [];
     const images = cleanImages(req.body.images);
 
     if (!subject || !message) {
@@ -153,15 +162,16 @@ router.post("/send", requireAuth, async (req, res) => {
     }
 
     let subscribers;
-    if (recipientId) {
-      if (!mongoose.isValidObjectId(recipientId)) {
+    if (recipientIds.length) {
+      if (!recipientIds.every((id) => mongoose.isValidObjectId(id))) {
         return res.status(400).json({ error: "Invalid recipient" });
       }
-      const subscriber = await Subscriber.findById(recipientId);
-      if (!subscriber) {
-        return res.status(404).json({ error: "That subscriber no longer exists." });
+      subscribers = await Subscriber.find({ _id: { $in: recipientIds } });
+      if (subscribers.length === 0) {
+        return res.status(404).json({
+          error: recipientIds.length === 1 ? "That subscriber no longer exists." : "Those subscribers no longer exist.",
+        });
       }
-      subscribers = [subscriber];
     } else {
       const SEGMENTS = ["all", "music", "merch", "shows"];
       const target = segment || "all";
@@ -195,13 +205,17 @@ router.post("/send", requireAuth, async (req, res) => {
     // Configure email transporter (using environment variables)
     // EMAIL_HOST switches to any SMTP provider (e.g. Resend: smtp.resend.com, port 465).
     // Without it, sending goes through EMAIL_SERVICE (Gmail by default).
+    // One pooled connection, so emails go out one after another instead of all at once.
     const auth = { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASSWORD };
     const port = Number(process.env.EMAIL_PORT) || 465;
-    const transporter = nodemailer.createTransport(
-      process.env.EMAIL_HOST
-        ? { host: process.env.EMAIL_HOST, port, secure: port === 465, auth }
-        : { service: process.env.EMAIL_SERVICE || "gmail", auth }
-    );
+    const transporter = nodemailer.createTransport({
+      ...(process.env.EMAIL_HOST
+        ? { host: process.env.EMAIL_HOST, port, secure: port === 465 }
+        : { service: process.env.EMAIL_SERVICE || "gmail" }),
+      auth,
+      pool: true,
+      maxConnections: 1,
+    });
 
     // EMAIL_FROM lets the newsletter go out from a separate sending address
     // (e.g. a dedicated no-reply inbox) instead of the login account
@@ -212,7 +226,7 @@ router.post("/send", requireAuth, async (req, res) => {
     const from = `"${process.env.EMAIL_FROM_NAME || "Saint Misty"}" <${fromAddress}>`;
 
     // Each email gets its own preferences and unsubscribe links
-    const emailPromises = subscribers.map((subscriber) => {
+    const sendTo = (subscriber) => {
       const { preferencesUrl, unsubscribeUrl, oneClickUrl } = linksFor(req, subscriber);
       return transporter.sendMail({
         from,
@@ -223,14 +237,57 @@ router.post("/send", requireAuth, async (req, res) => {
         list: { unsubscribe: { url: oneClickUrl, comment: "Unsubscribe" } },
         headers: { "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" },
       });
-    });
+    };
 
-    await Promise.all(emailPromises);
+    // Resend accepts about 2 emails per second, so send one at a time with a short gap
+    // and retry a failed one once after a pause. Failures are collected rather than
+    // stopping the whole send, so it's clear exactly who didn't get it.
+    const failed = [];
+    let lastError;
+    try {
+      for (let i = 0; i < subscribers.length; i++) {
+        if (i > 0) await wait(SEND_GAP_MS);
+        try {
+          await sendTo(subscribers[i]);
+        } catch (firstErr) {
+          await wait(RETRY_DELAY_MS);
+          try {
+            await sendTo(subscribers[i]);
+          } catch (err) {
+            console.error(`Newsletter to ${subscribers[i].email} failed:`, err);
+            lastError = err;
+            failed.push(subscribers[i].email);
+          }
+        }
+      }
+    } finally {
+      transporter.close();
+    }
+
+    const sent = subscribers.length - failed.length;
+
+    if (sent === 0) {
+      return res.status(500).json({
+        error: `Nothing was sent. The email provider said: ${providerReason(lastError)}`,
+      });
+    }
+
+    if (failed.length > 0) {
+      // Some went out: report success with the misses, so nobody resends to everyone
+      return res.json({
+        message: `Sent to ${sent} of ${subscribers.length}. These didn't go through: ${failed.join(", ")} (${providerReason(lastError)})`,
+        count: sent,
+        failed,
+      });
+    }
 
     res.json({
-      message: recipientId
-        ? `Email sent to ${subscribers[0].email}`
-        : `Newsletter sent successfully to ${subscribers.length} subscribers`,
+      message:
+        subscribers.length === 1 && recipientIds.length
+          ? `Email sent to ${subscribers[0].email}`
+          : recipientIds.length
+            ? `Sent to ${subscribers.length} selected subscribers`
+            : `Newsletter sent successfully to ${subscribers.length} subscribers`,
       count: subscribers.length
     });
   } catch (err) {
@@ -286,6 +343,46 @@ router.post("/unsubscribe/:id/:token", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to unsubscribe" });
+  }
+});
+
+// Put back subscribers that were just deleted (protected). Used by "Undo" in the admin.
+// They keep their original id, so the preferences and unsubscribe links in emails
+// they already have still work.
+router.post("/subscribers/restore", requireAuth, async (req, res) => {
+  const list = Array.isArray(req.body.subscribers) ? req.body.subscribers.slice(0, 1000) : [];
+  if (list.length === 0) return res.status(400).json({ error: "Nothing to restore" });
+
+  const restored = [];
+  const skipped = [];
+  try {
+    for (const item of list) {
+      const email = typeof item?.email === "string" ? item.email.trim().toLowerCase() : "";
+      if (!mongoose.isValidObjectId(item?._id) || !email.includes("@")) {
+        skipped.push(email || "unknown");
+        continue;
+      }
+      // Already back (e.g. they signed up again in the meantime): leave the current record alone
+      if (await Subscriber.exists({ $or: [{ _id: item._id }, { email }] })) {
+        skipped.push(email);
+        continue;
+      }
+      const subscribedAt = new Date(item.subscribedAt);
+      const subscriber = await Subscriber.create({
+        _id: item._id,
+        email,
+        ...(typeof item.name === "string" && item.name.trim() ? { name: item.name } : {}),
+        interests: Array.isArray(item.interests)
+          ? [...new Set(item.interests.filter((i) => VALID_INTERESTS.includes(i)))]
+          : [],
+        ...(isNaN(subscribedAt) ? {} : { subscribedAt }),
+      });
+      restored.push(subscriber);
+    }
+    res.json({ restored, skipped });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to restore subscribers", restored, skipped });
   }
 });
 

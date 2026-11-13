@@ -325,7 +325,9 @@
 /* Admin dashboard in light mode: white panels with the same blue accents as the rest of the site */
 .high-contrast .admin-header,
 .high-contrast .admin-epk-link,
-.high-contrast .admin-recipient {
+.high-contrast .admin-recipient,
+.high-contrast .admin-selection-bar,
+.high-contrast .admin-undo-bar {
   background: #ffffff !important;
   border-color: #6699cc !important;
   color: #000000 !important;
@@ -351,7 +353,8 @@
 
 .high-contrast .admin-hint,
 .high-contrast .admin-form-group small,
-.high-contrast .admin-subscriber-table td:last-child {
+.high-contrast .admin-subscriber-table .admin-subscriber-date,
+.high-contrast .admin-recipient-list ul {
   color: #444444 !important;
 }
 
@@ -417,6 +420,31 @@
 .high-contrast .admin-subscriber-email:hover,
 .high-contrast .admin-subscriber-email:focus-visible {
   color: #003366 !important;
+}
+
+.high-contrast .admin-subscriber-table tr.selected td {
+  background: #e6f0ff !important;
+}
+
+.high-contrast .admin-subscriber-check input {
+  accent-color: #003366;
+}
+
+.high-contrast .admin-subscriber-delete {
+  border-color: #6699cc !important;
+  color: #003366 !important;
+}
+
+.high-contrast .admin-subscriber-delete:hover,
+.high-contrast .admin-subscriber-delete:focus-visible {
+  border-color: #cc0000 !important;
+  background: #cc0000 !important;
+  color: #ffffff !important;
+}
+
+.high-contrast .admin-btn-danger {
+  background: #cc0000 !important;
+  color: #ffffff !important;
 }
 
 .high-contrast .admin-subscriber-tag {
